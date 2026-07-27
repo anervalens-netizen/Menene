@@ -3,13 +3,14 @@
 ## 1. Instalare normală pentru test
 
 1. Activează `Developer options` și `USB debugging` pe tabletă.
-2. Construiește APK-ul:
+2. Pentru test rapid, construiește și instalează varianta debug:
 
 ```bash
-./gradlew assembleRelease
+./gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-3. Instalează-l:
+Pentru instalarea kiosk definitivă folosește APK-ul release semnat, conform secțiunii `APK release semnat` din README:
 
 ```bash
 adb install -r app/build/outputs/apk/release/app-release.apk
@@ -33,8 +34,8 @@ Pași:
 4. Rulează:
 
 ```bash
-adb shell dpm set-device-owner ro.mehene.app/.kiosk.MeheneDeviceAdminReceiver
-adb shell am start -n ro.mehene.app/.MainActivity
+adb shell dpm set-device-owner ro.mehene.app/ro.mehene.app.kiosk.MeheneDeviceAdminReceiver
+adb shell am start -n ro.mehene.app/ro.mehene.app.MainActivity
 ```
 
 Dacă Android răspunde că dispozitivul este deja provisionat, repetă după resetare, înainte de adăugarea conturilor și a altor aplicații. Unele versiuni Samsung pot necesita provisioning prin QR/Knox în locul comenzii ADB.

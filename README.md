@@ -54,23 +54,45 @@ Cerințe:
 - JDK 17;
 - conexiune la internet numai pe PC, pentru prima descărcare a dependențelor.
 
+Validare și APK de test, instalabil imediat:
+
 ```bash
-./gradlew test assembleRelease
+./gradlew test assembleDebug
 ```
 
 Pe Windows:
 
 ```powershell
-.\gradlew.bat test assembleRelease
+.\gradlew.bat test assembleDebug
 ```
 
-Scripturile `gradlew` incluse descarcă Gradle 8.13 la prima rulare. Aplicația rezultată nu are nevoie de internet.
+APK de test:
 
-APK:
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
+
+### APK release semnat
+
+Generează o singură dată cheia privată și păstreaz-o în afara repository-ului:
+
+```bash
+keytool -genkeypair -v -keystore mehene-release.jks -alias mehene -keyalg RSA -keysize 2048 -validity 10000
+```
+
+Setează `MEHENE_STORE_FILE`, `MEHENE_STORE_PASSWORD`, `MEHENE_KEY_ALIAS` și `MEHENE_KEY_PASSWORD` ca variabile de mediu sau proprietăți Gradle, apoi rulează:
+
+```bash
+./gradlew test assembleRelease
+```
+
+APK final semnat:
 
 ```text
 app/build/outputs/apk/release/app-release.apk
 ```
+
+Fără cele patru valori, Gradle produce intenționat un APK release nesemnat. Scripturile `gradlew` incluse descarcă Gradle 8.13 la prima rulare. Aplicația instalată nu are nevoie de internet.
 
 ## Kiosk complet
 

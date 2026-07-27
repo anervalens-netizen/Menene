@@ -3,6 +3,25 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val releaseStorePath = providers.gradleProperty("MEHENE_STORE_FILE")
+    .orElse(providers.environmentVariable("MEHENE_STORE_FILE"))
+    .orNull
+val releaseStorePassword = providers.gradleProperty("MEHENE_STORE_PASSWORD")
+    .orElse(providers.environmentVariable("MEHENE_STORE_PASSWORD"))
+    .orNull
+val releaseKeyAlias = providers.gradleProperty("MEHENE_KEY_ALIAS")
+    .orElse(providers.environmentVariable("MEHENE_KEY_ALIAS"))
+    .orNull
+val releaseKeyPassword = providers.gradleProperty("MEHENE_KEY_PASSWORD")
+    .orElse(providers.environmentVariable("MEHENE_KEY_PASSWORD"))
+    .orNull
+val releaseSigningConfigured = listOf(
+    releaseStorePath,
+    releaseStorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword,
+).all { !it.isNullOrBlank() }
+
 android {
     namespace = "ro.mehene.app"
     compileSdk = 36
@@ -18,12 +37,26 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        if (releaseSigningConfigured) {
+            create("release") {
+                storeFile = file(releaseStorePath!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
         release {
+            if (releaseSigningConfigured) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
