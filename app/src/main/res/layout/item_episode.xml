@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="190dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/bg_card"
+    android:clickable="true"
+    android:clipToOutline="true"
+    android:elevation="7dp"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/artwork"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/fallbackNumber"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="#55FFFFFF"
+        android:textSize="76sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/playIcon"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_player_center"
+        android:contentDescription="@string/play_pause"
+        android:padding="13dp"
+        android:src="@drawable/ic_play" />
+
+    <TextView
+        android:id="@+id/numberBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_episode_badge"
+        android:textColor="@color/mehene_white"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_scrim_bottom" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-rounded"
+        android:maxLines="2"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="18dp"
+        android:textColor="@color/mehene_white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_gravity="bottom"
+        android:max="1000"
+        android:progressTint="@color/mehene_yellow"
+        android:progressBackgroundTint="#45FFFFFF"
+        android:visibility="gone" />
+
+</FrameLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mehene</string>
+    <string name="home_title">MEHENE</string>
+    <string name="home_subtitle">Alege desenul tău preferat</string>
+    <string name="offline_badge">OFFLINE</string>
+    <string name="empty_title">Biblioteca este goală</string>
+    <string name="empty_message">Părintele trebuie să aleagă folderul cu seriale și episoade.</string>
+    <string name="setup_library">Configurează biblioteca</string>
+    <string name="episodes_count">%1$d episoade</string>
+    <string name="one_episode">1 episod</string>
+    <string name="back_to_series">Înapoi la seriale</string>
+    <string name="close_episode">Închide episodul</string>
+    <string name="volume_up">Volum mai tare</string>
+    <string name="volume_down">Volum mai încet</string>
+    <string name="play_pause">Pauză sau redare</string>
+    <string name="parent_pin_title">Mod părinte</string>
+    <string name="parent_pin_hint">PIN</string>
+    <string name="parent_pin_wrong">PIN incorect</string>
+    <string name="parent_menu_title">Setări părinte</string>
+    <string name="choose_library">Alege folderul bibliotecii</string>
+    <string name="rescan_library">Reîncarcă biblioteca</string>
+    <string name="change_pin">Schimbă PIN-ul</string>
+    <string name="enable_kiosk">Activează kiosk</string>
+    <string name="disable_kiosk">Dezactivează kiosk</string>
+    <string name="temporary_exit">Ieșire temporară în Android</string>
+    <string name="cancel">Anulează</string>
+    <string name="save">Salvează</string>
+    <string name="default_pin_info">PIN inițial: 2468</string>
+    <string name="pin_changed">PIN schimbat</string>
+    <string name="folder_saved">Bibliotecă salvată</string>
+    <string name="folder_error">Folderul nu poate fi citit</string>
+    <string name="scan_error">Biblioteca nu a putut fi încărcată</string>
+    <string name="no_series">Nu există încă seriale cu episoade în folderul ales.</string>
+    <string name="no_episodes">Acest serial nu are încă episoade.</string>
+    <string name="device_admin_description">Blochează tableta în aplicația Mehene.</string>
+    <string name="kiosk_device_owner">Kiosk complet activ</string>
+    <string name="kiosk_soft">Doar fullscreen; kiosk complet necesită configurare ADB</string>
+    <string name="loading">Se încarcă…</string>
+    <string name="episode_number">Episodul %1$d</string>
+    <string name="video_error">Episodul nu poate fi redat</string>
+</resources>
