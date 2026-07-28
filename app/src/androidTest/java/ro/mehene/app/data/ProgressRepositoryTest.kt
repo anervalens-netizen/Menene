@@ -10,6 +10,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -22,14 +23,17 @@ class ProgressRepositoryTest {
     private lateinit var database: MeheneDatabase
     private lateinit var backupStore: ProgressBackupStore
     private lateinit var repository: ProgressRepository
+    private lateinit var backupFile: java.io.File
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
+        backupFile = context.filesDir.resolve("mehene-progress-backup.json")
+        backupFile.delete()
         database = Room.inMemoryDatabaseBuilder(context, MeheneDatabase::class.java)
             .allowMainThreadQueries()
             .build()
-        backupStore = ProgressBackupStore(context).also(ProgressBackupStore::clear)
+        backupStore = ProgressBackupStore(context)
         repository = ProgressRepository(
             dao = database.playbackProgressDao(),
             backupStore = backupStore,
@@ -39,7 +43,7 @@ class ProgressRepositoryTest {
 
     @After
     fun tearDown() {
-        backupStore.clear()
+        backupFile.delete()
         database.close()
     }
 
@@ -61,5 +65,14 @@ class ProgressRepositoryTest {
     fun criticalCheckpointIsAvailableFromBackup() = runBlocking {
         repository.checkpoint("e1", 40, 100, nowEpochMs = 100)
         assertEquals(40, backupStore.get("e1")?.positionMs)
+    }
+
+    @Test
+    fun delayedCheckpointCannotUndoReset() = runBlocking {
+        repository.checkpoint("e1", 40, 100, nowEpochMs = 100)
+        backupStore.clear(nowEpochMs = 200)
+        repository.clear()
+        repository.checkpoint("e1", 80, 100, nowEpochMs = 150)
+        assertNull(repository.get("e1"))
     }
 }
