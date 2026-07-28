@@ -18,9 +18,11 @@ Această iterație tratează aplicația ca pe un aparat offline care trebuie să
 
 - starea din memorie este sursa runtime pentru UI;
 - Room rămâne persistența principală;
+- dacă Room nu se poate deschide, un DAO în memorie permite pornirea și utilizarea aplicației;
 - checkpoint-urile critice sunt salvate și într-un fișier atomic de backup;
 - backup-ul poate repopula Room după o problemă locală;
 - salvările vechi nu pot suprascrie progresul mai nou;
+- resetarea progresului scrie un tombstone persistent, astfel încât datele vechi sau checkpoint-urile întârziate să nu reapară;
 - un eșec Room sau backup este izolat și nu blochează navigarea ori playerul.
 
 ### 3. Setări recuperabile
