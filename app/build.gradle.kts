@@ -31,12 +31,11 @@ android {
         applicationId = "ro.mehene.app"
         minSdk = 23
         targetSdk = 35
-        versionCode = 3
-        versionName = "2.0.0"
+        versionCode = 4
+        versionName = "2.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-
     }
 
     signingConfigs {
@@ -130,7 +129,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.room:room-testing:$roomVersion")
 }
-
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
