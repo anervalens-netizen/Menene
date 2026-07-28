@@ -41,9 +41,11 @@ class ProgressRepository(
 
     suspend fun get(episodeId: String): EpisodeProgress? = writeMutex.withLock {
         mutableProgress.value[episodeId]?.let { return@withLock it }
+        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs() }.getOrDefault(0L)
         val databaseValue = runCatching { dao.get(episodeId) }
             .onFailure { Log.e(TAG, "Room get failed", it) }
             .getOrNull()
+            ?.takeIf { it.lastPlayedAtEpochMs >= clearedAtEpochMs }
         val entity = databaseValue ?: runCatching { backupStore.get(episodeId) }
             .onFailure { Log.e(TAG, "Progress backup get failed", it) }
             .getOrNull()
@@ -145,6 +147,8 @@ class ProgressRepository(
 
     private suspend fun persist(entity: PlaybackProgressEntity, backupRequired: Boolean) = writeMutex.withLock {
         if (!initialized.get()) loadInitialStateUnlocked()
+        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs() }.getOrDefault(0L)
+        if (entity.lastPlayedAtEpochMs < clearedAtEpochMs) return@withLock
         val current = mutableProgress.value[entity.episodeId]
         if (current != null && entity.lastPlayedAtEpochMs < current.lastPlayedAtEpochMs) return@withLock
 
@@ -165,6 +169,9 @@ class ProgressRepository(
 
     private suspend fun loadInitialStateUnlocked() {
         if (initialized.get()) return
+        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs() }
+            .onFailure { Log.e(TAG, "Progress reset marker read failed", it) }
+            .getOrDefault(0L)
         val backup = runCatching { backupStore.loadAll() }
             .onFailure { Log.e(TAG, "Progress backup read failed", it) }
             .getOrDefault(emptyList())
@@ -174,7 +181,9 @@ class ProgressRepository(
 
         val merged = linkedMapOf<String, PlaybackProgressEntity>()
         backup.forEach { mergeNewer(merged, it) }
-        database.orEmpty().forEach { mergeNewer(merged, it) }
+        database.orEmpty()
+            .filter { it.lastPlayedAtEpochMs >= clearedAtEpochMs }
+            .forEach { mergeNewer(merged, it) }
         mutableProgress.value = merged.values.associate { it.episodeId to it.toDomain() }
         initialized.set(true)
 
