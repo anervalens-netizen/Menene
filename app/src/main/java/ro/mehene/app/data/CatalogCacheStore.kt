@@ -1,6 +1,9 @@
 package ro.mehene.app.data
 
 import android.content.Context
+import android.util.AtomicFile
+import java.io.File
+import java.security.MessageDigest
 import ro.mehene.app.model.CatalogSource
 import ro.mehene.app.model.EpisodeItem
 import ro.mehene.app.model.LibraryCatalog
@@ -9,31 +12,66 @@ import ro.mehene.app.model.SeasonItem
 import ro.mehene.app.model.SeriesItem
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 
 class CatalogCacheStore(context: Context) {
-    private val cacheFile = File(context.filesDir, "mehene-catalog-cache.json")
+    private val cacheFile = File(context.filesDir, CACHE_FILE_NAME)
+    private val atomicFile = AtomicFile(cacheFile)
 
-    fun load(expectedRootUri: String): LibraryCatalog? = runCatching {
+    fun load(
+        expectedRootUri: String,
+        expectedSourceFingerprint: String?,
+        maxAgeMs: Long,
+        nowEpochMs: Long = System.currentTimeMillis(),
+    ): LibraryCatalog? {
         if (!cacheFile.isFile) return null
-        val root = JSONObject(cacheFile.readText())
-        if (root.optString("rootUri") != expectedRootUri) return null
-        decode(root).copy(source = CatalogSource.INTERNAL_CACHE)
-    }.getOrNull()
+        return try {
+            val envelopeText = atomicFile.openRead().bufferedReader().use { it.readText() }
+            val envelope = JSONObject(envelopeText)
+            require(envelope.optInt("cacheSchemaVersion") == CACHE_SCHEMA_VERSION)
+            if (envelope.optString("rootUri") != expectedRootUri) return null
 
-    fun save(catalog: LibraryCatalog) {
-        runCatching {
-            val temporary = File(cacheFile.parentFile, "${cacheFile.name}.tmp")
-            temporary.writeText(encode(catalog).toString())
-            if (!temporary.renameTo(cacheFile)) {
-                cacheFile.writeText(temporary.readText())
-                temporary.delete()
-            }
+            val cachedFingerprint = envelope.optNullableString("sourceFingerprint")
+            if (cachedFingerprint != expectedSourceFingerprint) return null
+            val cachedAtEpochMs = envelope.optLong("cachedAtEpochMs")
+            if (expectedSourceFingerprint == null && nowEpochMs - cachedAtEpochMs > maxAgeMs) return null
+
+            val payload = envelope.getString("payload")
+            require(envelope.optString("payloadSha256") == sha256(payload))
+            decode(JSONObject(payload)).copy(source = CatalogSource.INTERNAL_CACHE)
+        } catch (_: Throwable) {
+            clear()
+            null
+        }
+    }
+
+    fun save(
+        catalog: LibraryCatalog,
+        sourceFingerprint: String?,
+        nowEpochMs: Long = System.currentTimeMillis(),
+    ) {
+        val payload = encode(catalog).toString()
+        val envelope = JSONObject().apply {
+            put("cacheSchemaVersion", CACHE_SCHEMA_VERSION)
+            put("rootUri", catalog.rootUri)
+            put("sourceFingerprint", sourceFingerprint ?: JSONObject.NULL)
+            put("cachedAtEpochMs", nowEpochMs)
+            put("payloadSha256", sha256(payload))
+            put("payload", payload)
+        }.toString()
+
+        var output = atomicFile.startWrite()
+        try {
+            output.write(envelope.toByteArray(Charsets.UTF_8))
+            output.fd.sync()
+            atomicFile.finishWrite(output)
+        } catch (error: Throwable) {
+            atomicFile.failWrite(output)
+            throw error
         }
     }
 
     fun clear() {
-        cacheFile.delete()
+        atomicFile.delete()
     }
 
     private fun encode(catalog: LibraryCatalog): JSONObject = JSONObject().apply {
@@ -124,7 +162,7 @@ class CatalogCacheStore(context: Context) {
                 },
             )
         }
-        return LibraryCatalog(
+        val catalog = LibraryCatalog(
             rootUri = root.getString("rootUri"),
             series = series,
             diagnostics = LibraryDiagnostics(
@@ -140,6 +178,17 @@ class CatalogCacheStore(context: Context) {
             source = root.optString("source")
                 .let { runCatching { CatalogSource.valueOf(it) }.getOrDefault(CatalogSource.INTERNAL_CACHE) },
         )
+        CatalogValidator.requireValid(catalog)
+        return catalog
+    }
+
+    private fun sha256(value: String): String = MessageDigest.getInstance("SHA-256")
+        .digest(value.toByteArray(Charsets.UTF_8))
+        .joinToString(separator = "") { "%02x".format(it) }
+
+    companion object {
+        private const val CACHE_FILE_NAME = "mehene-catalog-cache-v2.json"
+        private const val CACHE_SCHEMA_VERSION = 2
     }
 }
 

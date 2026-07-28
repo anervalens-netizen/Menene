@@ -34,8 +34,11 @@ object CatalogJsonCodec {
         val series = root.optJSONArray("series").toObjectList { seriesJson ->
             val id = seriesJson.getString("id")
             val seriesPath = seriesJson.optString("path")
-            val directory = resolveRelative(rootDocument, seriesPath) ?: rootDocument
+            val directory = resolveRelative(rootDocument, seriesPath)
+                ?.takeIf(DocumentFile::isDirectory)
+                ?: error("Directorul serialului lipsește: $seriesPath")
             val cover = resolveRelative(rootDocument, seriesJson.optNullableString("cover"))
+                ?.takeIf(DocumentFile::isFile)
             if (cover == null) missingSeriesArtwork += 1
 
             val seasons = seriesJson.optJSONArray("seasons").toObjectList { seasonJson ->
@@ -48,8 +51,10 @@ object CatalogJsonCodec {
                         return@toObjectListNotNull null
                     }
                     val artwork = resolveRelative(rootDocument, episodeJson.optNullableString("artwork"))
+                        ?.takeIf(DocumentFile::isFile)
                     if (artwork == null) missingEpisodeArtwork += 1
                     val subtitle = resolveRelative(rootDocument, episodeJson.optNullableString("subtitle"))
+                        ?.takeIf(DocumentFile::isFile)
                     EpisodeItem(
                         id = episodeJson.getString("id"),
                         seriesId = id,
@@ -99,9 +104,12 @@ object CatalogJsonCodec {
     }
 
     private fun resolveRelative(root: DocumentFile, relativePath: String?): DocumentFile? {
-        if (relativePath.isNullOrBlank() || relativePath == ".") return root
+        if (relativePath.isNullOrBlank()) return null
+        if (relativePath == ".") return root
+        val segments = relativePath.replace('\\', '/').split('/').filter(String::isNotBlank)
+        if (segments.any { it == "." || it == ".." || it.indexOf('\u0000') >= 0 }) return null
         var current: DocumentFile = root
-        relativePath.replace('\\', '/').split('/').filter(String::isNotBlank).forEach { segment ->
+        segments.forEach { segment ->
             current = current.findFile(segment) ?: return null
         }
         return current

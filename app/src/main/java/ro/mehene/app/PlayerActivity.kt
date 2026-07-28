@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,8 +23,10 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.AspectRatioFrameLayout
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ro.mehene.app.data.LibraryResult
 import ro.mehene.app.data.PlaybackMode
 import ro.mehene.app.databinding.ActivityPlayerBinding
@@ -42,12 +45,16 @@ class PlayerActivity : AppCompatActivity() {
     private var catalog: LibraryCatalog? = null
     private var currentEpisode: EpisodeItem? = null
     private var playbackMode = PlaybackMode.SINGLE
+    private var playbackModeProvided = false
     private var preferredAudioLanguage = "ron"
+    private var sessionEpisodeId = ""
     private var savedPositionMs = 0L
     private var pausedByUser = false
     private var playbackFailed = false
     private var countdownNext: EpisodeItem? = null
     private var countdownSeconds = 0
+    private var restoredNextEpisodeId: String? = null
+    private var restoredCountdownSeconds = 0
 
     private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -73,6 +80,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         override fun onPlayerError(error: PlaybackException) {
+            saveProgress(critical = true)
             playbackFailed = true
             handler.removeCallbacks(bufferTimeout)
             binding.loading.visibility = View.GONE
@@ -82,6 +90,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private val bufferTimeout = Runnable {
         if (player?.playbackState == Player.STATE_BUFFERING) {
+            saveProgress(critical = true)
             playbackFailed = true
             player?.pause()
             binding.loading.visibility = View.GONE
@@ -91,7 +100,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private val periodicProgressSave = object : Runnable {
         override fun run() {
-            saveProgress()
+            saveProgress(critical = false)
             if (player != null) handler.postDelayed(this, PROGRESS_SAVE_INTERVAL_MS)
         }
     }
@@ -101,6 +110,21 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setVolumeControlStream(AudioManager.STREAM_MUSIC)
+
+        sessionEpisodeId = savedInstanceState?.getString(STATE_EPISODE_ID)
+            ?: intent.getStringExtra(EXTRA_EPISODE_ID).orEmpty()
+        val restoredPlaybackMode = savedInstanceState?.getString(STATE_PLAYBACK_MODE)
+        val requestedPlaybackMode = intent.getStringExtra(EXTRA_PLAYBACK_MODE)
+        playbackModeProvided = restoredPlaybackMode != null || requestedPlaybackMode != null
+        playbackMode = restoredPlaybackMode
+            ?.let { runCatching { PlaybackMode.valueOf(it) }.getOrNull() }
+            ?: requestedPlaybackMode
+                ?.let { runCatching { PlaybackMode.valueOf(it) }.getOrNull() }
+                ?: PlaybackMode.SINGLE
+        pausedByUser = savedInstanceState?.getBoolean(STATE_PAUSED_BY_USER) ?: false
+        savedPositionMs = savedInstanceState?.getLong(STATE_POSITION_MS) ?: 0L
+        restoredNextEpisodeId = savedInstanceState?.getString(STATE_NEXT_EPISODE_ID)
+        restoredCountdownSeconds = savedInstanceState?.getInt(STATE_COUNTDOWN_SECONDS) ?: 0
 
         binding.playerView.useController = false
         binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
@@ -121,24 +145,38 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (currentEpisode != null && player == null) initializePlayer()
+        if (usesStartStopLifecycle()) activatePlayback()
     }
 
     override fun onResume() {
         super.onResume()
         KioskController.applyImmersive(this)
+        if (!usesStartStopLifecycle()) activatePlayback()
+    }
+
+    override fun onPause() {
+        if (!usesStartStopLifecycle()) deactivatePlayback()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        if (usesStartStopLifecycle()) deactivatePlayback()
+        super.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        captureProgress()?.let { outState.putLong(STATE_POSITION_MS, it.positionMs) }
+        outState.putString(STATE_EPISODE_ID, currentEpisode?.id ?: sessionEpisodeId)
+        outState.putString(STATE_PLAYBACK_MODE, playbackMode.name)
+        outState.putBoolean(STATE_PAUSED_BY_USER, pausedByUser)
+        outState.putString(STATE_NEXT_EPISODE_ID, countdownNext?.id)
+        outState.putInt(STATE_COUNTDOWN_SECONDS, countdownSeconds)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) KioskController.applyImmersive(this)
-    }
-
-    override fun onStop() {
-        cancelCountdown()
-        saveProgress()
-        releasePlayer()
-        super.onStop()
     }
 
     override fun onDestroy() {
@@ -147,44 +185,69 @@ class PlayerActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun usesStartStopLifecycle(): Boolean = Build.VERSION.SDK_INT > Build.VERSION_CODES.M
+
+    private fun playbackLifecycleActive(): Boolean = if (usesStartStopLifecycle()) {
+        lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)
+    } else {
+        lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+    }
+
+    private fun activatePlayback() {
+        if (currentEpisode != null && player == null && countdownNext == null) initializePlayer()
+        if (countdownNext != null) resumeCountdown()
+    }
+
+    private fun deactivatePlayback() {
+        pauseCountdown()
+        saveProgress(critical = true)
+        releasePlayer()
+    }
+
     private fun loadSession() {
         binding.loading.visibility = View.VISIBLE
         lifecycleScope.launch {
-            val episodeId = intent.getStringExtra(EXTRA_EPISODE_ID).orEmpty()
             val result = container.libraryRepository.loadCatalog()
-            if (episodeId.isBlank() || result !is LibraryResult.Success) {
+            if (sessionEpisodeId.isBlank() || result !is LibraryResult.Success) {
                 showPermanentError()
                 return@launch
             }
-            val episode = result.value.findEpisode(episodeId)
+            val episode = result.value.findEpisode(sessionEpisodeId)
             if (episode == null) {
                 showPermanentError()
                 return@launch
             }
             catalog = result.value
             currentEpisode = episode
-            playbackMode = intent.getStringExtra(EXTRA_PLAYBACK_MODE)
-                ?.let { runCatching { PlaybackMode.valueOf(it) }.getOrNull() }
-                ?: container.settingsRepository.playbackMode.first()
+            if (!playbackModeProvided) {
+                playbackMode = container.settingsRepository.playbackMode.first()
+            }
             preferredAudioLanguage = container.settingsRepository.preferredAudioLanguage.first()
-            savedPositionMs = container.progressRepository.get(episode.id)?.positionMs ?: 0L
+            if (savedPositionMs <= 0L) {
+                savedPositionMs = container.progressRepository.get(episode.id)?.positionMs ?: 0L
+            }
             binding.episodeTitle.text = episode.title
-            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) initializePlayer()
+
+            val restoredNext = restoredNextEpisodeId?.let(result.value::findEpisode)
+            if (restoredNext != null && restoredCountdownSeconds > 0) {
+                startCountdown(restoredNext, restoredCountdownSeconds)
+                restoredNextEpisodeId = null
+            } else if (playbackLifecycleActive()) {
+                initializePlayer()
+            }
         }
     }
 
     private fun initializePlayer() {
         val episode = currentEpisode ?: return
-        if (player != null) return
+        if (player != null || countdownNext != null || !playbackLifecycleActive()) return
         playbackFailed = false
         binding.errorPanel.visibility = View.GONE
         binding.loading.visibility = View.VISIBLE
 
         val trackSelector = DefaultTrackSelector(this).apply {
             val parameters = buildUponParameters()
-            if (preferredAudioLanguage.isNotBlank()) {
-                parameters.setPreferredAudioLanguage(preferredAudioLanguage)
-            }
+            if (preferredAudioLanguage.isNotBlank()) parameters.setPreferredAudioLanguage(preferredAudioLanguage)
             setParameters(parameters.build())
         }
         val audioAttributes = AudioAttributes.Builder()
@@ -211,9 +274,10 @@ class PlayerActivity : AppCompatActivity() {
     private fun mediaItem(episode: EpisodeItem): MediaItem {
         val builder = MediaItem.Builder().setUri(episode.mediaUri).setMediaId(episode.id)
         episode.subtitleUri?.let { subtitleUri ->
-            val mimeType = when {
-                subtitleUri.lowercase().endsWith(".vtt") -> MimeTypes.TEXT_VTT
-                else -> MimeTypes.APPLICATION_SUBRIP
+            val mimeType = if (subtitleUri.lowercase().endsWith(".vtt")) {
+                MimeTypes.TEXT_VTT
+            } else {
+                MimeTypes.APPLICATION_SUBRIP
             }
             builder.setSubtitleConfigurations(
                 listOf(
@@ -238,7 +302,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun retryPlayback() {
-        saveProgress()
+        saveProgress(critical = true)
         playbackFailed = false
         releasePlayer()
         initializePlayer()
@@ -289,40 +353,83 @@ class PlayerActivity : AppCompatActivity() {
         binding.volumeIndicator.visibility = View.GONE
     }
 
-    private fun saveProgress() {
-        val episode = currentEpisode ?: return
-        val activePlayer = player ?: return
+    private data class ProgressCheckpoint(
+        val episodeId: String,
+        val positionMs: Long,
+        val durationMs: Long,
+        val capturedAtEpochMs: Long,
+    )
+
+    private fun captureProgress(): ProgressCheckpoint? {
+        val episode = currentEpisode ?: return null
+        val activePlayer = player ?: return null
         val duration = validDuration(activePlayer.duration)
-        if (duration <= 0L) return
+        if (duration <= 0L) return null
         savedPositionMs = activePlayer.currentPosition.coerceAtLeast(0L)
-        lifecycleScope.launch {
-            container.progressRepository.save(episode.id, savedPositionMs, duration)
+        return ProgressCheckpoint(episode.id, savedPositionMs, duration, System.currentTimeMillis())
+    }
+
+    private fun saveProgress(critical: Boolean) {
+        val checkpoint = captureProgress() ?: return
+        if (critical) {
+            container.progressRepository.enqueueCheckpoint(
+                checkpoint.episodeId,
+                checkpoint.positionMs,
+                checkpoint.durationMs,
+                checkpoint.capturedAtEpochMs,
+            )
+        } else {
+            container.applicationScope.launch {
+                container.progressRepository.save(
+                    checkpoint.episodeId,
+                    checkpoint.positionMs,
+                    checkpoint.durationMs,
+                    checkpoint.capturedAtEpochMs,
+                )
+            }
         }
     }
 
     private fun handleEpisodeEnded() {
         val episode = currentEpisode ?: return
         val duration = validDuration(player?.duration ?: 0L)
-        lifecycleScope.launch {
+        val catalogSnapshot = catalog
+        container.applicationScope.launch {
             container.progressRepository.markCompleted(episode.id, duration)
-            val catalogSnapshot = catalog ?: return@launch closePlayer()
             val progress = container.progressRepository.snapshot()
-            val next = PlaybackQueuePlanner.nextEpisode(
-                catalog = catalogSnapshot,
-                currentEpisodeId = episode.id,
-                mode = playbackMode,
-                progress = progress,
-            )
-            if (next == null) closePlayer() else startCountdown(next)
+            val next = catalogSnapshot?.let { catalogValue ->
+                PlaybackQueuePlanner.nextEpisode(
+                    catalog = catalogValue,
+                    currentEpisodeId = episode.id,
+                    mode = playbackMode,
+                    progress = progress,
+                )
+            }
+            withContext(Dispatchers.Main.immediate) {
+                if (isFinishing || isDestroyed) return@withContext
+                if (next == null) closePlayer() else startCountdown(next)
+            }
         }
     }
 
-    private fun startCountdown(next: EpisodeItem) {
+    private fun startCountdown(next: EpisodeItem, seconds: Int = NEXT_COUNTDOWN_SECONDS) {
+        releasePlayer()
         countdownNext = next
-        countdownSeconds = NEXT_COUNTDOWN_SECONDS
+        countdownSeconds = seconds.coerceAtLeast(1)
         binding.nextTitle.text = next.title
         binding.nextPanel.visibility = View.VISIBLE
         updateCountdown()
+    }
+
+    private fun resumeCountdown() {
+        if (countdownNext == null || countdownSeconds <= 0) return
+        binding.nextPanel.visibility = View.VISIBLE
+        handler.removeCallbacks(countdownTick)
+        handler.postDelayed(countdownTick, 1_000L)
+    }
+
+    private fun pauseCountdown() {
+        handler.removeCallbacks(countdownTick)
     }
 
     private fun updateCountdown() {
@@ -333,7 +440,7 @@ class PlayerActivity : AppCompatActivity() {
         )
         if (countdownSeconds <= 0) {
             val next = countdownNext
-            cancelCountdown()
+            clearCountdown()
             if (next != null) switchEpisode(next)
             return
         }
@@ -343,22 +450,26 @@ class PlayerActivity : AppCompatActivity() {
 
     private val countdownTick = Runnable(::updateCountdown)
 
-    private fun cancelCountdown() {
+    private fun clearCountdown() {
         handler.removeCallbacks(countdownTick)
         countdownNext = null
+        countdownSeconds = 0
         binding.nextPanel.visibility = View.GONE
     }
 
     private fun switchEpisode(next: EpisodeItem) {
+        clearCountdown()
         releasePlayer()
         currentEpisode = next
+        sessionEpisodeId = next.id
+        intent.putExtra(EXTRA_EPISODE_ID, next.id)
         savedPositionMs = 0L
         pausedByUser = false
         playbackFailed = false
         binding.episodeTitle.text = next.title
         lifecycleScope.launch {
             savedPositionMs = container.progressRepository.get(next.id)?.positionMs ?: 0L
-            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) initializePlayer()
+            if (playbackLifecycleActive()) initializePlayer()
         }
     }
 
@@ -372,7 +483,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun closePlayer() {
-        saveProgress()
+        saveProgress(critical = true)
         finish()
     }
 
@@ -383,6 +494,12 @@ class PlayerActivity : AppCompatActivity() {
         private const val BUFFER_TIMEOUT_MS = 20_000L
         private const val NEXT_COUNTDOWN_SECONDS = 5
         private const val VOLUME_SEGMENTS = 7
+        private const val STATE_EPISODE_ID = "state_episode_id"
+        private const val STATE_PLAYBACK_MODE = "state_playback_mode"
+        private const val STATE_PAUSED_BY_USER = "state_paused_by_user"
+        private const val STATE_POSITION_MS = "state_position_ms"
+        private const val STATE_NEXT_EPISODE_ID = "state_next_episode_id"
+        private const val STATE_COUNTDOWN_SECONDS = "state_countdown_seconds"
 
         fun intent(context: Context, episodeId: String, mode: PlaybackMode): Intent =
             Intent(context, PlayerActivity::class.java).apply {
