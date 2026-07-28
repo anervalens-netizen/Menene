@@ -113,6 +113,7 @@ class AdminActivity : AppCompatActivity() {
         } else if (!folderPickerActive) {
             KioskController.applyImmersive(this)
         }
+        viewModel.refreshKioskState()
         viewModel.refresh()
     }
 
@@ -148,13 +149,21 @@ class AdminActivity : AppCompatActivity() {
                 diagnostics.text = if (catalog == null) {
                     getString(R.string.admin_diagnostics_unavailable)
                 } else {
-                    getString(
-                        R.string.admin_diagnostics_summary,
-                        catalog.diagnostics.ignoredVideoCount,
-                        catalog.diagnostics.missingSeriesArtworkCount,
-                        catalog.diagnostics.missingEpisodeArtworkCount,
-                        catalog.diagnostics.scanDurationMs,
-                    )
+                    buildString {
+                        append(
+                            getString(
+                                R.string.admin_diagnostics_summary,
+                                catalog.diagnostics.ignoredVideoCount,
+                                catalog.diagnostics.missingSeriesArtworkCount,
+                                catalog.diagnostics.missingEpisodeArtworkCount,
+                                catalog.diagnostics.scanDurationMs,
+                            ),
+                        )
+                        catalog.diagnostics.lastError?.takeIf(String::isNotBlank)?.let { warning ->
+                            append("\n")
+                            append(warning)
+                        }
+                    }
                 }
                 bindPlaybackMode(state.playbackMode)
                 bindAudioLanguage(state.preferredAudioLanguage)
@@ -203,7 +212,7 @@ class AdminActivity : AppCompatActivity() {
     private fun toggleKiosk() {
         if (preferences.kioskEnabled) KioskController.disableKiosk(this)
         else if (preferences.libraryUri != null) KioskController.enableKiosk(this)
-        viewModel.refresh()
+        viewModel.refreshKioskState()
     }
 
     private fun openFolderPicker() {
@@ -230,5 +239,6 @@ class AdminActivity : AppCompatActivity() {
         preferences.resumeKioskAfterExternalActivity = false
         if (shouldResume && preferences.kioskEnabled) KioskController.prepareAndEnter(this)
         else KioskController.applyImmersive(this)
+        viewModel.refreshKioskState()
     }
 }
