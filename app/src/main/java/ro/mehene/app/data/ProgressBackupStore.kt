@@ -11,11 +11,17 @@ class ProgressBackupStore(context: Context) {
     private val atomicFile = AtomicFile(File(context.filesDir, FILE_NAME))
     private val lock = Any()
     private var loaded = false
+    private var clearedAtEpochMs = 0L
     private val entities = linkedMapOf<String, PlaybackProgressEntity>()
 
     fun loadAll(): List<PlaybackProgressEntity> = synchronized(lock) {
         ensureLoaded()
         entities.values.sortedByDescending(PlaybackProgressEntity::lastPlayedAtEpochMs)
+    }
+
+    fun clearedAtEpochMs(): Long = synchronized(lock) {
+        ensureLoaded()
+        clearedAtEpochMs
     }
 
     fun get(episodeId: String): PlaybackProgressEntity? = synchronized(lock) {
@@ -25,6 +31,7 @@ class ProgressBackupStore(context: Context) {
 
     fun upsertIfNewer(entity: PlaybackProgressEntity) = synchronized(lock) {
         ensureLoaded()
+        if (entity.lastPlayedAtEpochMs < clearedAtEpochMs) return@synchronized
         val existing = entities[entity.episodeId]
         if (existing == null || entity.lastPlayedAtEpochMs >= existing.lastPlayedAtEpochMs) {
             entities[entity.episodeId] = entity
@@ -34,6 +41,7 @@ class ProgressBackupStore(context: Context) {
 
     fun replaceAll(values: Collection<PlaybackProgressEntity>) = synchronized(lock) {
         entities.clear()
+        clearedAtEpochMs = 0L
         values.forEach { entity ->
             val existing = entities[entity.episodeId]
             if (existing == null || entity.lastPlayedAtEpochMs >= existing.lastPlayedAtEpochMs) {
@@ -49,10 +57,11 @@ class ProgressBackupStore(context: Context) {
         if (episodeIds.fold(false) { changed, id -> entities.remove(id) != null || changed }) persist()
     }
 
-    fun clear() = synchronized(lock) {
+    fun clear(nowEpochMs: Long = System.currentTimeMillis()) = synchronized(lock) {
         entities.clear()
+        clearedAtEpochMs = nowEpochMs.coerceAtLeast(clearedAtEpochMs)
         loaded = true
-        atomicFile.delete()
+        persist()
     }
 
     private fun ensureLoaded() {
@@ -62,6 +71,7 @@ class ProgressBackupStore(context: Context) {
         runCatching {
             val root = atomicFile.openRead().bufferedReader().use { JSONObject(it.readText()) }
             require(root.optInt("schemaVersion") == SCHEMA_VERSION)
+            clearedAtEpochMs = root.optLong("clearedAtEpochMs")
             val array = root.optJSONArray("progress") ?: JSONArray()
             for (index in 0 until array.length()) {
                 val item = array.getJSONObject(index)
@@ -76,6 +86,7 @@ class ProgressBackupStore(context: Context) {
             }
         }.onFailure {
             entities.clear()
+            clearedAtEpochMs = 0L
             atomicFile.delete()
         }
     }
@@ -83,6 +94,7 @@ class ProgressBackupStore(context: Context) {
     private fun persist() {
         val root = JSONObject().apply {
             put("schemaVersion", SCHEMA_VERSION)
+            put("clearedAtEpochMs", clearedAtEpochMs)
             put("progress", JSONArray().apply {
                 entities.values.forEach { entity ->
                     put(JSONObject().apply {
