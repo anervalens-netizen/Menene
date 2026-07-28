@@ -3,6 +3,7 @@ package ro.mehene.app
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -17,6 +18,8 @@ class SeriesViewModel(application: Application) : AndroidViewModel(application) 
     private val series = MutableStateFlow<SeriesItem?>(null)
     private val unavailable = MutableStateFlow(false)
     private val selectedSeasonNumber = MutableStateFlow<Int?>(null)
+    private var loadJob: Job? = null
+    private var requestedSeriesId: String? = null
 
     val uiState = combine(
         series,
@@ -48,15 +51,18 @@ class SeriesViewModel(application: Application) : AndroidViewModel(application) 
     )
 
     fun load(seriesId: String) {
-        if (series.value?.id == seriesId) return
-        viewModelScope.launch {
+        if (series.value?.id == seriesId && !unavailable.value) return
+        requestedSeriesId = seriesId
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             unavailable.value = false
             when (val result = container.libraryRepository.loadCatalog()) {
                 is LibraryResult.Success -> {
+                    if (requestedSeriesId != seriesId) return@launch
                     val item = result.value.findSeries(seriesId)
                     if (item == null) unavailable.value = true else series.value = item
                 }
-                else -> unavailable.value = true
+                else -> if (requestedSeriesId == seriesId) unavailable.value = true
             }
         }
     }
