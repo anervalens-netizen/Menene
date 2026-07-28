@@ -4,7 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
+import java.io.FileNotFoundException
+import java.security.MessageDigest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -16,8 +20,6 @@ import ro.mehene.app.model.SeasonItem
 import ro.mehene.app.model.SeriesItem
 import ro.mehene.app.util.NameFormatter
 import ro.mehene.app.util.NaturalOrderComparator
-import java.io.FileNotFoundException
-import java.security.MessageDigest
 import kotlin.system.measureTimeMillis
 
 class LibraryRepository(
@@ -29,6 +31,12 @@ class LibraryRepository(
 
     @Volatile
     private var memoryCatalog: LibraryCatalog? = null
+
+    @Volatile
+    private var memorySourceFingerprint: String? = null
+
+    @Volatile
+    private var memoryCachedAtEpochMs: Long = 0L
 
     fun isConfigured(): Boolean = preferences.libraryUri != null
 
@@ -47,27 +55,39 @@ class LibraryRepository(
                 }
                 val rootUri = preferences.libraryUri ?: return@withLock LibraryResult.NotConfigured
                 val generatedCatalogText = readGeneratedCatalog(root)
-                val generatedAtEpochMs = generatedCatalogText?.let(CatalogJsonCodec::generatedAtEpochMs)
-                fun isFresh(catalog: LibraryCatalog): Boolean = when {
-                    generatedCatalogText == null -> true
-                    generatedAtEpochMs == null -> false
-                    else -> catalog.generatedAtEpochMs == generatedAtEpochMs
-                }
+                val sourceFingerprint = generatedCatalogText?.let(::sha256)
+                val now = System.currentTimeMillis()
 
                 if (!forceRefresh) {
-                    memoryCatalog?.takeIf { it.rootUri == rootUri && isFresh(it) }?.let {
-                        return@withLock LibraryResult.Success(it)
-                    }
-                    cacheStore.load(rootUri)?.takeIf(::isFresh)?.let {
-                        memoryCatalog = it
-                        return@withLock LibraryResult.Success(it)
+                    memoryCatalog?.takeIf { catalog ->
+                        catalog.rootUri == rootUri && when (catalog.source) {
+                            CatalogSource.GENERATED_CATALOG ->
+                                sourceFingerprint != null && memorySourceFingerprint == sourceFingerprint
+                            CatalogSource.FOLDER_SCAN, CatalogSource.INTERNAL_CACHE ->
+                                now - memoryCachedAtEpochMs <= MEMORY_FOLDER_SCAN_TTL_MS
+                        }
+                    }?.let { return@withLock LibraryResult.Success(it) }
+
+                    cacheStore.load(
+                        expectedRootUri = rootUri,
+                        expectedSourceFingerprint = sourceFingerprint,
+                        maxAgeMs = DISK_FOLDER_SCAN_TTL_MS,
+                        nowEpochMs = now,
+                    )?.let { cached ->
+                        memoryCatalog = cached
+                        memorySourceFingerprint = sourceFingerprint
+                        memoryCachedAtEpochMs = now
+                        return@withLock LibraryResult.Success(cached)
                     }
                 }
 
-                scanRoot(root, rootUri, generatedCatalogText).also { result ->
+                scanRoot(root, rootUri, generatedCatalogText, sourceFingerprint).also { result ->
                     if (result is LibraryResult.Success) {
-                        memoryCatalog = result.value
-                        cacheStore.save(result.value)
+                        val cacheFingerprint = sourceFingerprint.takeIf {
+                            result.value.source == CatalogSource.GENERATED_CATALOG
+                        }
+                        remember(result.value, cacheFingerprint)
+                        runCatching { cacheStore.save(result.value, cacheFingerprint) }
                     }
                 }
             }
@@ -102,16 +122,21 @@ class LibraryRepository(
                 }
             }
 
-            val scanned = scanRoot(newRoot, uriString)
+            val generatedCatalogText = readGeneratedCatalog(newRoot)
+            val sourceFingerprint = generatedCatalogText?.let(::sha256)
+            val scanned = scanRoot(newRoot, uriString, generatedCatalogText, sourceFingerprint)
             if (scanned !is LibraryResult.Success) {
                 releasePermission(uriString, except = oldUri)
                 return@withLock scanned
             }
 
             preferences.libraryUri = uriString
-            memoryCatalog = scanned.value
             cacheStore.clear()
-            cacheStore.save(scanned.value)
+            val cacheFingerprint = sourceFingerprint.takeIf {
+                scanned.value.source == CatalogSource.GENERATED_CATALOG
+            }
+            remember(scanned.value, cacheFingerprint)
+            runCatching { cacheStore.save(scanned.value, cacheFingerprint) }
             if (oldUri != null && oldUri != uriString) releasePermission(oldUri)
             scanned
         }
@@ -138,23 +163,52 @@ class LibraryRepository(
             is LibraryResult.Failure -> result
         }
 
-    private fun scanRoot(
+    private fun remember(catalog: LibraryCatalog, sourceFingerprint: String?) {
+        memoryCatalog = catalog
+        memorySourceFingerprint = sourceFingerprint
+        memoryCachedAtEpochMs = System.currentTimeMillis()
+    }
+
+    private suspend fun scanRoot(
         root: DocumentFile,
         rootUri: String,
-        generatedCatalogText: String? = readGeneratedCatalog(root),
+        generatedCatalogText: String?,
+        sourceFingerprint: String?,
     ): LibraryResult<LibraryCatalog> {
         return try {
             var catalog: LibraryCatalog? = null
+            var generatedCatalogFailure: String? = null
             val duration = measureTimeMillis {
+                currentCoroutineContext().ensureActive()
                 if (!generatedCatalogText.isNullOrBlank()) {
-                    catalog = runCatching {
-                        CatalogJsonCodec.decode(root, rootUri, generatedCatalogText, 0L)
-                    }.getOrNull()
+                    catalog = try {
+                        CatalogJsonCodec.decode(root, rootUri, generatedCatalogText, 0L).also {
+                            CatalogValidator.requireValid(it)
+                        }
+                    } catch (error: Throwable) {
+                        generatedCatalogFailure = "catalog.json invalid; scanare foldere: ${error.message.orEmpty()}"
+                        null
+                    }
                 }
                 if (catalog == null) catalog = scanFolders(root, rootUri)
             }
             val finalCatalog = requireNotNull(catalog).let { scanned ->
-                scanned.copy(diagnostics = scanned.diagnostics.copy(scanDurationMs = duration))
+                val validation = CatalogValidator.requireValid(scanned)
+                val warningText = buildList {
+                    generatedCatalogFailure?.let(::add)
+                    addAll(validation.warnings)
+                }.takeIf(List<String>::isNotEmpty)?.joinToString("; ")
+                scanned.copy(
+                    diagnostics = scanned.diagnostics.copy(
+                        scanDurationMs = duration,
+                        lastError = warningText ?: scanned.diagnostics.lastError,
+                    ),
+                    source = if (sourceFingerprint != null && generatedCatalogFailure == null) {
+                        CatalogSource.GENERATED_CATALOG
+                    } else {
+                        CatalogSource.FOLDER_SCAN
+                    },
+                )
             }
             LibraryResult.Success(finalCatalog)
         } catch (error: SecurityException) {
@@ -166,89 +220,95 @@ class LibraryRepository(
         }
     }
 
-    private fun scanFolders(root: DocumentFile, rootUri: String): LibraryCatalog {
+    private suspend fun scanFolders(root: DocumentFile, rootUri: String): LibraryCatalog {
         var ignoredVideoCount = 0
         var missingSeriesArtworkCount = 0
         var missingEpisodeArtworkCount = 0
+        val seriesItems = mutableListOf<SeriesItem>()
 
-        val seriesItems = root.listFiles()
+        val seriesDirectories = root.listFiles()
             .filter { it.isDirectory && !it.name.orEmpty().startsWith('.') }
-            .mapNotNull { seriesDirectory ->
-                val seriesId = stableId(seriesDirectory.uri.toString())
-                val directFiles = seriesDirectory.listFiles().toList()
-                val seasonDirectories = directFiles
-                    .filter(DocumentFile::isDirectory)
-                    .mapNotNull { directory ->
-                        LibraryFileRules.seasonNumber(directory.name.orEmpty())?.let { number -> number to directory }
-                    }
-                    .sortedBy { it.first }
+            .sortedWith(compareBy(NaturalOrderComparator) { it.name.orEmpty() })
 
-                val seasonSources = if (seasonDirectories.isEmpty()) {
-                    listOf(1 to seriesDirectory)
-                } else {
-                    seasonDirectories
+        for (seriesDirectory in seriesDirectories) {
+            currentCoroutineContext().ensureActive()
+            val seriesId = stableId(seriesDirectory.uri.toString())
+            val directFiles = seriesDirectory.listFiles().toList()
+            val seasonDirectories = directFiles
+                .filter(DocumentFile::isDirectory)
+                .mapNotNull { directory ->
+                    LibraryFileRules.seasonNumber(directory.name.orEmpty())?.let { number -> number to directory }
                 }
+                .sortedBy { it.first }
 
-                val seasons = seasonSources.mapNotNull { (seasonNumber, seasonDirectory) ->
-                    val files = seasonDirectory.listFiles().toList()
-                    ignoredVideoCount += files.count { looksLikeVideo(it) && !isSupportedVideo(it) }
-                    val imagesByBase = files.filter(::isImage)
-                        .associateBy { LibraryFileRules.baseName(it.name.orEmpty()).lowercase() }
-                    val subtitlesByBase = files.filter(::isSubtitle)
-                        .associateBy { LibraryFileRules.baseName(it.name.orEmpty()).lowercase() }
-                    val videos = files.filter(::isSupportedVideo)
-                        .sortedWith(compareBy(NaturalOrderComparator) { it.name.orEmpty() })
-                    if (videos.isEmpty()) return@mapNotNull null
-
-                    val seasonTitle = seasonDirectory.name
-                        ?.takeIf { seasonDirectories.isNotEmpty() }
-                        ?.let(NameFormatter::displayName)
-                        ?: "Sezonul $seasonNumber"
-                    val episodes = videos.mapIndexed { index, file ->
-                        val baseName = LibraryFileRules.baseName(file.name.orEmpty()).lowercase()
-                        val artwork = imagesByBase[baseName]
-                        if (artwork == null) missingEpisodeArtworkCount += 1
-                        val number = LibraryFileRules.episodeNumber(file.name.orEmpty(), index + 1)
-                        EpisodeItem(
-                            id = stableId("${seriesDirectory.uri}|${file.uri}|${file.length()}|${file.lastModified()}"),
-                            seriesId = seriesId,
-                            seasonNumber = seasonNumber,
-                            seasonTitle = seasonTitle,
-                            number = number,
-                            sortOrder = index + 1,
-                            title = NameFormatter.displayName(file.name.orEmpty()),
-                            mediaUri = file.uri.toString(),
-                            subtitleUri = subtitlesByBase[baseName]?.uri?.toString(),
-                            artworkUri = artwork?.uri?.toString(),
-                            artworkVersion = artwork?.lastModified() ?: 0L,
-                        )
-                    }
-                    SeasonItem(seasonNumber, seasonTitle, episodes)
-                }
-                if (seasons.isEmpty()) return@mapNotNull null
-
-                val cover = findSeriesArtwork(directFiles)
-                if (cover == null) missingSeriesArtworkCount += 1
-                SeriesItem(
-                    id = seriesId,
-                    title = NameFormatter.displayName(seriesDirectory.name.orEmpty()),
-                    directoryUri = seriesDirectory.uri.toString(),
-                    coverUri = cover?.uri?.toString(),
-                    coverVersion = cover?.lastModified() ?: 0L,
-                    seasons = seasons,
-                )
+            val seasonSources = if (seasonDirectories.isEmpty()) {
+                listOf(1 to seriesDirectory)
+            } else {
+                seasonDirectories
             }
-            .sortedWith(compareBy(NaturalOrderComparator) { it.title })
+            val seasons = mutableListOf<SeasonItem>()
 
+            for ((seasonNumber, seasonDirectory) in seasonSources) {
+                currentCoroutineContext().ensureActive()
+                val files = seasonDirectory.listFiles().toList()
+                ignoredVideoCount += files.count { looksLikeVideo(it) && !isSupportedVideo(it) }
+                val imagesByBase = files.filter(::isImage)
+                    .associateBy { LibraryFileRules.baseName(it.name.orEmpty()).lowercase() }
+                val subtitlesByBase = files.filter(::isSubtitle)
+                    .associateBy { LibraryFileRules.baseName(it.name.orEmpty()).lowercase() }
+                val videos = files.filter(::isSupportedVideo)
+                    .sortedWith(compareBy(NaturalOrderComparator) { it.name.orEmpty() })
+                if (videos.isEmpty()) continue
+
+                val seasonTitle = seasonDirectory.name
+                    ?.takeIf { seasonDirectories.isNotEmpty() }
+                    ?.let(NameFormatter::displayName)
+                    ?: "Sezonul $seasonNumber"
+                val episodes = videos.mapIndexed { index, file ->
+                    val baseName = LibraryFileRules.baseName(file.name.orEmpty()).lowercase()
+                    val artwork = imagesByBase[baseName]
+                    if (artwork == null) missingEpisodeArtworkCount += 1
+                    val number = LibraryFileRules.episodeNumber(file.name.orEmpty(), index + 1)
+                    EpisodeItem(
+                        id = stableId("${seriesDirectory.uri}|${file.uri}|${file.length()}|${file.lastModified()}"),
+                        seriesId = seriesId,
+                        seasonNumber = seasonNumber,
+                        seasonTitle = seasonTitle,
+                        number = number,
+                        sortOrder = index + 1,
+                        title = NameFormatter.displayName(file.name.orEmpty()),
+                        mediaUri = file.uri.toString(),
+                        subtitleUri = subtitlesByBase[baseName]?.uri?.toString(),
+                        artworkUri = artwork?.uri?.toString(),
+                        artworkVersion = artwork?.lastModified() ?: 0L,
+                    )
+                }
+                seasons += SeasonItem(seasonNumber, seasonTitle, episodes)
+            }
+            if (seasons.isEmpty()) continue
+
+            val cover = findSeriesArtwork(directFiles)
+            if (cover == null) missingSeriesArtworkCount += 1
+            seriesItems += SeriesItem(
+                id = seriesId,
+                title = NameFormatter.displayName(seriesDirectory.name.orEmpty()),
+                directoryUri = seriesDirectory.uri.toString(),
+                coverUri = cover?.uri?.toString(),
+                coverVersion = cover?.lastModified() ?: 0L,
+                seasons = seasons,
+            )
+        }
+
+        val sortedSeries = seriesItems.sortedWith(compareBy(NaturalOrderComparator) { it.title })
         return LibraryCatalog(
             rootUri = rootUri,
-            series = seriesItems,
+            series = sortedSeries,
             diagnostics = LibraryDiagnostics(
                 ignoredVideoCount = ignoredVideoCount,
                 missingSeriesArtworkCount = missingSeriesArtworkCount,
                 missingEpisodeArtworkCount = missingEpisodeArtworkCount,
-                seriesCount = seriesItems.size,
-                episodeCount = seriesItems.sumOf { it.episodeCount },
+                seriesCount = sortedSeries.size,
+                episodeCount = sortedSeries.sumOf { it.episodeCount },
             ),
             generatedAtEpochMs = System.currentTimeMillis(),
             source = CatalogSource.FOLDER_SCAN,
@@ -258,6 +318,7 @@ class LibraryRepository(
     private fun readGeneratedCatalog(root: DocumentFile): String? = runCatching {
         val catalogFile = root.findFile(CatalogJsonCodec.FILE_NAME)?.takeIf(DocumentFile::isFile)
             ?: return@runCatching null
+        if (catalogFile.length() > MAX_GENERATED_CATALOG_BYTES) return@runCatching null
         context.contentResolver.openInputStream(catalogFile.uri)
             ?.bufferedReader()
             ?.use { it.readText() }
@@ -312,13 +373,16 @@ class LibraryRepository(
     private fun isSubtitle(file: DocumentFile): Boolean =
         file.isFile && LibraryFileRules.isSubtitleName(file.name.orEmpty())
 
+    private fun stableId(value: String): String = sha256(value).take(24)
 
-    private fun stableId(value: String): String {
-        val digest = MessageDigest.getInstance("SHA-256").digest(value.toByteArray())
-        return digest.take(12).joinToString("") { "%02x".format(it) }
-    }
+    private fun sha256(value: String): String = MessageDigest.getInstance("SHA-256")
+        .digest(value.toByteArray(Charsets.UTF_8))
+        .joinToString(separator = "") { "%02x".format(it) }
 
     companion object {
         private val SUPPORTED_VIDEO_MIME_TYPES = setOf("video/mp4", "video/x-m4v")
+        private const val MEMORY_FOLDER_SCAN_TTL_MS = 2 * 60 * 1000L
+        private const val DISK_FOLDER_SCAN_TTL_MS = 15 * 60 * 1000L
+        private const val MAX_GENERATED_CATALOG_BYTES = 8 * 1024 * 1024L
     }
 }
