@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -22,6 +23,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val settingsRepository = container.settingsRepository
 
     private val catalogResult = MutableStateFlow<LibraryResult<LibraryCatalog>?>(null)
+    private var refreshJob: Job? = null
+    private var requestGeneration = 0L
 
     val uiState = combine(
         catalogResult,
@@ -52,9 +55,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refresh(force: Boolean = false) {
-        viewModelScope.launch {
-            if (catalogResult.value == null || force) catalogResult.value = null
+        val generation = ++requestGeneration
+        refreshJob?.cancel()
+        refreshJob = viewModelScope.launch {
             val result = libraryRepository.loadCatalog(force)
+            if (generation != requestGeneration) return@launch
             catalogResult.value = result
             if (result is LibraryResult.Success) {
                 progressRepository.prune(result.value.episodes.map { it.id }.toSet())
@@ -63,9 +68,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setLibrary(uri: Uri) {
-        viewModelScope.launch {
-            catalogResult.value = null
-            catalogResult.value = libraryRepository.persistLibraryUri(uri)
+        val generation = ++requestGeneration
+        refreshJob?.cancel()
+        refreshJob = viewModelScope.launch {
+            val result = libraryRepository.persistLibraryUri(uri)
+            if (generation != requestGeneration) return@launch
+            catalogResult.value = result
+            if (result is LibraryResult.Success) {
+                progressRepository.prune(result.value.episodes.map { it.id }.toSet())
+            }
         }
     }
 }
