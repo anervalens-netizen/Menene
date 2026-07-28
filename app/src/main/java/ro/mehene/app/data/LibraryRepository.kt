@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import java.io.FileNotFoundException
 import java.security.MessageDigest
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -211,6 +212,8 @@ class LibraryRepository(
                 )
             }
             LibraryResult.Success(finalCatalog)
+        } catch (error: CancellationException) {
+            throw error
         } catch (error: SecurityException) {
             LibraryResult.PermissionLost
         } catch (error: FileNotFoundException) {
