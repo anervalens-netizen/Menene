@@ -1,9 +1,18 @@
 param(
     [Parameter(Mandatory = $true)][string]$Source,
     [Parameter(Mandatory = $true)][string]$Destination,
-    [string]$AudioLanguage = "ron"
+    [string]$AudioLanguage = "ron",
+    [switch]$PublishPartial
 )
 $ErrorActionPreference = "Stop"
 $ScriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
-python (Join-Path $ScriptDirectory "mehene_library.py") $Source $Destination --audio-language $AudioLanguage
+$Arguments = @(
+    (Join-Path $ScriptDirectory "mehene_builder.py"),
+    $Source,
+    $Destination,
+    "--audio-language",
+    $AudioLanguage
+)
+if ($PublishPartial) { $Arguments += "--publish-partial" }
+python @Arguments
 exit $LASTEXITCODE
