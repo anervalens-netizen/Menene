@@ -3,7 +3,7 @@ package ro.mehene.app.util
 import android.content.Context
 
 fun Context.meheneGridColumns(
-    minimumColumnWidthDp: Int = 250,
+    minimumColumnWidthDp: Int = 230,
     maximumColumns: Int = 3,
 ): Int {
     val widthDp = resources.configuration.screenWidthDp.takeIf { it > 0 } ?: 800

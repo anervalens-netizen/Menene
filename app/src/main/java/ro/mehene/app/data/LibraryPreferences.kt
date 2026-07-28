@@ -21,6 +21,6 @@ class LibraryPreferences(context: Context) {
         private const val PREFERENCES_NAME = "mehene_preferences"
         private const val KEY_LIBRARY_URI = "library_uri"
         private const val KEY_KIOSK_ENABLED = "kiosk_enabled"
-        private const val KEY_RESUME_KIOSK = "resume_kiosk_after_external_activity"
+        private const val KEY_RESUME_KIOSK = "resume_kiosk"
     }
 }

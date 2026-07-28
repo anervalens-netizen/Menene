@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ro.mehene.app.ui.RatioFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="190dp"
-    android:layout_margin="10dp"
-    android:background="@drawable/bg_card"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:clickable="true"
     android:clipToOutline="true"
     android:elevation="7dp"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    app:ratioHeight="9"
+    app:ratioWidth="16">
 
     <ImageView
         android:id="@+id/artwork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null"
+        android:importantForAccessibility="no"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
@@ -24,18 +27,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:includeFontPadding="false"
         android:textColor="#55FFFFFF"
-        android:textSize="76sp"
+        android:textSize="70sp"
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/playIcon"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
         android:layout_gravity="center"
         android:background="@drawable/bg_player_center"
-        android:contentDescription="@string/play_pause"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
         android:padding="13dp"
         android:src="@drawable/ic_play" />
 
@@ -44,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
-        android:layout_margin="12dp"
+        android:layout_margin="11dp"
         android:background="@drawable/bg_episode_badge"
         android:textColor="@color/mehene_white"
         android:textSize="13sp"
@@ -52,21 +54,38 @@
 
     <TextView
         android:id="@+id/completedBadge"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:layout_gravity="top|end"
-        android:layout_margin="12dp"
-        android:background="@drawable/bg_episode_badge"
+        android:layout_margin="11dp"
+        android:background="@drawable/bg_completed_badge"
         android:gravity="center"
         android:text="@string/completed_mark"
         android:textColor="@color/mehene_white"
-        android:textSize="25sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/continueBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="11dp"
+        android:background="@drawable/bg_continue_badge"
+        android:paddingStart="12dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="6dp"
+        android:text="@string/continue_short"
+        android:textColor="@color/mehene_ink"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_height="92dp"
         android:layout_gravity="bottom"
         android:background="@drawable/bg_scrim_bottom" />
 
@@ -76,25 +95,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:ellipsize="end"
-        android:fontFamily="sans-serif-rounded"
         android:maxLines="2"
-        android:paddingStart="16dp"
+        android:paddingStart="15dp"
         android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="18dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="17dp"
         android:textColor="@color/mehene_white"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:textStyle="bold" />
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="6dp"
         android:layout_gravity="bottom"
         android:max="1000"
-        android:progressTint="@color/mehene_yellow"
         android:progressBackgroundTint="#45FFFFFF"
+        android:progressTint="@color/mehene_yellow"
         android:visibility="gone" />
-
-</FrameLayout>
+</ro.mehene.app.ui.RatioFrameLayout>

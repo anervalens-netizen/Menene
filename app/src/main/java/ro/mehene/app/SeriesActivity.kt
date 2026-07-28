@@ -2,61 +2,59 @@ package ro.mehene.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import ro.mehene.app.data.LibraryRepository
-import ro.mehene.app.data.LibraryResult
-import ro.mehene.app.data.PlaybackProgressStore
+import kotlinx.coroutines.launch
+import ro.mehene.app.data.PlaybackMode
 import ro.mehene.app.databinding.ActivitySeriesBinding
+import ro.mehene.app.databinding.ItemSeasonTabBinding
 import ro.mehene.app.kiosk.KioskController
 import ro.mehene.app.model.EpisodeItem
+import ro.mehene.app.model.SeasonItem
 import ro.mehene.app.ui.EpisodeAdapter
+import ro.mehene.app.ui.state.SeriesUiState
 import ro.mehene.app.util.meheneGridColumns
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
 
 class SeriesActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySeriesBinding
-    private lateinit var repository: LibraryRepository
-    private lateinit var adapter: EpisodeAdapter
-    private val scanExecutor: ExecutorService = Executors.newSingleThreadExecutor()
-    private var scanTask: Future<*>? = null
-
-    private val seriesTitle: String by lazy {
-        intent.getStringExtra(EXTRA_SERIES_TITLE).orEmpty()
-    }
-    private val seriesUri: String by lazy {
-        intent.getStringExtra(EXTRA_SERIES_URI).orEmpty()
-    }
+    private val viewModel: SeriesViewModel by viewModels()
+    private val adapter = EpisodeAdapter(::openEpisode)
+    private var playbackMode = PlaybackMode.SINGLE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySeriesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        repository = LibraryRepository(this)
-        adapter = EpisodeAdapter(PlaybackProgressStore(this), ::openEpisode)
         binding.episodeList.layoutManager = GridLayoutManager(this, meheneGridColumns())
         binding.episodeList.adapter = adapter
         binding.episodeList.setHasFixedSize(true)
-        binding.seriesTitle.text = seriesTitle
         binding.backButton.setOnClickListener { finish() }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() = finish()
         })
 
-        loadEpisodes()
+        val seriesId = intent.getStringExtra(EXTRA_SERIES_ID).orEmpty()
+        viewModel.load(seriesId)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::render)
+            }
+        }
         KioskController.applyImmersive(this)
     }
 
     override fun onResume() {
         super.onResume()
         KioskController.applyImmersive(this)
-        adapter.refreshPlaybackState()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -64,70 +62,50 @@ class SeriesActivity : AppCompatActivity() {
         if (hasFocus) KioskController.applyImmersive(this)
     }
 
-    override fun onDestroy() {
-        scanTask?.cancel(true)
-        scanExecutor.shutdownNow()
-        super.onDestroy()
-    }
-
-    private fun loadEpisodes() {
-        binding.loading.visibility = View.VISIBLE
-        binding.emptyMessage.visibility = View.GONE
-        binding.episodeList.visibility = View.INVISIBLE
-        scanTask?.cancel(true)
-
-        scanTask = scanExecutor.submit {
-            val result = repository.scanEpisodes(seriesUri)
-            runOnUiThread {
-                if (isFinishing || isDestroyed) return@runOnUiThread
-                binding.loading.visibility = View.GONE
-                showEpisodeResult(result)
+    private fun render(state: SeriesUiState) = with(binding) {
+        loading.visibility = if (state is SeriesUiState.Loading) View.VISIBLE else View.GONE
+        when (state) {
+            SeriesUiState.Loading -> Unit
+            SeriesUiState.Unavailable -> {
+                episodeList.visibility = View.GONE
+                emptyMessage.visibility = View.VISIBLE
+                emptyMessage.setText(R.string.library_child_call_adult)
             }
-        }
-    }
-
-    private fun showEpisodeResult(result: LibraryResult<List<EpisodeItem>>) {
-        when (result) {
-            is LibraryResult.Success -> {
-                val episodes = result.value
-                adapter.submitItems(episodes)
-                binding.seriesSubtitle.text = resources.getQuantityString(
+            is SeriesUiState.Content -> {
+                playbackMode = state.playbackMode
+                seriesTitle.text = state.series.title
+                seriesSubtitle.text = resources.getQuantityString(
                     R.plurals.episodes_count,
-                    episodes.size,
-                    episodes.size,
+                    state.selectedSeason.episodes.size,
+                    state.selectedSeason.episodes.size,
                 )
-                binding.episodeList.visibility = if (episodes.isEmpty()) View.INVISIBLE else View.VISIBLE
-                binding.emptyMessage.visibility = if (episodes.isEmpty()) View.VISIBLE else View.GONE
-                binding.emptyMessage.setText(R.string.no_episodes)
+                bindSeasons(state.seasons, state.selectedSeason)
+                adapter.submitList(state.selectedSeason.episodes)
+                adapter.updateProgress(state.progress)
+                episodeList.visibility = if (state.selectedSeason.episodes.isEmpty()) View.GONE else View.VISIBLE
+                emptyMessage.visibility = if (state.selectedSeason.episodes.isEmpty()) View.VISIBLE else View.GONE
             }
-
-            LibraryResult.PermissionLost -> showError(R.string.library_permission_lost)
-            LibraryResult.StorageUnavailable -> showError(R.string.library_storage_unavailable)
-            LibraryResult.NotConfigured -> showError(R.string.library_not_configured)
-            is LibraryResult.Failure -> showError(R.string.scan_error)
         }
     }
 
-    private fun showError(messageRes: Int) {
-        adapter.submitItems(emptyList())
-        binding.seriesSubtitle.text = ""
-        binding.episodeList.visibility = View.INVISIBLE
-        binding.emptyMessage.visibility = View.VISIBLE
-        binding.emptyMessage.setText(messageRes)
+    private fun bindSeasons(seasons: List<SeasonItem>, selected: SeasonItem) {
+        binding.seasonTabs.removeAllViews()
+        binding.seasonScroll.visibility = if (seasons.size > 1) View.VISIBLE else View.GONE
+        if (seasons.size <= 1) return
+        seasons.forEach { season ->
+            val tab = ItemSeasonTabBinding.inflate(LayoutInflater.from(this), binding.seasonTabs, false)
+            tab.root.text = season.title
+            tab.root.isSelected = season.number == selected.number
+            tab.root.setOnClickListener { viewModel.selectSeason(season.number) }
+            binding.seasonTabs.addView(tab.root)
+        }
     }
 
     private fun openEpisode(episode: EpisodeItem) {
-        startActivity(
-            Intent(this, PlayerActivity::class.java).apply {
-                putExtra(PlayerActivity.EXTRA_EPISODE_TITLE, episode.title)
-                putExtra(PlayerActivity.EXTRA_MEDIA_URI, episode.mediaUri)
-                putExtra(PlayerActivity.EXTRA_PLAYBACK_KEY, episode.playbackKey)
-            },
-        )
+        startActivity(PlayerActivity.intent(this, episode.id, playbackMode))
     }
 
     companion object {
-        const val EXTRA_SERIES_TITLE = "series_title"
-        const val EXTRA_SERIES_URI = "series_uri"
+        const val EXTRA_SERIES_ID = "series_id"
     }
 }

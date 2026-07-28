@@ -1,7 +1,6 @@
 package ro.mehene.app.data
 
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PlaybackProgressPolicyTest {
@@ -9,16 +8,15 @@ class PlaybackProgressPolicyTest {
     fun distinguishesUnwatchedInProgressAndCompleted() {
         assertEquals(
             EpisodePlaybackState.UNWATCHED,
-            PlaybackProgressPolicy.evaluate(2_000L, 100_000L).state,
+            PlaybackProgressPolicy.evaluate("e", 2_000, 100_000, 1).state,
         )
-
-        val inProgress = PlaybackProgressPolicy.evaluate(40_000L, 100_000L)
-        assertEquals(EpisodePlaybackState.IN_PROGRESS, inProgress.state)
-        assertTrue(inProgress.fraction in 0.39f..0.41f)
-
+        assertEquals(
+            EpisodePlaybackState.IN_PROGRESS,
+            PlaybackProgressPolicy.evaluate("e", 30_000, 100_000, 1).state,
+        )
         assertEquals(
             EpisodePlaybackState.COMPLETED,
-            PlaybackProgressPolicy.evaluate(96_000L, 100_000L).state,
+            PlaybackProgressPolicy.evaluate("e", 96_000, 100_000, 1).state,
         )
     }
 }

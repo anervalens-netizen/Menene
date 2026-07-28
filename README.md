@@ -1,75 +1,93 @@
 # Mehene
 
-**Mehene** este o aplicație Android complet offline pentru o bibliotecă personală de desene animate, proiectată pentru **Samsung Galaxy Tab A 8.0 (2019)**: ecran 1280×800, Android 9, aproximativ 2 GB RAM și stocare microSD.
+Mehene este un „Cartoon Network personal” complet offline pentru Samsung Galaxy Tab A 8.0 (2019). Aplicația este Android nativ, optimizată pentru Android 9, aproximativ 2 GB RAM și biblioteci stocate pe microSD.
 
-Aplicația nu conține și nu descarcă episoade. Fișierele video obținute legal sunt copiate de proprietar într-un folder, iar Mehene construiește automat catalogul.
+## Experiență
 
-## Experiența copilului
+- catalog vizual cu seriale, sezoane și episoade;
+- card `Continuă` pentru episodul început;
+- `Mehene TV`, care alternează serialele și alege episoadele nevăzute;
+- moduri de redare: un episod, continuă serialul sau Mehene TV;
+- player fullscreen cu X, pauză la atingere, volum, buffering, retry și auto-next controlat;
+- progres local: nevăzut, început, terminat;
+- subtitrări `.srt`/`.vtt` cu același nume ca episodul;
+- kiosk Android și pornire după restart când aplicația este Device Owner;
+- zero acces la internet, reclame, conturi sau telemetrie.
 
-- ecran principal cu carduri mari pentru seriale;
-- serial → episoade → player fullscreen;
-- player cu X, volum +/− și pauză/redare prin atingere;
-- indicator pentru episoade începute și bifă pentru cele terminate;
-- reluare automată de la ultima poziție;
-- feedback pentru buffering, volum și erori de redare;
-- fără browser, reclame, conturi, notificări sau acces la internet.
+## Fără securitate
 
-## Decizie explicită: fără securitate
+Mehene este utilizată de un copil supravegheat. Nu există PIN, parolă, autentificare sau criptare specială. Administrarea se deschide prin cinci atingeri pe siglă doar pentru a păstra interfața copilului curată. Regula este documentată în [docs/NO_SECURITY.md](docs/NO_SECURITY.md).
 
-Mehene este folosită exclusiv de un copil supravegheat. **Nu există și nu trebuie adăugate PIN, parolă, autentificare, biometrie sau alte mecanisme de securitate**, decât dacă proprietarul proiectului cere explicit ulterior schimbarea acestei decizii.
+## Arhitectură
 
-Meniul de administrare se deschide prin **5 atingeri pe sigla Mehene** numai pentru a păstra interfața copilului curată. Gestul nu reprezintă securitate. Kiosk-ul previne ieșirile accidentale, nu accesul intenționat al unui utilizator nesupravegheat.
+- Views/XML, fără Compose sau framework hibrid;
+- ViewModel + StateFlow pentru starea ecranelor;
+- Storage Access Framework pentru memoria internă și microSD;
+- `catalog.json` generat extern, cu scanarea folderelor ca fallback;
+- cache intern pentru pornire rapidă;
+- Room pentru progres și istoric local;
+- DataStore pentru modul de redare și limba audio preferată;
+- Media3 ExoPlayer pentru playback;
+- Library Builder Python pentru conversie, validare, miniaturi și catalog.
 
-Regula completă: [docs/NO_SECURITY.md](docs/NO_SECURITY.md).
+Detalii: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Biblioteca
+## Biblioteca recomandată
 
 ```text
 Mehene/
+├── catalog.json
 ├── Bluey/
-│   ├── cover.jpg
-│   ├── Episod 01 - Titlu.mp4
-│   ├── Episod 01 - Titlu.jpg
-│   └── Episod 02 - Titlu.mp4
+│   ├── cover.webp
+│   ├── Season 01/
+│   │   ├── Episod 01.mp4
+│   │   ├── Episod 01.webp
+│   │   └── Episod 01.srt
+│   └── Season 02/
 └── Mașini de curse/
-    ├── poster.png
-    └── 01 - Start.mp4
+    ├── cover.jpg
+    └── Episod 01.mp4
 ```
 
-Format acceptat în catalog: **MP4/M4V cu H.264 și AAC**, maximum 1280×720 recomandat. Alte containere video sunt ignorate și apar în diagnosticul bibliotecii, pentru a evita episoade care apar în listă dar nu pot fi decodate de tabletă.
+Format video: MP4, H.264 Main, AAC stereo, maximum 1280×720 și 30 fps.
 
-Conversie și reguli: [docs/LIBRARY_FORMAT.md](docs/LIBRARY_FORMAT.md).
+## Mehene Library Builder
 
-## Prima pornire
+Pe calculator sau server:
 
-1. Instalează APK-ul.
-2. Deschide Mehene și apasă `Configurează biblioteca`.
-3. Selectează folderul `Mehene` din memoria internă sau microSD.
-4. Verifică serialele și episoadele.
-5. Atinge sigla de 5 ori pentru meniul de administrare.
-6. Activează kiosk numai după ce biblioteca funcționează corect.
+```bash
+python3 tools/mehene_library.py "/Desene originale" "/CardSD/Mehene" --audio-language ron
+```
 
-După prima configurare, selectorul de foldere poate fi deschis numai din meniul de administrare. Dacă Lock Task este activ, Mehene îl oprește temporar pentru DocumentsUI și îl reactivează la revenire.
+Windows:
 
-## Build
+```powershell
+.\tools\convert-library.ps1 -Source "D:\Desene originale" -Destination "E:\Mehene"
+```
+
+Builderul:
+
+- copiază fișierele deja compatibile;
+- convertește numai ce este necesar și reutilizează rezultatele valide la rulările următoare;
+- preferă pista audio românească;
+- optimizează coperțile și generează miniaturi WebP;
+- păstrează subtitrările sidecar;
+- creează `catalog.json` și `mehene-report.json`;
+- continuă procesarea și raportează toate erorile.
+
+Detalii: [docs/LIBRARY_BUILDER.md](docs/LIBRARY_BUILDER.md).
+
+## Build Android
 
 Cerințe:
 
 - JDK 17;
-- Android SDK 35;
-- internet pe calculator numai pentru prima descărcare a Gradle și dependențelor.
+- Android SDK 36;
+- internet pe calculator numai pentru prima descărcare a dependențelor.
 
 ```bash
 ./gradlew clean test lintDebug assembleDebug
 ```
-
-Pe Windows:
-
-```powershell
-.\gradlew.bat clean test lintDebug assembleDebug
-```
-
-Scripturile de bootstrap descarcă Gradle 8.13 într-un fișier temporar, verifică SHA-256-ul oficial și publică arhiva în cache numai după validare.
 
 APK debug:
 
@@ -77,67 +95,29 @@ APK debug:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### APK release semnat
-
-```bash
-keytool -genkeypair -v -keystore mehene-release.jks -alias mehene -keyalg RSA -keysize 2048 -validity 10000
-```
-
-Setează:
+APK release necesită cheia de semnare configurată prin:
 
 - `MEHENE_STORE_FILE`;
 - `MEHENE_STORE_PASSWORD`;
 - `MEHENE_KEY_ALIAS`;
 - `MEHENE_KEY_PASSWORD`.
 
-Apoi:
-
 ```bash
 ./gradlew clean test lintRelease assembleRelease
 ```
 
-APK:
+## Instalare kiosk
 
-```text
-app/build/outputs/apk/release/app-release.apk
-```
-
-Păstrează cheia de semnare în afara repository-ului și într-un backup sigur. Fără aceeași cheie, actualizările nu pot fi instalate peste versiunea existentă.
-
-## Kiosk complet
-
-Fullscreen nu este kiosk complet. Pentru Lock Task real, Mehene trebuie configurată drept `Device Owner` pe tableta dedicată:
+Procedura Device Owner necesită, de regulă, resetarea tabletei înainte de configurarea conturilor:
 
 ```bash
+adb install app/build/outputs/apk/release/app-release.apk
 adb shell dpm set-device-owner ro.mehene.app/ro.mehene.app.kiosk.MeheneDeviceAdminReceiver
 adb shell am start -n ro.mehene.app/ro.mehene.app.MainActivity
 ```
 
-Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
+Procedură și checklist: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
 
-## Arhitectură
+## Stadiu
 
-```text
-app/src/main/java/ro/mehene/app/
-├── data/       # SAF, rezultate tipizate, progres
-├── kiosk/      # Device Owner, Home alias, Lock Task, boot
-├── model/      # seriale și episoade
-├── ui/         # adaptoare și cache imagini
-├── util/       # sortare, titluri și grilă adaptivă
-├── MainActivity.kt
-├── SeriesActivity.kt
-└── PlayerActivity.kt
-```
-
-Detalii: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
-
-## Confidențialitate
-
-- manifestul nu solicită permisiunea `INTERNET`;
-- fără analytics, reclame sau telemetrie;
-- se citește numai folderul ales explicit;
-- catalogul și progresul rămân local pe tabletă.
-
-## Licență
-
-Cod MIT. Fișierele video și imaginile bibliotecii nu fac parte din repository.
+Versiunea 2.0 implementează arhitectura și funcțiile premium. Înainte de instalarea definitivă trebuie validate buildul Android, redarea pe tableta fizică, reboot-ul, microSD și o bibliotecă mare. Vezi [docs/VALIDATION_PLAN.md](docs/VALIDATION_PLAN.md).

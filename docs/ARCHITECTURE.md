@@ -1,62 +1,84 @@
-# Arhitectură
+# Arhitectură Mehene 2.0
 
-## Obiective
+## Principii
 
-- funcționare 100% offline;
-- consum redus pe Android 9 și aproximativ 2 GB RAM;
-- interfață simplă pentru copil mic;
-- administrare discretă, fără autentificare;
-- kiosk pentru prevenirea ieșirilor accidentale;
-- fără server, bază de date, conturi sau sincronizare.
+- offline real;
+- interfață simplă pentru copil;
+- administrare separată, fără autentificare;
+- performanță pe Android 9 și 2 GB RAM;
+- conținut pregătit pe PC/server, nu procesat greu pe tabletă;
+- cât mai puține straturi, dar responsabilități clare.
 
-## Politica fără securitate
+## Componente Android
 
-Mehene nu implementează PIN, parolă, autentificare, criptare proprie sau control parental securizat. Cinci atingeri pe siglă deschid direct meniul de administrare și reprezintă numai o convenție UI. Această decizie nu trebuie schimbată fără cererea explicită a proprietarului.
+```text
+MeheneApplication / AppContainer
+├── LibraryRepository
+│   ├── Storage Access Framework
+│   ├── CatalogJsonCodec
+│   └── CatalogCacheStore
+├── ProgressRepository
+│   └── Room / SQLite
+├── SettingsRepository
+│   └── Preferences DataStore
+└── KioskController
+```
 
-## Android nativ
+## UI
 
-Kotlin, Views/XML, RecyclerView și drawables native. Nu sunt folosite WebView, Compose, Flutter, React Native sau animații grele.
+```text
+MainActivity     ← MainViewModel
+SeriesActivity   ← SeriesViewModel
+AdminActivity    ← AdminViewModel
+PlayerActivity   ← Media3 + repositories + PlaybackQueuePlanner
+```
 
-## Catalogul
+Activity-urile desenează starea și trimit acțiuni. Scanarea, progresul și alegerea următorului episod nu sunt implementate în adaptoare sau layouturi.
 
-`LibraryRepository` citește folderul acordat prin Storage Access Framework și returnează rezultate tipizate:
+## Catalog
 
-- succes;
-- bibliotecă neconfigurată;
-- permisiune pierdută;
-- stocare indisponibilă;
-- eroare neașteptată.
+Ordinea surselor:
 
-Numai MP4/M4V sunt publicate în catalog. Alte fișiere video sunt numărate în diagnosticul parental. O copertă de serial trebuie să se numească `cover`, `poster`, `folder` sau `serial`; nu se folosește arbitrar miniatura unui episod.
+1. catalog valid în memorie;
+2. cache intern valid pentru URI-ul bibliotecii;
+3. `catalog.json` din bibliotecă;
+4. scanarea folderelor ca fallback.
 
-URI-ul de progres include URI-ul fișierului, dimensiunea și ultima modificare, astfel încât înlocuirea episodului să nu moștenească automat progresul versiunii anterioare.
+Schimbarea folderului este tranzacțională: noul folder este validat și scanat înainte ca vechea bibliotecă să fie înlocuită.
+
+## Progres
+
+Room păstrează:
+
+- ID episod;
+- poziție;
+- durată;
+- terminat/început;
+- ultima redare.
+
+Aceasta permite Continue Watching, Mehene TV și curățarea progresului pentru episoade dispărute.
 
 ## Player
 
-Media3 ExoPlayer redă URI-urile locale și gestionează:
-
-- reluarea poziției;
-- salvare periodică la 10 secunde;
-- diferența dintre pauza utilizatorului și pauza de lifecycle;
-- buffering;
-- retry după eroare;
-- audio focus și deconectarea căștilor;
-- stările nevăzut, început și terminat.
+Media3 este creat în `onStart()` și eliberat în `onStop()`, pentru a elibera decoderul hardware pe tableta veche. Playerul aplică limba audio preferată, subtitrări sidecar, buffering timeout și coadă de redare.
 
 ## Kiosk
 
-Kiosk-ul are stări reale, nu un singur boolean vizual:
+Kiosk are două niveluri:
 
-- dezactivat;
-- fullscreen;
-- screen pinning;
-- Device Owner pregătit;
-- Lock Task activ.
+- immersive/screen pinning pentru test;
+- Device Owner + Lock Task + Home alias pentru utilizarea definitivă.
 
-Rolul Home este declarat printr-un `activity-alias` dezactivat implicit și activat numai în Device Owner kiosk. Pentru schimbarea folderului, Lock Task este oprit temporar, DocumentsUI este deschis, apoi Mehene revine în kiosk.
+Ieșirea temporară în Android nu dezactivează preferința kiosk; Lock Task se reactivează la revenire.
 
-În Device Owner sunt configurate allowlist-ul Lock Task, Home persistent și restricția `DISALLOW_CREATE_WINDOWS`.
+## Ce nu se introduce
 
-## Memorie
-
-Imaginile sunt decodate aproximativ la dimensiunea cardului, în RGB_565. Cache key include URI-ul și versiunea fișierului. Cererile simultane pentru aceeași imagine sunt deduplicate, iar holder-ele reciclate sunt detașate de requesturile vechi.
+- server runtime;
+- conturi;
+- internet;
+- analytics;
+- Compose;
+- dependency injection framework;
+- autentificare/PIN;
+- criptare specială;
+- microservicii sau module Gradle inutile.
