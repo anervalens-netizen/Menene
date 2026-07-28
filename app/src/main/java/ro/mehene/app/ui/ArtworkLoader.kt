@@ -9,11 +9,19 @@ import android.os.Looper
 import android.util.LruCache
 import android.widget.ImageView
 import ro.mehene.app.R
+import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
 object ArtworkLoader {
+    private data class PendingRequest(
+        val imageView: WeakReference<ImageView>,
+        val cacheKey: String,
+        val onFailure: () -> Unit,
+    )
+
     private val executor = Executors.newFixedThreadPool(2)
     private val mainHandler = Handler(Looper.getMainLooper())
+    private val pending = mutableMapOf<String, MutableList<PendingRequest>>()
     private val cache = object : LruCache<String, Bitmap>(cacheSizeKb()) {
         override fun sizeOf(key: String, value: Bitmap): Int = value.byteCount / 1024
     }
@@ -21,24 +29,56 @@ object ArtworkLoader {
     fun load(
         context: Context,
         uriString: String,
+        version: Long,
         imageView: ImageView,
         onFailure: () -> Unit = {},
     ) {
-        imageView.setTag(R.id.artwork_uri_tag, uriString)
-        cache.get(uriString)?.let { cached ->
+        val cacheKey = "$uriString#$version"
+        imageView.setTag(R.id.artwork_uri_tag, cacheKey)
+        cache.get(cacheKey)?.let { cached ->
             imageView.setImageBitmap(cached)
             return
         }
 
-        val appContext = context.applicationContext
-        executor.execute {
-            val bitmap = decodeSampledBitmap(appContext, Uri.parse(uriString), 720, 420)
-            if (bitmap != null) cache.put(uriString, bitmap)
-            mainHandler.post {
-                if (imageView.getTag(R.id.artwork_uri_tag) != uriString) return@post
-                if (bitmap != null) imageView.setImageBitmap(bitmap) else onFailure()
+        val request = PendingRequest(WeakReference(imageView), cacheKey, onFailure)
+        val shouldStartDecode = synchronized(pending) {
+            val requests = pending[cacheKey]
+            if (requests == null) {
+                pending[cacheKey] = mutableListOf(request)
+                true
+            } else {
+                requests += request
+                false
             }
         }
+        if (!shouldStartDecode) return
+
+        val appContext = context.applicationContext
+        executor.execute {
+            val bitmap = decodeSampledBitmap(appContext, Uri.parse(uriString), 480, 300)
+            if (bitmap != null) cache.put(cacheKey, bitmap)
+            val requests = synchronized(pending) { pending.remove(cacheKey).orEmpty() }
+            mainHandler.post {
+                requests.forEach { pendingRequest ->
+                    val target = pendingRequest.imageView.get() ?: return@forEach
+                    if (target.getTag(R.id.artwork_uri_tag) != pendingRequest.cacheKey) return@forEach
+                    if (bitmap != null) {
+                        target.setImageBitmap(bitmap)
+                    } else {
+                        pendingRequest.onFailure()
+                    }
+                }
+            }
+        }
+    }
+
+    fun cancel(imageView: ImageView) {
+        imageView.setTag(R.id.artwork_uri_tag, null)
+        imageView.setImageDrawable(null)
+    }
+
+    fun clearCache() {
+        cache.evictAll()
     }
 
     private fun decodeSampledBitmap(
@@ -80,6 +120,6 @@ object ArtworkLoader {
 
     private fun cacheSizeKb(): Int {
         val maxMemoryKb = (Runtime.getRuntime().maxMemory() / 1024L).toInt()
-        return (maxMemoryKb / 12).coerceAtLeast(4 * 1024)
+        return (maxMemoryKb / 12).coerceAtLeast(2 * 1024)
     }
 }

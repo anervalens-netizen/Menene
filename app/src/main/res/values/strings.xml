@@ -3,40 +3,58 @@
     <string name="app_name">Mehene</string>
     <string name="home_title">MEHENE</string>
     <string name="home_subtitle">Alege desenul tău preferat</string>
-    <string name="offline_badge">OFFLINE</string>
+
     <string name="empty_title">Biblioteca este goală</string>
-    <string name="empty_message">Părintele trebuie să aleagă folderul cu seriale și episoade.</string>
+    <string name="empty_message">Alege folderul cu seriale și episoade pentru prima configurare.</string>
+    <string name="library_not_configured">Biblioteca nu este configurată</string>
+    <string name="library_unavailable">Biblioteca nu este disponibilă</string>
+    <string name="library_permission_lost">Accesul la folder s-a pierdut. Atinge sigla de 5 ori și alege din nou biblioteca.</string>
+    <string name="library_storage_unavailable">Memoria sau cardul microSD nu este disponibil. Verifică-l și reîncarcă biblioteca din meniul de administrare.</string>
     <string name="setup_library">Configurează biblioteca</string>
-    <string name="episodes_count">%1$d episoade</string>
-    <string name="one_episode">1 episod</string>
+    <string name="no_series">Nu există seriale cu episoade MP4 în folderul ales.</string>
+    <string name="no_episodes">Acest serial nu are episoade MP4 disponibile.</string>
+    <string name="scan_error">Biblioteca nu a putut fi încărcată. Reîncearcă din meniul de administrare.</string>
+
+    <plurals name="episodes_count">
+        <item quantity="one">%1$d episod</item>
+        <item quantity="few">%1$d episoade</item>
+        <item quantity="other">%1$d de episoade</item>
+    </plurals>
+
     <string name="back_to_series">Înapoi la seriale</string>
     <string name="close_episode">Închide episodul</string>
     <string name="volume_up">Volum mai tare</string>
     <string name="volume_down">Volum mai încet</string>
+    <string name="volume_level">Volum %1$d din %2$d</string>
     <string name="play_pause">Pauză sau redare</string>
-    <string name="parent_pin_title">Mod părinte</string>
-    <string name="parent_pin_hint">PIN</string>
-    <string name="parent_pin_wrong">PIN incorect</string>
-    <string name="parent_menu_title">Setări părinte</string>
+    <string name="episode_number">Episodul %1$d</string>
+    <string name="completed_mark">✓</string>
+    <string name="video_error">Episodul nu poate fi redat</string>
+    <string name="retry_video">Încearcă din nou</string>
+
+    <string name="administration_menu_title">Administrare Mehene</string>
     <string name="choose_library">Alege folderul bibliotecii</string>
     <string name="rescan_library">Reîncarcă biblioteca</string>
-    <string name="change_pin">Schimbă PIN-ul</string>
     <string name="enable_kiosk">Activează kiosk</string>
     <string name="disable_kiosk">Dezactivează kiosk</string>
-    <string name="temporary_exit">Ieșire temporară în Android</string>
+    <string name="temporary_exit">Ieșire în setările Android</string>
+    <string name="library_diagnostics">Diagnostic bibliotecă</string>
+    <string name="library_diagnostics_ok">Toate fișierele video detectate folosesc formatul recomandat MP4/M4V.</string>
+    <string name="library_diagnostics_ignored">Au fost ignorate %1$d fișiere video care nu sunt MP4/M4V. Convertește-le cu scripturile din folderul tools.</string>
     <string name="cancel">Anulează</string>
-    <string name="save">Salvează</string>
-    <string name="default_pin_info">PIN inițial: 2468</string>
-    <string name="pin_changed">PIN schimbat</string>
     <string name="folder_saved">Bibliotecă salvată</string>
     <string name="folder_error">Folderul nu poate fi citit</string>
-    <string name="scan_error">Biblioteca nu a putut fi încărcată</string>
-    <string name="no_series">Nu există încă seriale cu episoade în folderul ales.</string>
-    <string name="no_episodes">Acest serial nu are încă episoade.</string>
-    <string name="device_admin_description">Blochează tableta în aplicația Mehene.</string>
+    <string name="configure_library_first">Configurează biblioteca înainte de a activa kiosk.</string>
+
     <string name="kiosk_device_owner">Kiosk complet activ</string>
-    <string name="kiosk_soft">Doar fullscreen; kiosk complet necesită configurare ADB</string>
+    <string name="kiosk_device_owner_ready">Device Owner este configurat, dar Lock Task nu este activ</string>
+    <string name="kiosk_screen_pinning">Screen pinning activ; poate fi oprit din combinația Android</string>
+    <string name="kiosk_soft">Doar fullscreen; kiosk complet necesită Device Owner</string>
+    <string name="kiosk_disabled_status">Kiosk dezactivat</string>
+    <string name="kiosk_disabled">Kiosk dezactivat</string>
+    <string name="kiosk_enabled_full">Kiosk complet activat</string>
+    <string name="kiosk_enabled_soft">Android va cere confirmarea pentru screen pinning.</string>
+
+    <string name="device_admin_description">Configurează tableta pentru modul kiosk Mehene.</string>
     <string name="loading">Se încarcă…</string>
-    <string name="episode_number">Episodul %1$d</string>
-    <string name="video_error">Episodul nu poate fi redat</string>
 </resources>

@@ -7,14 +7,27 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Build
+import android.os.UserManager
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import ro.mehene.app.MainActivity
 import ro.mehene.app.data.LibraryPreferences
 
+enum class KioskState {
+    DISABLED,
+    FULLSCREEN_ONLY,
+    SCREEN_PINNING,
+    LOCK_TASK_ACTIVE,
+    DEVICE_OWNER_READY,
+}
+
 object KioskController {
+    private const val TAG = "MeheneKiosk"
+
     fun applyImmersive(activity: Activity) {
         activity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         @Suppress("DEPRECATION")
@@ -27,14 +40,45 @@ object KioskController {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
+    fun state(context: Context): KioskState {
+        val preferences = LibraryPreferences(context)
+        if (!preferences.kioskEnabled) return KioskState.DISABLED
+
+        val activityManager = context.getSystemService(ActivityManager::class.java)
+        return when (activityManager.lockTaskModeState) {
+            ActivityManager.LOCK_TASK_MODE_LOCKED -> KioskState.LOCK_TASK_ACTIVE
+            ActivityManager.LOCK_TASK_MODE_PINNED -> KioskState.SCREEN_PINNING
+            else -> if (isDeviceOwner(context)) {
+                KioskState.DEVICE_OWNER_READY
+            } else {
+                KioskState.FULLSCREEN_ONLY
+            }
+        }
+    }
+
     fun prepareAndEnter(activity: Activity) {
         applyImmersive(activity)
-        val preferences = LibraryPreferences(activity)
-        if (!preferences.kioskEnabled) return
+        if (!LibraryPreferences(activity).kioskEnabled) return
 
         if (isDeviceOwner(activity)) {
-            configureDeviceOwner(activity)
-            enterLockTask(activity)
+            if (configureDeviceOwner(activity)) enterLockTask(activity)
+        }
+    }
+
+    fun enableKiosk(activity: Activity) {
+        LibraryPreferences(activity).kioskEnabled = true
+        if (isDeviceOwner(activity)) {
+            if (configureDeviceOwner(activity)) enterLockTask(activity)
+        } else {
+            requestScreenPinning(activity)
+        }
+        applyImmersive(activity)
+    }
+
+    fun prepareForExternalActivity(activity: Activity) {
+        if (isLocked(activity)) {
+            runCatching { activity.stopLockTask() }
+                .onFailure { Log.e(TAG, "Unable to stop lock task for external activity", it) }
         }
     }
 
@@ -48,48 +92,71 @@ object KioskController {
         return activityManager.lockTaskModeState != ActivityManager.LOCK_TASK_MODE_NONE
     }
 
-    fun configureDeviceOwner(context: Context) {
+    fun configureDeviceOwner(context: Context): Boolean {
         val manager = context.getSystemService(DevicePolicyManager::class.java)
-        if (!manager.isDeviceOwnerApp(context.packageName)) return
+        if (!manager.isDeviceOwnerApp(context.packageName)) return false
         val admin = adminComponent(context)
+        val homeAlias = homeAliasComponent(context)
 
-        runCatching {
+        return runCatching {
+            context.packageManager.setComponentEnabledSetting(
+                homeAlias,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP,
+            )
             manager.setLockTaskPackages(admin, arrayOf(context.packageName))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 manager.setLockTaskFeatures(admin, DevicePolicyManager.LOCK_TASK_FEATURE_NONE)
             }
+            manager.addUserRestriction(admin, UserManager.DISALLOW_CREATE_WINDOWS)
+
             val homeFilter = IntentFilter(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_HOME)
                 addCategory(Intent.CATEGORY_DEFAULT)
             }
-            manager.addPersistentPreferredActivity(
-                admin,
-                homeFilter,
-                ComponentName(context, MainActivity::class.java),
-            )
-        }
+            manager.addPersistentPreferredActivity(admin, homeFilter, homeAlias)
+        }.onFailure {
+            Log.e(TAG, "Unable to configure Device Owner kiosk", it)
+        }.isSuccess
     }
 
-    fun enterLockTask(activity: Activity) {
+    fun enterLockTask(activity: Activity): Boolean {
         val manager = activity.getSystemService(DevicePolicyManager::class.java)
-        if (!manager.isLockTaskPermitted(activity.packageName)) return
-        if (isLocked(activity)) return
-        runCatching { activity.startLockTask() }
+        if (!manager.isLockTaskPermitted(activity.packageName)) return false
+        if (isLocked(activity)) return true
+        return runCatching { activity.startLockTask() }
+            .onFailure { Log.e(TAG, "Unable to enter lock task", it) }
+            .isSuccess
     }
 
-    fun requestScreenPinning(activity: Activity) {
-        if (isLocked(activity)) return
-        runCatching { activity.startLockTask() }
+    fun requestScreenPinning(activity: Activity): Boolean {
+        if (isLocked(activity)) return true
+        return runCatching { activity.startLockTask() }
+            .onFailure { Log.e(TAG, "Unable to request screen pinning", it) }
+            .isSuccess
     }
 
     fun disableKiosk(activity: Activity) {
-        if (isLocked(activity)) runCatching { activity.stopLockTask() }
+        LibraryPreferences(activity).kioskEnabled = false
+        if (isLocked(activity)) {
+            runCatching { activity.stopLockTask() }
+                .onFailure { Log.e(TAG, "Unable to stop lock task", it) }
+        }
+
         val manager = activity.getSystemService(DevicePolicyManager::class.java)
         if (!manager.isDeviceOwnerApp(activity.packageName)) return
         val admin = adminComponent(activity)
         runCatching {
             manager.clearPackagePersistentPreferredActivities(admin, activity.packageName)
             manager.setLockTaskPackages(admin, emptyArray())
+            manager.clearUserRestriction(admin, UserManager.DISALLOW_CREATE_WINDOWS)
+            activity.packageManager.setComponentEnabledSetting(
+                homeAliasComponent(activity),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP,
+            )
+        }.onFailure {
+            Log.e(TAG, "Unable to disable Device Owner kiosk", it)
         }
     }
 
@@ -101,4 +168,7 @@ object KioskController {
 
     fun adminComponent(context: Context): ComponentName =
         ComponentName(context, MeheneDeviceAdminReceiver::class.java)
+
+    private fun homeAliasComponent(context: Context): ComponentName =
+        ComponentName(context.packageName, "${context.packageName}.MeheneHomeActivity")
 }

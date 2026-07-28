@@ -1,57 +1,56 @@
 # Instalare pe Samsung Galaxy Tab A 8.0 (2019)
 
-## 1. Instalare normală pentru test
-
-1. Activează `Developer options` și `USB debugging` pe tabletă.
-2. Pentru test rapid, construiește și instalează varianta debug:
+## Test normal
 
 ```bash
-./gradlew assembleDebug
+./gradlew clean test lintDebug assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Pentru instalarea kiosk definitivă folosește APK-ul release semnat, conform secțiunii `APK release semnat` din README:
+Deschide Mehene și configurează biblioteca. În această etapă aplicația este fullscreen, dar Android permite ieșirea normală.
 
-```bash
-adb install -r app/build/outputs/apk/release/app-release.apk
-```
+## Kiosk complet
 
-4. Deschide Mehene și selectează folderul bibliotecii.
+Lock Task complet necesită ca Mehene să fie `Device Owner`. Tableta trebuie tratată ca dispozitiv dedicat și poate necesita resetare din fabrică.
 
-În această etapă aplicația rulează fullscreen. Fără configurarea Device Owner, Android poate permite totuși ieșirea prin combinațiile sistemului.
-
-## 2. Kiosk complet
-
-Kiosk complet folosește Android Lock Task Mode și necesită ca Mehene să fie `Device Owner`.
-
-> Recomandat: tabletă dedicată, fără conturi sau date importante. Operația poate necesita resetare la setările din fabrică.
-
-Pași:
-
-1. Resetează tableta și nu adăuga un cont Google.
-2. Activează USB debugging cât mai devreme după configurarea inițială.
-3. Instalează APK-ul release.
-4. Rulează:
+1. Resetează tableta.
+2. Nu adăuga încă un cont Google.
+3. Activează Developer options și USB debugging.
+4. Instalează APK-ul release semnat.
+5. Configurează Device Owner:
 
 ```bash
 adb shell dpm set-device-owner ro.mehene.app/ro.mehene.app.kiosk.MeheneDeviceAdminReceiver
 adb shell am start -n ro.mehene.app/ro.mehene.app.MainActivity
 ```
 
-Dacă Android răspunde că dispozitivul este deja provisionat, repetă după resetare, înainte de adăugarea conturilor și a altor aplicații. Unele versiuni Samsung pot necesita provisioning prin QR/Knox în locul comenzii ADB.
+6. În Mehene, alege folderul bibliotecii și verifică redarea.
+7. Atinge sigla de 5 ori și selectează `Activează kiosk`.
 
-După configurare:
+Kiosk-ul este dezactivat implicit tocmai pentru ca prima configurare a folderului să nu fie blocată de Lock Task.
 
-- Mehene devine ecranul Home;
-- Home, Recents, notificările și bara de navigare sunt blocate;
-- aplicația pornește după restart;
-- copilul poate naviga numai între seriale, episoade și player.
+## Administrare
 
-## Mod părinte
+Cinci atingeri pe siglă deschid direct meniul. Nu există PIN sau altă autentificare, deoarece tableta este folosită numai sub supraveghere.
 
-- atinge sigla Mehene de 5 ori în maximum 3 secunde;
-- PIN inițial: `2468`;
-- schimbă PIN-ul imediat după instalare;
-- meniul permite alegerea folderului, rescanarea, activarea/dezactivarea kiosk și ieșirea temporară în Android.
+Meniul permite:
 
-Pentru a reactiva kiosk după ieșirea temporară, deschide din nou Mehene și activează opțiunea din meniul părinte.
+- alegerea unui alt folder;
+- rescanarea bibliotecii;
+- activarea/dezactivarea kiosk;
+- diagnosticul fișierelor ignorate;
+- ieșirea în setările Android.
+
+La alegerea unui folder nou, Mehene oprește temporar Lock Task, deschide selectorul Android și reactivează kiosk la revenire. Permisiunea persistentă pentru folderul vechi este eliberată după salvarea celui nou.
+
+## După restart
+
+Când Device Owner și kiosk sunt active:
+
+- aliasul Mehene Home este activ;
+- aplicația este allowlistată pentru Lock Task;
+- Home, Recents și bara de navigare sunt blocate;
+- BootReceiver pornește aplicația numai dacă biblioteca este configurată;
+- overlay-urile externe sunt restricționate.
+
+Unele versiuni Samsung pot necesita provisioning prin QR sau Knox în locul comenzii ADB.

@@ -24,14 +24,14 @@ val releaseSigningConfigured = listOf(
 
 android {
     namespace = "ro.mehene.app"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "ro.mehene.app"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -61,7 +61,7 @@ android {
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -79,14 +79,16 @@ android {
         jvmTarget = "17"
     }
 
-    testOptions {
-        unitTests.isReturnDefaultValues = true
+    lint {
+        abortOnError = true
+        checkReleaseBuilds = true
+        warningsAsErrors = false
     }
 
     packaging {
         resources.excludes += setOf(
             "META-INF/AL2.0",
-            "META-INF/LGPL2.1"
+            "META-INF/LGPL2.1",
         )
     }
 }

@@ -7,19 +7,23 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import ro.mehene.app.data.LibraryRepository
+import ro.mehene.app.data.LibraryResult
 import ro.mehene.app.data.PlaybackProgressStore
 import ro.mehene.app.databinding.ActivitySeriesBinding
 import ro.mehene.app.kiosk.KioskController
 import ro.mehene.app.model.EpisodeItem
 import ro.mehene.app.ui.EpisodeAdapter
+import ro.mehene.app.util.meheneGridColumns
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 class SeriesActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySeriesBinding
     private lateinit var repository: LibraryRepository
     private lateinit var adapter: EpisodeAdapter
     private val scanExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+    private var scanTask: Future<*>? = null
 
     private val seriesTitle: String by lazy {
         intent.getStringExtra(EXTRA_SERIES_TITLE).orEmpty()
@@ -35,7 +39,7 @@ class SeriesActivity : AppCompatActivity() {
 
         repository = LibraryRepository(this)
         adapter = EpisodeAdapter(PlaybackProgressStore(this), ::openEpisode)
-        binding.episodeList.layoutManager = GridLayoutManager(this, 3)
+        binding.episodeList.layoutManager = GridLayoutManager(this, meheneGridColumns())
         binding.episodeList.adapter = adapter
         binding.episodeList.setHasFixedSize(true)
         binding.seriesTitle.text = seriesTitle
@@ -52,7 +56,7 @@ class SeriesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         KioskController.applyImmersive(this)
-        adapter.notifyDataSetChanged()
+        adapter.refreshPlaybackState()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -61,6 +65,7 @@ class SeriesActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        scanTask?.cancel(true)
         scanExecutor.shutdownNow()
         super.onDestroy()
     }
@@ -69,22 +74,46 @@ class SeriesActivity : AppCompatActivity() {
         binding.loading.visibility = View.VISIBLE
         binding.emptyMessage.visibility = View.GONE
         binding.episodeList.visibility = View.INVISIBLE
+        scanTask?.cancel(true)
 
-        scanExecutor.execute {
-            val episodes = runCatching { repository.scanEpisodes(seriesUri) }.getOrDefault(emptyList())
+        scanTask = scanExecutor.submit {
+            val result = repository.scanEpisodes(seriesUri)
             runOnUiThread {
                 if (isFinishing || isDestroyed) return@runOnUiThread
                 binding.loading.visibility = View.GONE
-                adapter.submitItems(episodes)
-                binding.seriesSubtitle.text = if (episodes.size == 1) {
-                    getString(R.string.one_episode)
-                } else {
-                    getString(R.string.episodes_count, episodes.size)
-                }
-                binding.episodeList.visibility = if (episodes.isEmpty()) View.INVISIBLE else View.VISIBLE
-                binding.emptyMessage.visibility = if (episodes.isEmpty()) View.VISIBLE else View.GONE
+                showEpisodeResult(result)
             }
         }
+    }
+
+    private fun showEpisodeResult(result: LibraryResult<List<EpisodeItem>>) {
+        when (result) {
+            is LibraryResult.Success -> {
+                val episodes = result.value
+                adapter.submitItems(episodes)
+                binding.seriesSubtitle.text = resources.getQuantityString(
+                    R.plurals.episodes_count,
+                    episodes.size,
+                    episodes.size,
+                )
+                binding.episodeList.visibility = if (episodes.isEmpty()) View.INVISIBLE else View.VISIBLE
+                binding.emptyMessage.visibility = if (episodes.isEmpty()) View.VISIBLE else View.GONE
+                binding.emptyMessage.setText(R.string.no_episodes)
+            }
+
+            LibraryResult.PermissionLost -> showError(R.string.library_permission_lost)
+            LibraryResult.StorageUnavailable -> showError(R.string.library_storage_unavailable)
+            LibraryResult.NotConfigured -> showError(R.string.library_not_configured)
+            is LibraryResult.Failure -> showError(R.string.scan_error)
+        }
+    }
+
+    private fun showError(messageRes: Int) {
+        adapter.submitItems(emptyList())
+        binding.seriesSubtitle.text = ""
+        binding.episodeList.visibility = View.INVISIBLE
+        binding.emptyMessage.visibility = View.VISIBLE
+        binding.emptyMessage.setText(messageRes)
     }
 
     private fun openEpisode(episode: EpisodeItem) {
@@ -92,6 +121,7 @@ class SeriesActivity : AppCompatActivity() {
             Intent(this, PlayerActivity::class.java).apply {
                 putExtra(PlayerActivity.EXTRA_EPISODE_TITLE, episode.title)
                 putExtra(PlayerActivity.EXTRA_MEDIA_URI, episode.mediaUri)
+                putExtra(PlayerActivity.EXTRA_PLAYBACK_KEY, episode.playbackKey)
             },
         )
     }

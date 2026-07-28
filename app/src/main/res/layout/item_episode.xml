@@ -50,6 +50,20 @@
         android:textSize="13sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/completedBadge"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_episode_badge"
+        android:gravity="center"
+        android:text="@string/completed_mark"
+        android:textColor="@color/mehene_white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="96dp"

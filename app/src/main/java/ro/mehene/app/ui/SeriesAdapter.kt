@@ -5,6 +5,8 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ro.mehene.app.R
 import ro.mehene.app.databinding.ItemSeriesBinding
@@ -12,9 +14,8 @@ import ro.mehene.app.model.SeriesItem
 
 class SeriesAdapter(
     private val onSeriesClick: (SeriesItem) -> Unit,
-) : RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder>() {
+) : ListAdapter<SeriesItem, SeriesAdapter.SeriesViewHolder>(DIFF_CALLBACK) {
 
-    private val items = mutableListOf<SeriesItem>()
     private val palette = intArrayOf(
         Color.rgb(77, 150, 255),
         Color.rgb(255, 107, 107),
@@ -25,9 +26,7 @@ class SeriesAdapter(
     )
 
     fun submitItems(newItems: List<SeriesItem>) {
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
+        submitList(newItems.toList())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesViewHolder {
@@ -36,10 +35,13 @@ class SeriesAdapter(
     }
 
     override fun onBindViewHolder(holder: SeriesViewHolder, position: Int) {
-        holder.bind(items[position], palette[position % palette.size])
+        holder.bind(getItem(position), palette[position % palette.size])
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun onViewRecycled(holder: SeriesViewHolder) {
+        holder.recycle()
+        super.onViewRecycled(holder)
+    }
 
     inner class SeriesViewHolder(
         private val binding: ItemSeriesBinding,
@@ -52,25 +54,40 @@ class SeriesAdapter(
                 setColor(fallbackColor)
             }
             fallbackInitial.text = item.title.firstOrNull()?.uppercase() ?: "M"
+            fallbackInitial.visibility = View.VISIBLE
             title.text = item.title
-            count.text = if (item.episodeCount == 1) {
-                card.context.getString(R.string.one_episode)
-            } else {
-                card.context.getString(R.string.episodes_count, item.episodeCount)
-            }
+            count.text = card.resources.getQuantityString(
+                R.plurals.episodes_count,
+                item.episodeCount,
+                item.episodeCount,
+            )
             card.contentDescription = "${item.title}, ${count.text}"
 
-            cover.setImageDrawable(null)
+            ArtworkLoader.cancel(cover)
             val coverUri = item.coverUri
             if (coverUri == null) {
                 cover.visibility = View.GONE
             } else {
                 cover.visibility = View.VISIBLE
-                ArtworkLoader.load(card.context, coverUri, cover) {
+                ArtworkLoader.load(card.context, coverUri, item.coverVersion, cover) {
                     cover.visibility = View.GONE
                 }
             }
             card.setOnClickListener { onSeriesClick(item) }
+        }
+
+        fun recycle() {
+            ArtworkLoader.cancel(binding.cover)
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<SeriesItem>() {
+            override fun areItemsTheSame(oldItem: SeriesItem, newItem: SeriesItem): Boolean =
+                oldItem.directoryUri == newItem.directoryUri
+
+            override fun areContentsTheSame(oldItem: SeriesItem, newItem: SeriesItem): Boolean =
+                oldItem == newItem
         }
     }
 }

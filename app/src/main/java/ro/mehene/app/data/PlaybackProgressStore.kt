@@ -6,32 +6,45 @@ import java.security.MessageDigest
 class PlaybackProgressStore(context: Context) {
     private val preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    fun savedPosition(mediaUri: String): Long = preferences.getLong(positionKey(mediaUri), 0L)
-
-    fun progress(mediaUri: String): Float {
-        val duration = preferences.getLong(durationKey(mediaUri), 0L)
-        if (duration <= 0L) return 0f
-        return (savedPosition(mediaUri).toFloat() / duration.toFloat()).coerceIn(0f, 1f)
+    fun savedPosition(playbackKey: String): Long {
+        if (preferences.getBoolean(completedKey(playbackKey), false)) return 0L
+        return preferences.getLong(positionKey(playbackKey), 0L)
     }
 
-    fun save(mediaUri: String, positionMs: Long, durationMs: Long) {
+    fun progress(playbackKey: String): EpisodeProgress {
+        if (preferences.getBoolean(completedKey(playbackKey), false)) {
+            return EpisodeProgress(EpisodePlaybackState.COMPLETED, 1f)
+        }
+        return PlaybackProgressPolicy.evaluate(
+            positionMs = preferences.getLong(positionKey(playbackKey), 0L),
+            durationMs = preferences.getLong(durationKey(playbackKey), 0L),
+        )
+    }
+
+    fun save(playbackKey: String, positionMs: Long, durationMs: Long) {
         if (durationMs <= 0L) return
-        val completed = positionMs >= (durationMs * 0.95f)
+        val evaluated = PlaybackProgressPolicy.evaluate(positionMs, durationMs)
         preferences.edit()
-            .putLong(positionKey(mediaUri), if (completed) 0L else positionMs.coerceAtLeast(0L))
-            .putLong(durationKey(mediaUri), durationMs)
+            .putLong(
+                positionKey(playbackKey),
+                if (evaluated.state == EpisodePlaybackState.IN_PROGRESS) positionMs.coerceAtLeast(0L) else 0L,
+            )
+            .putLong(durationKey(playbackKey), durationMs)
+            .putBoolean(completedKey(playbackKey), evaluated.state == EpisodePlaybackState.COMPLETED)
             .apply()
     }
 
-    fun markCompleted(mediaUri: String, durationMs: Long) {
+    fun markCompleted(playbackKey: String, durationMs: Long) {
         preferences.edit()
-            .putLong(positionKey(mediaUri), 0L)
-            .putLong(durationKey(mediaUri), durationMs.coerceAtLeast(0L))
+            .putLong(positionKey(playbackKey), 0L)
+            .putLong(durationKey(playbackKey), durationMs.coerceAtLeast(0L))
+            .putBoolean(completedKey(playbackKey), true)
             .apply()
     }
 
-    private fun positionKey(mediaUri: String) = "position_${digest(mediaUri)}"
-    private fun durationKey(mediaUri: String) = "duration_${digest(mediaUri)}"
+    private fun positionKey(playbackKey: String) = "position_${digest(playbackKey)}"
+    private fun durationKey(playbackKey: String) = "duration_${digest(playbackKey)}"
+    private fun completedKey(playbackKey: String) = "completed_${digest(playbackKey)}"
 
     private fun digest(value: String): String {
         val bytes = MessageDigest.getInstance("SHA-256").digest(value.toByteArray())

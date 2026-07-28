@@ -5,8 +5,11 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ro.mehene.app.R
+import ro.mehene.app.data.EpisodePlaybackState
 import ro.mehene.app.data.PlaybackProgressStore
 import ro.mehene.app.databinding.ItemEpisodeBinding
 import ro.mehene.app.model.EpisodeItem
@@ -14,9 +17,8 @@ import ro.mehene.app.model.EpisodeItem
 class EpisodeAdapter(
     private val progressStore: PlaybackProgressStore,
     private val onEpisodeClick: (EpisodeItem) -> Unit,
-) : RecyclerView.Adapter<EpisodeAdapter.EpisodeViewHolder>() {
+) : ListAdapter<EpisodeItem, EpisodeAdapter.EpisodeViewHolder>(DIFF_CALLBACK) {
 
-    private val items = mutableListOf<EpisodeItem>()
     private val palette = intArrayOf(
         Color.rgb(65, 145, 151),
         Color.rgb(109, 109, 211),
@@ -27,9 +29,11 @@ class EpisodeAdapter(
     )
 
     fun submitItems(newItems: List<EpisodeItem>) {
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
+        submitList(newItems.toList())
+    }
+
+    fun refreshPlaybackState() {
+        if (itemCount > 0) notifyItemRangeChanged(0, itemCount, PAYLOAD_PROGRESS)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
@@ -38,10 +42,21 @@ class EpisodeAdapter(
     }
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
-        holder.bind(items[position], palette[position % palette.size])
+        holder.bind(getItem(position), palette[position % palette.size])
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.contains(PAYLOAD_PROGRESS)) {
+            holder.bindProgress(getItem(position))
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    override fun onViewRecycled(holder: EpisodeViewHolder) {
+        holder.recycle()
+        super.onViewRecycled(holder)
+    }
 
     inner class EpisodeViewHolder(
         private val binding: ItemEpisodeBinding,
@@ -58,27 +73,50 @@ class EpisodeAdapter(
             title.text = item.title
             card.contentDescription = "${numberBadge.text}, ${item.title}"
 
-            artwork.setImageDrawable(null)
+            ArtworkLoader.cancel(artwork)
             val artworkUri = item.artworkUri
             if (artworkUri == null) {
                 artwork.visibility = View.GONE
             } else {
                 artwork.visibility = View.VISIBLE
-                ArtworkLoader.load(card.context, artworkUri, artwork) {
+                ArtworkLoader.load(card.context, artworkUri, item.artworkVersion, artwork) {
                     artwork.visibility = View.GONE
                 }
             }
 
-            val savedProgress = progressStore.progress(item.mediaUri)
-            if (savedProgress > 0.01f) {
+            bindProgress(item)
+            card.setOnClickListener { onEpisodeClick(item) }
+        }
+
+        fun bindProgress(item: EpisodeItem) = with(binding) {
+            val playback = progressStore.progress(item.playbackKey)
+            completedBadge.visibility = if (playback.state == EpisodePlaybackState.COMPLETED) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            if (playback.state == EpisodePlaybackState.IN_PROGRESS) {
                 progress.visibility = View.VISIBLE
-                progress.progress = (savedProgress * 1000).toInt()
+                progress.progress = (playback.fraction * 1000).toInt()
             } else {
                 progress.visibility = View.GONE
                 progress.progress = 0
             }
+        }
 
-            card.setOnClickListener { onEpisodeClick(item) }
+        fun recycle() {
+            ArtworkLoader.cancel(binding.artwork)
+        }
+    }
+
+    companion object {
+        private const val PAYLOAD_PROGRESS = "progress"
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<EpisodeItem>() {
+            override fun areItemsTheSame(oldItem: EpisodeItem, newItem: EpisodeItem): Boolean =
+                oldItem.mediaUri == newItem.mediaUri
+
+            override fun areContentsTheSame(oldItem: EpisodeItem, newItem: EpisodeItem): Boolean =
+                oldItem == newItem
         }
     }
 }
