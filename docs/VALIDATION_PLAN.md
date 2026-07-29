@@ -1,10 +1,37 @@
-# Plan de validare înainte de instalarea pe server
+# Plan de validare și porți de release
 
-## Validare rapidă locală
+Acest document definește testele obligatorii înainte de instalarea definitivă. Un test fără dovadă nu este considerat trecut.
+
+## Reguli
+
+- fiecare rulare notează commitul, versiunea APK, dispozitivul, versiunea Android și rezultatul;
+- erorile sunt reparate și testul se repetă integral;
+- rezultatele se salvează în `docs/test-results/`;
+- produsul rămâne NO-GO cât timp o poartă P0 este deschisă;
+- Device Owner se activează numai după trecerea testelor fără kiosk.
+
+# Gate G0 — Validare statică offline
 
 ```bash
 python3 tools/validate_repo.py
 ```
+
+## Trebuie să confirme
+
+- XML valid;
+- manifest fără permisiune internet;
+- politica fără securitate;
+- versiune coerentă;
+- Builder și validator Python compilabile;
+- testele interne ale Builderului;
+- lock și publicare atomică la nivel de fișier.
+
+## Dovadă
+
+- output complet salvat;
+- commit și data rulării.
+
+# Gate G1 — Build Android curat
 
 Pe un calculator cu JDK 17 și Android SDK 36:
 
@@ -12,62 +39,220 @@ Pe un calculator cu JDK 17 și Android SDK 36:
 python3 tools/validate_repo.py --android
 ```
 
-## Build Android
+Rulează echivalent:
 
-- `clean test lintDebug assembleDebug`;
-- toate testele instrumentate Room/cache/progres;
-- build release semnat;
-- instalare update peste versiunea anterioară cu aceeași cheie;
-- pornire după upgrade fără pierderea progresului sau setărilor;
-- verificarea schemei Room exportate.
+```bash
+./gradlew clean test lintDebug assembleDebug
+```
 
-## Recuperare și concurență
+Pentru release:
 
-- cache catalog trunchiat, JSON invalid și checksum greșit;
-- DataStore corupt: revenire la valori implicite;
-- Room indisponibil: UI și progres din backup atomic;
-- checkpoint vechi sosit după unul nou: progresul nou rămâne;
+```bash
+./gradlew clean test lintRelease assembleRelease
+```
+
+## Criterii
+
+- zero erori de compilare;
+- zero erori lint;
+- testele unitare trec;
+- testele instrumentate Room/cache/progres trec;
+- build debug și release sunt generate;
+- R8 nu elimină componente necesare;
+- schema Room versiunea 1 este generată și comisă;
+- Android Studio sync trece.
+
+## Dovadă
+
+- logurile Gradle;
+- APK-uri;
+- schema Room;
+- raport lint;
+- SHA-256 al artefactelor.
+
+# Gate G2 — Semnare și upgrade
+
+## Teste
+
+- build release cu cheia definitivă;
+- verificarea semnăturii APK;
+- backupul cheii în două locații;
+- instalare curată;
+- update peste versiunea anterioară cu aceeași cheie;
+- pornire după upgrade;
+- progresul și setările sunt păstrate;
+- procedură de rollback verificată pe dispozitiv de test.
+
+## Acceptare
+
+Nicio pierdere de date și niciun conflict de semnătură.
+
+# Gate G3 — Recuperare și concurență Android
+
+- cache catalog trunchiat;
+- JSON invalid;
+- checksum greșit;
+- cache fallback expirat;
+- DataStore corupt → valori implicite;
+- Room indisponibil la construire;
+- Room care aruncă la query-time;
+- checkpoint vechi după checkpoint nou;
+- reset progres urmat de checkpoint întârziat;
 - oprirea procesului imediat după X, Home și finalul episodului;
 - anularea unei scanări în timp ce începe alta;
-- schimbarea bibliotecii cu folder nou invalid: biblioteca veche rămâne activă;
-- `catalog.json` invalid: fallback la scanarea folderelor și diagnostic vizibil.
+- schimbarea bibliotecii cu folder nou invalid;
+- selectarea unui folder valid, dar gol, fără ștergerea progresului altor biblioteci după implementarea namespace-ului;
+- `catalog.json` invalid → fallback și diagnostic.
 
-## Library Builder
+## Acceptare
+
+UI-ul rămâne utilizabil, iar datele mai noi nu sunt înlocuite de date vechi.
+
+# Gate G4 — Library Builder
+
+## Funcțional
 
 - două rulări consecutive: a doua reutilizează rezultatele;
-- două procese simultane: al doilea este blocat;
-- lock stale este recuperat;
-- fișier video corupt: catalogul anterior nu este înlocuit;
-- `--publish-partial` publică numai când este solicitat explicit;
-- întrerupere în timpul copierii, transcodingului și scrierii JSON;
-- ID-uri stabile după rebuild;
-- nicio cale din catalog nu poate ieși din folderul destinație.
+- audio preferat și fallback;
+- copertă și miniaturi;
+- SRT/VTT;
+- catalog și raport valide;
+- ID-uri stabile după rebuild.
 
-## Tabletă Samsung
+## Erori
+
+- două procese simultane;
+- lock stale;
+- build mai lung decât pragul stale după implementarea heartbeat-ului;
+- kill în timpul copierii;
+- kill în timpul transcodingului;
+- kill în timpul scrierii catalogului;
+- video corupt;
+- sursă modificată în timpul buildului;
+- `--publish-partial` numai explicit;
+- nicio cale nu iese din destinație;
+- generația activă rămâne intactă la orice eșec după implementarea stagingului.
+
+## Acceptare
+
+Tableta vede numai un catalog complet valid, iar rollbackul la generația anterioară este demonstrat.
+
+# Gate G5 — Samsung fără Device Owner
+
+## Smoke test
 
 - cold start și warm start;
-- reboot complet de 10 ori;
-- redare continuă minimum 2 ore;
-- Android 9: background/foreground repetat și ecran stins/aprins;
-- pauză manuală păstrată după revenire;
-- countdown auto-next restaurat după recreare;
-- scoatere/reintroducere microSD;
-- fișier corupt și codec incompatibil;
-- subtitrări SRT și VTT;
-- audio română, engleză și „original”;
-- Home, Recents, notification shade și power menu;
-- ieșire temporară și revenire kiosk;
-- restart în Device Owner și pornire automată.
+- configurează biblioteca pe microSD;
+- Home → serial → sezon → episod → X;
+- Continuă;
+- Mehene TV;
+- auto-next și anulare;
+- pauză manuală;
+- retry;
+- volum;
+- schimbarea limbii audio;
+- subtitrări SRT/VTT;
+- ecran stins/aprins;
+- background/foreground repetat;
+- process death/recreare;
+- scoatere și reintroducere microSD;
+- fișier corupt și codec incompatibil.
 
-## Bibliotecă mare
+## Acceptare
+
+Zero crash, ANR sau blocare fără cale de revenire.
+
+# Gate G6 — Codec și redare de durată
+
+## Matrice minimă
+
+- H.264 Main Level 3.1;
+- 720p la 24, 25 și 30 fps;
+- AAC stereo 44,1/48 kHz;
+- video fără audio;
+- SRT cu diacritice;
+- VTT;
+- fișier trunchiat.
+
+## Soak
+
+- redare continuă minimum două ore;
+- minimum 20 auto-next;
+- 20 background/foreground;
+- 10 opriri forțate și redeschideri;
+- monitorizare RAM, temperatură și baterie.
+
+## Acceptare
+
+- fără crash/ANR/OOM;
+- memoria nu crește monoton;
+- progresul pierdut este cel mult ultimul interval de checkpoint;
+- formatele recomandate folosesc decoderul disponibil și redau fluid.
+
+# Gate G7 — Kiosk și reboot
+
+După resetarea dispozitivului:
+
+- provisioning Device Owner;
+- activare Lock Task;
+- Home și Recents;
+- notification shade;
+- power menu conform configurației;
+- folder picker din administrare;
+- ieșire temporară și revenire;
+- dezactivare controlată kiosk;
+- reboot complet de 10 ori;
+- pornire automată după fiecare reboot.
+
+## Acceptare
+
+Copilul nu iese accidental, iar adultul poate recupera și administra dispozitivul fără reinstalare.
+
+# Gate G8 — Bibliotecă mare și performanță
+
+## Date
 
 - minimum 50 seriale;
 - minimum 500 episoade;
-- scroll rapid;
-- pornire din cache;
-- expirarea cache-ului fallback;
-- rescanare completă și anulată;
-- reconstruirea catalogului cu ID-uri stabile;
-- măsurarea duratei pornirii și a consumului de memorie.
+- mai multe sezoane;
+- artwork complet și incomplet;
+- subtitrări mixte.
 
-Produsul nu este considerat final până când această listă este verificată pe dispozitivul real.
+## Teste
+
+- cold start din cache;
+- warm start;
+- scroll rapid;
+- deschidere serial mare;
+- schimbare sezon;
+- rescanare completă;
+- anularea rescanării;
+- rebuild Builder;
+- comutare între două biblioteci după implementarea namespace-ului de progres.
+
+## Praguri inițiale
+
+- cold start până la catalog: maximum 3 secunde;
+- warm start: maximum 1,5 secunde;
+- fără OOM;
+- fără degradare continuă a memoriei;
+- scroll acceptabil vizual pe dispozitiv.
+
+Pragurile pot fi ajustate o singură dată după prima măsurare, cu justificare documentată.
+
+# Gate G9 — Visual QA și accesibilitate
+
+- capturi etalon Home/Series/Player/Admin;
+- verificare 1280×800;
+- texte lungi;
+- fallback fără artwork;
+- contrast;
+- touch targets;
+- Accessibility Scanner;
+- TalkBack;
+- ordinea focusului;
+- descrieri fără duplicare.
+
+# Gate final
+
+Produsul este considerat gata de instalare numai când G0–G9 sunt trecute sau când o abatere este acceptată explicit în `docs/test-results/ACCEPTED_RISKS.md` cu motiv, impact și plan de remediere.
