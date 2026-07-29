@@ -1,13 +1,14 @@
-# Arhitectură Mehene 2.0
+# Arhitectură Mehene 2.1
 
 ## Principii
 
 - offline real;
 - interfață simplă pentru copil;
 - administrare separată, fără autentificare;
-- performanță pe Android 9 și 2 GB RAM;
+- performanță pe Android 9 și aproximativ 2 GB RAM;
 - conținut pregătit pe PC/server, nu procesat greu pe tabletă;
-- cât mai puține straturi, dar responsabilități clare.
+- cât mai puține straturi, dar responsabilități clare;
+- degradare controlată: aplicația trebuie să rămână utilizabilă când un strat local eșuează.
 
 ## Componente Android
 
@@ -15,14 +16,19 @@
 MeheneApplication / AppContainer
 ├── LibraryRepository
 │   ├── Storage Access Framework
-│   ├── CatalogJsonCodec
-│   └── CatalogCacheStore
+│   ├── CatalogJsonCodec + CatalogValidator
+│   └── CatalogCacheStore / AtomicFile
 ├── ProgressRepository
-│   └── Room / SQLite
+│   ├── runtime StateFlow
+│   ├── Room / SQLite
+│   ├── ProgressBackupStore / AtomicFile
+│   └── InMemoryPlaybackProgressDao, fallback best-effort
 ├── SettingsRepository
-│   └── Preferences DataStore
+│   └── Preferences DataStore + corruption handler
 └── KioskController
 ```
+
+`AppContainer` deține un scope de aplicație pentru checkpoint-uri și operații care trebuie să continue după distrugerea unui Activity.
 
 ## UI
 
@@ -35,18 +41,35 @@ PlayerActivity   ← Media3 + repositories + PlaybackQueuePlanner
 
 Activity-urile desenează starea și trimit acțiuni. Scanarea, progresul și alegerea următorului episod nu sunt implementate în adaptoare sau layouturi.
 
+ViewModel-urile anulează operația anterioară și folosesc o generație de request pentru a nu publica rezultate asincrone vechi.
+
 ## Catalog
 
 Ordinea surselor:
 
 1. catalog valid în memorie;
-2. cache intern valid pentru URI-ul bibliotecii;
-3. `catalog.json` din bibliotecă;
+2. cache intern valid pentru URI, fingerprint și TTL;
+3. `catalog.json` valid din bibliotecă;
 4. scanarea folderelor ca fallback.
 
-Schimbarea folderului este tranzacțională: noul folder este validat și scanat înainte ca vechea bibliotecă să fie înlocuită.
+Schimbarea folderului este tranzacțională la nivelul aplicației: noul folder este validat și scanat înainte ca vechea bibliotecă să fie înlocuită.
+
+Cache-ul intern folosește `AtomicFile`, checksum SHA-256 și validare semantică. Pentru cataloage generate, fingerprint-ul este hash-ul textului `catalog.json`; pentru scanarea folderelor se aplică TTL.
+
+### Limită actuală
+
+Library Builder 2.1 restaurează catalogul anterior după o eroare, dar nucleul legacy scrie candidatul în destinație înainte de validarea finală. Refactorizarea pe generații/staging este prevăzută în roadmap.
 
 ## Progres
+
+Sursa runtime pentru UI este `StateFlow` din `ProgressRepository`.
+
+Persistența folosește:
+
+- Room ca bază principală;
+- backup JSON atomic pentru checkpoint-uri critice;
+- tombstone persistent la resetarea progresului;
+- DAO în memorie ca fallback best-effort dacă obținerea Room/DAO eșuează imediat.
 
 Room păstrează:
 
@@ -56,11 +79,27 @@ Room păstrează:
 - terminat/început;
 - ultima redare.
 
-Aceasta permite Continue Watching, Mehene TV și curățarea progresului pentru episoade dispărute.
+### Limită actuală
+
+Progresul nu este încă separat prin `libraryId`. Schimbarea catalogului declanșează prune pentru ID-urile absente. Roadmapul cere namespace pe bibliotecă și eliminarea ștergerii automate globale.
+
+De asemenea, Room poate deschide baza de date la prima interogare. Prin urmare, DAO-ul în memorie nu este o garanție de comutare pentru orice corupere apărută la query-time; continuitatea reală este oferită de runtime state și backup.
 
 ## Player
 
-Media3 este creat în `onStart()` și eliberat în `onStop()`, pentru a elibera decoderul hardware pe tableta veche. Playerul aplică limba audio preferată, subtitrări sidecar, buffering timeout și coadă de redare.
+Media3 folosește lifecycle diferențiat:
+
+- Android 7+: inițializare în `onStart`, eliberare în `onStop`;
+- Android 6: inițializare în `onResume`, eliberare în `onPause`.
+
+Playerul aplică:
+
+- limba audio preferată;
+- subtitrări sidecar;
+- buffering timeout;
+- checkpoint periodic și critic;
+- restaurarea sesiunii și countdownului;
+- coadă pentru continuarea serialului și Mehene TV.
 
 ## Kiosk
 
@@ -69,7 +108,19 @@ Kiosk are două niveluri:
 - immersive/screen pinning pentru test;
 - Device Owner + Lock Task + Home alias pentru utilizarea definitivă.
 
-Ieșirea temporară în Android nu dezactivează preferința kiosk; Lock Task se reactivează la revenire.
+Ieșirea temporară în Android nu dezactivează preferința kiosk; Lock Task se reactivează la revenire. Rezultatul exact depinde de firmware-ul Samsung și trebuie calificat pe dispozitiv.
+
+## Library Builder
+
+```text
+Sursă media
+  ↓ ffprobe / conversie / imagini / subtitrări
+Destinație + catalog candidat
+  ↓ validator fail-closed
+Catalog activ sau restaurarea celui anterior
+```
+
+Builderul are lock, validare și scriere atomică pentru fișiere individuale. Roadmapul prevede staging complet, heartbeat pentru lock și publicarea pe generații.
 
 ## Ce nu se introduce
 
@@ -77,8 +128,16 @@ Ieșirea temporară în Android nu dezactivează preferința kiosk; Lock Task se
 - conturi;
 - internet;
 - analytics;
-- Compose;
-- dependency injection framework;
+- Compose doar pentru modernizare cosmetică;
+- dependency injection framework fără nevoie demonstrată;
 - autentificare/PIN;
 - criptare specială;
 - microservicii sau module Gradle inutile.
+
+## Documente autoritative
+
+- `docs/FINAL_AUDIT.md` — verdict și constatări;
+- `docs/ROADMAP.md` — ordinea dezvoltării;
+- `docs/STABILITY.md` — garanții și degradare;
+- `docs/VALIDATION_PLAN.md` — porți de acceptare;
+- `docs/NO_SECURITY.md` — decizia fără securitate.
