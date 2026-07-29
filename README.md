@@ -25,12 +25,25 @@ Mehene este utilizată de un copil supravegheat. Nu există PIN, parolă, autent
 - Storage Access Framework;
 - `catalog.json` generat extern, scanare foldere ca fallback;
 - cache intern atomic, verificat prin checksum, fingerprint și TTL;
-- Room + backup atomic pentru progres;
+- runtime StateFlow + Room + backup atomic pentru progres;
 - DataStore cu recuperare la corupere;
 - Media3 ExoPlayer cu lifecycle adaptat versiunii Android;
-- Library Builder Python cu lock și publicare fail-closed.
+- Library Builder Python cu lock și rezultat final fail-closed.
 
 Detalii: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) și [docs/STABILITY.md](docs/STABILITY.md).
+
+## Audit și roadmap
+
+Auditul final este fixat pe commitul `f12b7b4b3af94bdca2a5ba0e98fea0a3d197156a`.
+
+- [Audit final](docs/FINAL_AUDIT.md)
+- [Roadmap detaliat](docs/ROADMAP.md)
+- [Porți de validare](docs/VALIDATION_PLAN.md)
+
+Verdict curent:
+
+- **GO condiționat** pentru build și etapa Release Candidate;
+- **NO-GO** pentru instalarea definitivă până la buildul complet, testele Samsung și închiderea constatărilor P1.
 
 ## Biblioteca recomandată
 
@@ -54,7 +67,7 @@ Format: MP4, H.264 Main, AAC stereo, maximum 1280×720 și 30 fps.
 ## Library Builder
 
 ```bash
-python3 tools/mehene_builder.py "/Desene originale" "/CardSD/Mehene" --audio-language ron
+python3 tools/mehene_builder.py "/Desene originale" "/Folder staging/Mehene" --audio-language ron
 ```
 
 Wrapper-ele recomandate:
@@ -64,12 +77,12 @@ Wrapper-ele recomandate:
 ```
 
 ```powershell
-.\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Mehene" -AudioLanguage ron
+.\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Mehene-Staging" -AudioLanguage ron
 ```
 
-Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și păstrează catalogul anterior dacă întâlnește erori. Publicarea parțială necesită explicit `--publish-partial` sau `-PublishPartial`.
+Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori. În versiunea 2.1 se recomandă construirea într-o destinație staging, nu direct într-o bibliotecă citită simultan de tabletă.
 
-Detalii: [docs/LIBRARY_BUILDER.md](docs/LIBRARY_BUILDER.md).
+Detalii și limitări: [docs/LIBRARY_BUILDER.md](docs/LIBRARY_BUILDER.md).
 
 ## Validare
 
@@ -111,4 +124,4 @@ Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
 
 ## Stadiu
 
-Versiunea **2.1.0** implementează hardening pentru cache, progres, setări, player și Library Builder. Nu este declarată finală până la trecerea testelor pe tableta fizică, microSD, reboot și bibliotecă mare din [docs/VALIDATION_PLAN.md](docs/VALIDATION_PLAN.md).
+Versiunea **2.1.0** implementează funcțiile premium și hardening pentru catalog, progres, setări, player și Builder. Următoarea etapă obligatorie este R1 din roadmap: build Android reproductibil, schema Room, APK release semnat și test de update. Nu se recomandă adăugarea de funcții noi înainte de trecerea porților Release Candidate.
