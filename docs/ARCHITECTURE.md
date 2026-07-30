@@ -5,7 +5,7 @@
 - offline real;
 - interfață simplă pentru copil;
 - administrare separată, fără autentificare;
-- performanță pe Android 9 și aproximativ 2 GB RAM;
+- performanță pe Samsung SM-T585 cu Android 8.1/API 27 și aproximativ 2 GB RAM;
 - conținut pregătit pe PC/server, nu procesat greu pe tabletă;
 - cât mai puține straturi, dar responsabilități clare;
 - degradare controlată: aplicația trebuie să rămână utilizabilă când un strat local eșuează.

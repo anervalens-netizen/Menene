@@ -1,0 +1,14 @@
+{
+  "manifestVersion": 1,
+  "accessedAt": "2026-07-30",
+  "builder": "Mehene 2.1.0",
+  "targetProfile": "MP4/H.264 Main Level 3.1/AAC 48kHz, max 720p/30",
+  "items": [
+    {"series":"Masinuta","episode":"Episod 01 - Masinuta","sourceUrl":"https://commons.wikimedia.org/wiki/File:CarAnimation1.webm","author":"DanielT200","license":"CC BY-SA 4.0","sourceSha256":"5752eafe60b8c9e652e49bec8b17a24314cc7fd07e734127e668181e9a4b8485","outputSha256":"f586c50d3e6bc5ca99693c8e9a782f22493bc584ab9990f127f9bdb57500b33a","durationSeconds":30.0,"modification":"buclat de 8 ori si transcodificat MP4 H.264; fara audio","ageVerdict":"potrivit 3-5: animatie simpla cu masina; supraveghere recomandata","attribution":"CarAnimation1 by DanielT200, CC BY-SA 4.0; adaptare Mehene sub CC BY-SA 4.0"},
+    {"series":"Animale","episode":"Episod 01 - Alfabetul animalelor","sourceUrl":"https://commons.wikimedia.org/wiki/File:Andy%27s_Animal_Alphabet.ogv","author":"New York Zoological Society","license":"Public Domain Mark 1.0 / US Government work","sourceSha256":"3bc0e627f405d2cc3a7b5915888a8fdc7fbdc4d20bcab11413d0263e48665ef7","outputSha256":"64fd62e76317f25d96da08ec32bf4d707de3a4a5d1e7ebcd7cffe90572824a2d","durationSeconds":605.572,"modification":"transcodificat OGV/Theora/Vorbis in MP4 H.264/AAC si miniatura WebP","ageVerdict":"potrivit 3-5: alfabet si animale; material vintage, revizie parentala recomandata","attribution":"Andy’s Animal Alphabet, New York Zoological Society, public domain"},
+    {"series":"Cantec educativ","episode":"Episod 01 - Iepurasul","sourceUrl":"https://commons.wikimedia.org/wiki/File:Songs-005-Did_You_Ever_See_a_Rabbit-v_1-play_tune.webm","author":"L. Frank Baum (versuri); Alberta N. Hall (muzica)","license":"Public domain (published 1900)","sourceSha256":"cd5ae560840cf79a7cae8f9448524ea64784e1ee142ab6a8e441bee9e2f7e9e6","outputSha256":"56ae7e29275b2805f782fdb1b3c70cac3dcf65765ab842f8b1b1f1af7ad8cc6a","durationSeconds":20.195,"modification":"transcodificat WebM/VP8/Vorbis in MP4 H.264/AAC si miniatura WebP","ageVerdict":"potrivit 3-5: rima scurta despre iepuras; limba engleza","attribution":"Did You Ever See a Rabbit, L. Frank Baum and Alberta N. Hall, public domain"}
+  ],
+  "catalogSha256": "a85c28c07f98ce6b097ffb9b9776944a2c64f3399ec75b7c78372c142b36c29f",
+  "catalogSourceFingerprint": "44fcb800849e24b5945ef1638ff5fc7c5e655a9ec47aed0e46ba6be5c2f97e62",
+  "excluded": ["Cocomelon: fara licenta explicita", "Caminandes: licenta directa a fisierului nu a fost confirmata", "orice sursa YouTube"]
+}

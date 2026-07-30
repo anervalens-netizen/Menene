@@ -1,6 +1,6 @@
 # Mehene
 
-Mehene este un „Cartoon Network personal” complet offline pentru Samsung Galaxy Tab A 8.0 (2019), optimizat pentru Android 9, aproximativ 2 GB RAM și biblioteci pe microSD.
+Mehene este un „Cartoon Network personal” complet offline pentru Samsung SM-T585, calificat pe Android 8.1/API 27, aproximativ 2 GB RAM și biblioteci pe microSD.
 
 ## Experiență
 

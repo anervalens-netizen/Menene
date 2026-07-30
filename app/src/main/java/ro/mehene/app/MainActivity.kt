@@ -7,11 +7,13 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import ro.mehene.app.data.LibraryPreferences
@@ -34,16 +36,21 @@ class MainActivity : AppCompatActivity() {
     private var logoTapCount = 0
     private var firstLogoTapAt = 0L
     private var folderPickerActive = false
+    private var skipNextResumeRefresh = false
 
     private val folderPicker = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         folderPickerActive = false
-        uri?.let(viewModel::setLibrary)
+        uri?.let {
+            skipNextResumeRefresh = true
+            viewModel.setLibrary(it)
+        }
         resumeKioskAfterExternalActivity()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        folderPickerActive = savedInstanceState?.getBoolean(STATE_FOLDER_PICKER_ACTIVE) ?: false
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         preferences = LibraryPreferences(this)
@@ -73,12 +80,18 @@ class MainActivity : AppCompatActivity() {
         KioskController.prepareAndEnter(this)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(STATE_FOLDER_PICKER_ACTIVE, folderPickerActive)
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onResume() {
         super.onResume()
         if (!folderPickerActive) {
             if (preferences.resumeKioskAfterExternalActivity) resumeKioskAfterExternalActivity()
             else KioskController.prepareAndEnter(this)
-            viewModel.refresh()
+            if (skipNextResumeRefresh) skipNextResumeRefresh = false
+            else viewModel.refresh()
         } else {
             KioskController.applyImmersive(this)
         }
@@ -150,6 +163,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    @OptIn(markerClass = [UnstableApi::class])
     private fun openEpisode(episode: EpisodeItem, mode: PlaybackMode) {
         startActivity(PlayerActivity.intent(this, episode.id, mode))
     }
@@ -189,5 +203,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val ADMIN_TAP_COUNT = 5
         private const val ADMIN_TAP_WINDOW_MS = 3_000L
+        private const val STATE_FOLDER_PICKER_ACTIVE = "folder_picker_active"
     }
 }

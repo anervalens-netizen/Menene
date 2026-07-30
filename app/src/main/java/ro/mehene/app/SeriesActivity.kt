@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import ro.mehene.app.data.PlaybackMode
@@ -101,6 +103,7 @@ class SeriesActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(markerClass = [UnstableApi::class])
     private fun openEpisode(episode: EpisodeItem) {
         startActivity(PlayerActivity.intent(this, episode.id, playbackMode))
     }

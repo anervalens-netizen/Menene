@@ -101,7 +101,12 @@ def season_number(name: str) -> int | None:
 
 def episode_number(name: str, fallback: int) -> int:
     stem = Path(name).stem.lower()
-    patterns = ('s\s*0*\d{1,3}[\s._-]*e\s*0*(\d{1,4})', '(?:episode|episod(?:ul)?)\s*0*(\d{1,4})', '(?:^|[^0-9])e\s*0*(\d{1,4})', '(?:^|[^0-9])0*(\d{1,4})(?:[^0-9]|$)')
+    patterns = (
+        r's\s*0*\d{1,3}[\s._-]*e\s*0*(\d{1,4})',
+        r'(?:episode|episod(?:ul)?)\s*0*(\d{1,4})',
+        r'(?:^|[^0-9])e\s*0*(\d{1,4})',
+        r'(?:^|[^0-9])0*(\d{1,4})(?:[^0-9]|$)',
+    )
     for pattern in patterns:
         match = re.search(pattern, stem, re.IGNORECASE)
         if match:

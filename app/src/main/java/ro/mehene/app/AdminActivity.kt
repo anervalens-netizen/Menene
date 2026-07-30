@@ -27,6 +27,7 @@ class AdminActivity : AppCompatActivity() {
     private var playbackSpinnerBinding = true
     private var audioSpinnerBinding = true
     private var folderPickerActive = false
+    private var skipNextResumeRefresh = false
     private var restoreAfterSettings = false
 
     private val playbackModes = listOf(
@@ -39,12 +40,16 @@ class AdminActivity : AppCompatActivity() {
 
     private val folderPicker = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         folderPickerActive = false
-        uri?.let(viewModel::setLibrary)
+        uri?.let {
+            skipNextResumeRefresh = true
+            viewModel.setLibrary(it)
+        }
         restoreKioskIfNeeded()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        folderPickerActive = savedInstanceState?.getBoolean(STATE_FOLDER_PICKER_ACTIVE) ?: false
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         preferences = LibraryPreferences(this)
@@ -105,6 +110,11 @@ class AdminActivity : AppCompatActivity() {
         KioskController.applyImmersive(this)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(STATE_FOLDER_PICKER_ACTIVE, folderPickerActive)
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onResume() {
         super.onResume()
         if (restoreAfterSettings || (!folderPickerActive && preferences.resumeKioskAfterExternalActivity)) {
@@ -114,7 +124,8 @@ class AdminActivity : AppCompatActivity() {
             KioskController.applyImmersive(this)
         }
         viewModel.refreshKioskState()
-        viewModel.refresh()
+        if (skipNextResumeRefresh) skipNextResumeRefresh = false
+        else viewModel.refresh()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -240,5 +251,9 @@ class AdminActivity : AppCompatActivity() {
         if (shouldResume && preferences.kioskEnabled) KioskController.prepareAndEnter(this)
         else KioskController.applyImmersive(this)
         viewModel.refreshKioskState()
+    }
+
+    companion object {
+        private const val STATE_FOLDER_PICKER_ACTIVE = "folder_picker_active"
     }
 }

@@ -219,3 +219,12 @@ Mehene poate fi considerată gata numai când:
 ## Concluzie
 
 Mehene 2.1 este o aplicație bine proiectată și mult peste nivelul unui prototip. Următoarea etapă nu trebuie să fie adăugarea de funcții. Prioritatea este transformarea codului într-un Release Candidate demonstrat prin build, teste și calificarea tabletei. După aceea, puținele lucrări P1 rămase pot ridica produsul la un nivel personal premium și predictibil operațional.
+
+## Decizie de acceptare P1 — 2026-07-30
+
+MEH-103 și MEH-104 nu au fost remediate structural în MVP. Sunt acceptate explicit numai pentru debug-ul personal calificat pe SM-T585, deoarece continuitatea curentă rămâne protejată de starea runtime și backupul atomic, iar selecția bibliotecii este acum validată prin SAF.
+
+- MEH-103: nu se schimbă biblioteca în mod curent; progresul poate fi pierdut la comutarea unei biblioteci/catalog gol. Înainte de release semnat: namespace `libraryId`, migrare Room și test de comutare.
+- MEH-104: Room rămâne best-effort după pornire; UI-ul nu se oprește, iar backupul atomic rămâne fallback. Înainte de release semnat: health-probe și DAO comutabil, cu test de defect la query.
+
+Nu sunt motive de a crea o cheie release sau de a instala definitiv APK-ul până la închiderea acestor condiții și verificarea update/rollback.

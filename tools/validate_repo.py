@@ -153,7 +153,15 @@ def validate_version(root: Path) -> None:
 def run_android(root: Path) -> None:
     wrapper = root / ("gradlew.bat" if sys.platform.startswith("win") else "gradlew")
     subprocess.run(
-        [str(wrapper), "clean", "test", "lintDebug", "assembleDebug"],
+        [
+            str(wrapper),
+            "clean",
+            "test",
+            "lintDebug",
+            "assembleDebug",
+            "lintRelease",
+            "assembleRelease",
+        ],
         cwd=root,
         check=True,
     )
@@ -179,7 +187,7 @@ def main() -> int:
     print("✓ Builder: sintaxă, catalog, scriere atomică, lock și fail-closed")
     print("✓ versiune Android 2.1.0")
     if args.android:
-        print("✓ teste, lint și APK debug")
+        print("✓ teste, lint și APK debug/release")
     else:
         print("ℹ buildul Android nu a fost rulat; folosește --android pe PC/server")
     return 0
