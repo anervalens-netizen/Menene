@@ -42,7 +42,7 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-rounded"
                     android:maxLines="1"
-                    android:textColor="@color/mehene_white"
+                    android:textColor="@color/menene_white"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                     android:id="@+id/seriesSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/mehene_white_88"
+                    android:textColor="@color/menene_white_88"
                     android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
@@ -91,7 +91,7 @@
         android:layout_gravity="center"
         android:background="@drawable/bg_empty_panel"
         android:gravity="center"
-        android:textColor="@color/mehene_ink"
+        android:textColor="@color/menene_ink"
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="gone" />
@@ -102,6 +102,6 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/mehene_yellow"
+        android:indeterminateTint="@color/menene_yellow"
         android:visibility="gone" />
 </FrameLayout>

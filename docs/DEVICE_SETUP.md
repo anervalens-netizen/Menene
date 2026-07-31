@@ -24,7 +24,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 3. Configurează o bibliotecă de test.
-4. Testează seriale, sezoane, subtitrări, volum, progres și Mehene TV.
+4. Testează seriale, sezoane, subtitrări, volum, progres și Menene TV.
 5. Testează process death, microSD și minimum două ore de redare.
 6. Nu activa încă Device Owner.
 
@@ -47,8 +47,8 @@ Device Owner poate necesita resetarea tabletei. Păstrează cheia de semnare APK
 
 ```bash
 adb install app/build/outputs/apk/release/app-release.apk
-adb shell dpm set-device-owner ro.mehene.app/ro.mehene.app.kiosk.MeheneDeviceAdminReceiver
-adb shell am start -n ro.mehene.app/ro.mehene.app.MainActivity
+adb shell dpm set-device-owner ro.menene.app/ro.menene.app.kiosk.MeneneDeviceAdminReceiver
+adb shell am start -n ro.menene.app/ro.menene.app.MainActivity
 ```
 
 După pornire:
@@ -63,7 +63,7 @@ După pornire:
 
 ## Recuperare
 
-Administrarea nu are PIN. `Deschide Android temporar` oprește Lock Task fără să dezactiveze configurația. La revenirea în Mehene, kiosk se reactivează.
+Administrarea nu are PIN. `Deschide Android temporar` oprește Lock Task fără să dezactiveze configurația. La revenirea în Menene, kiosk se reactivează.
 
 Păstrează înainte de Device Owner:
 

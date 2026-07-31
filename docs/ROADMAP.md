@@ -1,8 +1,8 @@
-# Roadmap Mehene
+# Roadmap Menene
 
 ## Scop
 
-Acest roadmap pornește de la auditul commitului `f12b7b4b3af94bdca2a5ba0e98fea0a3d197156a` și descrie ordinea recomandată pentru a transforma Mehene 2.1 din cod premium necalificat într-un produs instalabil, stabil și ușor de întreținut.
+Acest roadmap pornește de la auditul commitului `f12b7b4b3af94bdca2a5ba0e98fea0a3d197156a` și descrie ordinea recomandată pentru a transforma Menene 2.1 din cod premium necalificat într-un produs instalabil, stabil și ușor de întreținut.
 
 ## Reguli de execuție
 
@@ -157,7 +157,7 @@ Taskuri:
 - tableta citește numai generația completă;
 - catalogul anterior rămâne disponibil pentru rollback;
 - elimină monkey-patching-ul funcției legacy;
-- depreciază și apoi elimină `mehene_library.py`.
+- depreciază și apoi elimină `menene_library.py`.
 
 ### Acceptare
 
@@ -263,7 +263,7 @@ Un incident poate fi diagnosticat după restart fără Logcat.
 - 10 seriale / minimum 30 episoade;
 - coperți, sezoane, subtitrări;
 - audio română/engleză/original;
-- Continuă și Mehene TV;
+- Continuă și Menene TV;
 - pauză, retry, X și volum;
 - ecran stins/aprins;
 - process recreation prin developer option „Don’t keep activities”.

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec python3 "$SCRIPT_DIR/mehene_builder.py" "$@"
+exec python3 "$SCRIPT_DIR/menene_builder.py" "$@"

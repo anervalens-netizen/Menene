@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fast offline validation for the Mehene repository."""
+"""Fast offline validation for the Menene repository."""
 from __future__ import annotations
 
 import argparse
@@ -40,8 +40,8 @@ def validate_manifest(root: Path) -> None:
     manifest = (root / "app/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
     if "android.permission.INTERNET" in manifest:
         fail("Manifestul nu trebuie să solicite INTERNET")
-    if ".MeheneApplication" not in manifest:
-        fail("MeheneApplication lipsește din manifest")
+    if ".MeneneApplication" not in manifest:
+        fail("MeneneApplication lipsește din manifest")
 
 
 def validate_policy(root: Path) -> None:
@@ -83,17 +83,17 @@ def minimal_catalog() -> dict:
 
 def validate_builder(root: Path) -> None:
     tools = root / "tools"
-    legacy_path = tools / "mehene_library.py"
-    safe_path = tools / "mehene_builder.py"
+    legacy_path = tools / "menene_library.py"
+    safe_path = tools / "menene_builder.py"
     py_compile.compile(str(legacy_path), doraise=True)
     py_compile.compile(str(safe_path), doraise=True)
     sys.path.insert(0, str(tools))
     try:
-        builder = load_module("mehene_builder_validation", safe_path)
+        builder = load_module("menene_builder_validation", safe_path)
     finally:
         sys.path.pop(0)
 
-    with tempfile.TemporaryDirectory(prefix="mehene-validation-") as directory:
+    with tempfile.TemporaryDirectory(prefix="menene-validation-") as directory:
         root_path = Path(directory)
         source = root_path / "source"
         destination = root_path / "destination"
@@ -168,7 +168,7 @@ def run_android(root: Path) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validează repository-ul Mehene")
+    parser = argparse.ArgumentParser(description="Validează repository-ul Menene")
     parser.add_argument("--android", action="store_true", help="Rulează și buildul Android complet")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]

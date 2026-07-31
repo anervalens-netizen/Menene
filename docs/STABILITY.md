@@ -1,6 +1,6 @@
-# Stabilitate Mehene 2.1
+# Stabilitate Menene 2.1
 
-Mehene este proiectată ca un aparat offline care trebuie să continue să funcționeze când un strat local eșuează. Acest document separă explicit garanțiile implementate de limitările care încă necesită dezvoltare sau test hardware.
+Menene este proiectată ca un aparat offline care trebuie să continue să funcționeze când un strat local eșuează. Acest document separă explicit garanțiile implementate de limitările care încă necesită dezvoltare sau test hardware.
 
 ## Garanții implementate
 
@@ -87,4 +87,4 @@ Nu sunt încă confirmate:
 
 ## Nivelul de garanție
 
-Mehene 2.1 oferă **reziliență proiectată și validare statică**, nu încă o garanție de producție. Garanția operațională apare numai după trecerea porților din `docs/VALIDATION_PLAN.md` și închiderea constatărilor P1 din `docs/ROADMAP.md`.
+Menene 2.1 oferă **reziliență proiectată și validare statică**, nu încă o garanție de producție. Garanția operațională apare numai după trecerea porților din `docs/VALIDATION_PLAN.md` și închiderea constatărilor P1 din `docs/ROADMAP.md`.

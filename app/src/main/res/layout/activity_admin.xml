@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/administration_menu_title"
-                    android:textColor="@color/mehene_white"
+                    android:textColor="@color/menene_white"
                     android:textSize="29sp"
                     android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/admin_library"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -64,7 +64,7 @@
                     android:layout_marginTop="8dp"
                     android:ellipsize="middle"
                     android:maxLines="2"
-                    android:textColor="@color/mehene_ink_70"
+                    android:textColor="@color/menene_ink_70"
                     android:textSize="13sp" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="2dp"
-                    android:textColor="@color/mehene_ink_70"
+                    android:textColor="@color/menene_ink_70"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -100,7 +100,7 @@
                         android:background="@drawable/bg_button_primary"
                         android:text="@string/choose_library_short"
                         android:textAllCaps="false"
-                        android:textColor="@color/mehene_ink"
+                        android:textColor="@color/menene_ink"
                         android:textStyle="bold" />
 
                     <Button
@@ -112,7 +112,7 @@
                         android:background="@drawable/bg_button_secondary"
                         android:text="@string/rescan_library"
                         android:textAllCaps="false"
-                        android:textColor="@color/mehene_ink"
+                        android:textColor="@color/menene_ink"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/admin_playback"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/audio_language"
-                    android:textColor="@color/mehene_ink_70"
+                    android:textColor="@color/menene_ink_70"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -168,7 +168,7 @@
                     android:background="@drawable/bg_button_secondary"
                     android:text="@string/reset_progress"
                     android:textAllCaps="false"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -184,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/admin_tablet"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -193,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/mehene_ink_70"
+                    android:textColor="@color/menene_ink_70"
                     android:textSize="15sp" />
 
                 <LinearLayout
@@ -210,7 +210,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_primary"
                         android:textAllCaps="false"
-                        android:textColor="@color/mehene_ink"
+                        android:textColor="@color/menene_ink"
                         android:textStyle="bold" />
 
                     <Button
@@ -222,7 +222,7 @@
                         android:background="@drawable/bg_button_secondary"
                         android:text="@string/temporary_exit"
                         android:textAllCaps="false"
-                        android:textColor="@color/mehene_ink"
+                        android:textColor="@color/menene_ink"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -233,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:gravity="center"
-                android:textColor="@color/mehene_white_88"
+                android:textColor="@color/menene_white_88"
                 android:textSize="13sp" />
         </LinearLayout>
     </ScrollView>
@@ -244,5 +244,5 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/mehene_yellow" />
+        android:indeterminateTint="@color/menene_yellow" />
 </FrameLayout>

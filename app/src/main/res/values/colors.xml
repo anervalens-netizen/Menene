@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mehene_ink">#17204A</color>
-    <color name="mehene_ink_70">#B317204A</color>
-    <color name="mehene_cream">#FFF8E7</color>
-    <color name="mehene_white">#FFFFFFFF</color>
-    <color name="mehene_white_88">#E0FFFFFF</color>
-    <color name="mehene_yellow">#FFD858</color>
-    <color name="mehene_blue">#4D96FF</color>
-    <color name="mehene_coral">#FF6B6B</color>
-    <color name="mehene_green">#5DD39E</color>
-    <color name="mehene_purple">#9B7EDE</color>
-    <color name="mehene_teal">#37BEC9</color>
+    <color name="menene_ink">#17204A</color>
+    <color name="menene_ink_70">#B317204A</color>
+    <color name="menene_cream">#FFF8E7</color>
+    <color name="menene_white">#FFFFFFFF</color>
+    <color name="menene_white_88">#E0FFFFFF</color>
+    <color name="menene_yellow">#FFD858</color>
+    <color name="menene_blue">#4D96FF</color>
+    <color name="menene_coral">#FF6B6B</color>
+    <color name="menene_green">#5DD39E</color>
+    <color name="menene_purple">#9B7EDE</color>
+    <color name="menene_teal">#37BEC9</color>
 </resources>

@@ -36,6 +36,6 @@ Schema curentă: `1`.
 }
 ```
 
-Toate căile sunt relative la folderul selectat în Mehene. ID-urile trebuie să fie stabile între reconstrucțiile bibliotecii, astfel încât progresul să fie păstrat.
+Toate căile sunt relative la folderul selectat în Menene. ID-urile trebuie să fie stabile între reconstrucțiile bibliotecii, astfel încât progresul să fie păstrat.
 
 Dacă `catalog.json` lipsește sau este invalid, aplicația scanează folderele. Scanarea fallback nu poate oferi toate metadatele Builderului.

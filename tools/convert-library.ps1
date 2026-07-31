@@ -7,7 +7,7 @@ param(
 $ErrorActionPreference = "Stop"
 $ScriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Arguments = @(
-    (Join-Path $ScriptDirectory "mehene_builder.py"),
+    (Join-Path $ScriptDirectory "menene_builder.py"),
     $Source,
     $Destination,
     "--audio-language",

@@ -1,8 +1,8 @@
-# Audit final Mehene 2.1
+# Audit final Menene 2.1
 
 ## Identificare
 
-- Repository: `anervalens-netizen/Mehene`
+- Repository: `anervalens-netizen/Menene`
 - Branch auditat: `main`
 - Commit fixat: `f12b7b4b3af94bdca2a5ba0e98fea0a3d197156a`
 - Versiune aplicație: `2.1.0` / `versionCode 4`
@@ -100,7 +100,7 @@ Cheia de semnare este configurabilă, dar nu există dovadă pentru:
 
 ### MEH-101 — Publicarea Builderului nu este complet izolată
 
-`mehene_builder.py` apelează nucleul legacy, iar acesta scrie `catalog.json` înainte ca wrapperul să valideze și să decidă păstrarea sau restaurarea catalogului anterior. Rezultatul final este fail-closed, dar există o fereastră în care un consumator concurent poate vedea candidatul încă nevalidat.
+`menene_builder.py` apelează nucleul legacy, iar acesta scrie `catalog.json` înainte ca wrapperul să valideze și să decidă păstrarea sau restaurarea catalogului anterior. Rezultatul final este fail-closed, dar există o fereastră în care un consumator concurent poate vedea candidatul încă nevalidat.
 
 **Recomandare:** Builderul trebuie să genereze totul într-un director de staging și să publice catalogul numai după validare, printr-un singur switch atomic de generație.
 
@@ -205,7 +205,7 @@ Interfața este bine structurată, dar nu există capturi etalon, test pe densit
 
 ## Definiția produsului „gata de instalare”
 
-Mehene poate fi considerată gata numai când:
+Menene poate fi considerată gata numai când:
 
 1. buildul debug și release semnat trec din mediu curat;
 2. schema Room v1 este exportată și verificată;
@@ -218,7 +218,7 @@ Mehene poate fi considerată gata numai când:
 
 ## Concluzie
 
-Mehene 2.1 este o aplicație bine proiectată și mult peste nivelul unui prototip. Următoarea etapă nu trebuie să fie adăugarea de funcții. Prioritatea este transformarea codului într-un Release Candidate demonstrat prin build, teste și calificarea tabletei. După aceea, puținele lucrări P1 rămase pot ridica produsul la un nivel personal premium și predictibil operațional.
+Menene 2.1 este o aplicație bine proiectată și mult peste nivelul unui prototip. Următoarea etapă nu trebuie să fie adăugarea de funcții. Prioritatea este transformarea codului într-un Release Candidate demonstrat prin build, teste și calificarea tabletei. După aceea, puținele lucrări P1 rămase pot ridica produsul la un nivel personal premium și predictibil operațional.
 
 ## Decizie P1 inițială — 2026-07-30 (supersedată la 2026-07-31)
 

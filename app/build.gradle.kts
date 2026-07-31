@@ -6,17 +6,17 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-val releaseStorePath = providers.gradleProperty("MEHENE_STORE_FILE")
-    .orElse(providers.environmentVariable("MEHENE_STORE_FILE"))
+val releaseStorePath = providers.gradleProperty("MENENE_STORE_FILE")
+    .orElse(providers.environmentVariable("MENENE_STORE_FILE"))
     .orNull
-val releaseStorePassword = providers.gradleProperty("MEHENE_STORE_PASSWORD")
-    .orElse(providers.environmentVariable("MEHENE_STORE_PASSWORD"))
+val releaseStorePassword = providers.gradleProperty("MENENE_STORE_PASSWORD")
+    .orElse(providers.environmentVariable("MENENE_STORE_PASSWORD"))
     .orNull
-val releaseKeyAlias = providers.gradleProperty("MEHENE_KEY_ALIAS")
-    .orElse(providers.environmentVariable("MEHENE_KEY_ALIAS"))
+val releaseKeyAlias = providers.gradleProperty("MENENE_KEY_ALIAS")
+    .orElse(providers.environmentVariable("MENENE_KEY_ALIAS"))
     .orNull
-val releaseKeyPassword = providers.gradleProperty("MEHENE_KEY_PASSWORD")
-    .orElse(providers.environmentVariable("MEHENE_KEY_PASSWORD"))
+val releaseKeyPassword = providers.gradleProperty("MENENE_KEY_PASSWORD")
+    .orElse(providers.environmentVariable("MENENE_KEY_PASSWORD"))
     .orNull
 val releaseSigningConfigured = listOf(
     releaseStorePath,
@@ -26,11 +26,11 @@ val releaseSigningConfigured = listOf(
 ).all { !it.isNullOrBlank() }
 
 android {
-    namespace = "ro.mehene.app"
+    namespace = "ro.menene.app"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "ro.mehene.app"
+        applicationId = "ro.menene.app"
         minSdk = 23
         targetSdk = 35
         versionCode = 4

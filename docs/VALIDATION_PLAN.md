@@ -145,7 +145,7 @@ Tableta vede numai un catalog complet valid, iar rollbackul la generația anteri
 - configurează biblioteca pe microSD;
 - Home → serial → sezon → episod → X;
 - Continuă;
-- Mehene TV;
+- Menene TV;
 - auto-next și anulare;
 - pauză manuală;
 - retry;

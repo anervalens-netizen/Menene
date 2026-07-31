@@ -1,13 +1,13 @@
-# Mehene
+# Menene
 
-Mehene este un „Cartoon Network personal” complet offline pentru Samsung SM-T585, calificat pe Android 8.1/API 27, aproximativ 2 GB RAM și biblioteci pe microSD.
+Menene este un „Cartoon Network personal” complet offline pentru Samsung SM-T585, calificat pe Android 8.1/API 27, aproximativ 2 GB RAM și biblioteci pe microSD.
 
 ## Experiență
 
 - catalog vizual cu seriale, sezoane și episoade;
 - `Continuă` pentru ultimul episod început;
-- `Mehene TV`, cu alternarea serialelor și episoade nevăzute;
-- moduri: un episod, continuă serialul sau Mehene TV;
+- `Menene TV`, cu alternarea serialelor și episoade nevăzute;
+- moduri: un episod, continuă serialul sau Menene TV;
 - player fullscreen cu X, pauză la atingere, volum, buffering, retry și auto-next;
 - progres local: nevăzut, început, terminat;
 - subtitrări `.srt`/`.vtt` și preferință audio;
@@ -16,7 +16,7 @@ Mehene este un „Cartoon Network personal” complet offline pentru Samsung SM-
 
 ## Fără securitate
 
-Mehene este utilizată de un copil supravegheat. Nu există PIN, parolă, autentificare sau criptare specială. Administrarea se deschide prin cinci atingeri pe siglă numai pentru a păstra interfața curată. Regula obligatorie este în [docs/NO_SECURITY.md](docs/NO_SECURITY.md).
+Menene este utilizată de un copil supravegheat. Nu există PIN, parolă, autentificare sau criptare specială. Administrarea se deschide prin cinci atingeri pe siglă numai pentru a păstra interfața curată. Regula obligatorie este în [docs/NO_SECURITY.md](docs/NO_SECURITY.md).
 
 ## Arhitectură
 
@@ -49,7 +49,7 @@ Verdict curent:
 ## Biblioteca recomandată
 
 ```text
-Mehene/
+Menene/
 ├── catalog.json
 ├── Bluey/
 │   ├── cover.webp
@@ -68,7 +68,7 @@ Format: MP4, H.264 Main, AAC stereo, maximum 1280×720 și 30 fps.
 ## Library Builder
 
 ```bash
-python3 tools/mehene_builder.py "/Desene originale" "/Folder staging/Mehene" --audio-language ron
+python3 tools/menene_builder.py "/Desene originale" "/Folder staging/Menene" --audio-language ron
 ```
 
 Wrapper-ele recomandate:
@@ -78,7 +78,7 @@ Wrapper-ele recomandate:
 ```
 
 ```powershell
-.\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Mehene-Staging" -AudioLanguage ron
+.\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Menene-Staging" -AudioLanguage ron
 ```
 
 Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori. În versiunea 2.1 se recomandă construirea într-o destinație staging, nu direct într-o bibliotecă citită simultan de tabletă.
@@ -111,14 +111,14 @@ Cerințe: JDK 17 și Android SDK 36. APK-ul debug apare în:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-APK-ul release necesită cheia configurată prin `MEHENE_STORE_FILE`, `MEHENE_STORE_PASSWORD`, `MEHENE_KEY_ALIAS` și `MEHENE_KEY_PASSWORD`.
+APK-ul release necesită cheia configurată prin `MENENE_STORE_FILE`, `MENENE_STORE_PASSWORD`, `MENENE_KEY_ALIAS` și `MENENE_KEY_PASSWORD`.
 
 ## Kiosk
 
 ```bash
 adb install app/build/outputs/apk/release/app-release.apk
-adb shell dpm set-device-owner ro.mehene.app/ro.mehene.app.kiosk.MeheneDeviceAdminReceiver
-adb shell am start -n ro.mehene.app/ro.mehene.app.MainActivity
+adb shell dpm set-device-owner ro.menene.app/ro.menene.app.kiosk.MeneneDeviceAdminReceiver
+adb shell am start -n ro.menene.app/ro.menene.app.MainActivity
 ```
 
 Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).

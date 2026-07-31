@@ -1,6 +1,6 @@
 # Politica fără securitate
 
-Mehene este o aplicație personală folosită exclusiv de un copil supravegheat.
+Menene este o aplicație personală folosită exclusiv de un copil supravegheat.
 
 ## Decizie obligatorie
 

@@ -26,7 +26,7 @@
                 android:layout_height="58dp"
                 android:contentDescription="@string/app_name"
                 android:padding="2dp"
-                android:src="@drawable/ic_mehene_logo" />
+                android:src="@drawable/ic_menene_logo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
                 android:includeFontPadding="false"
                 android:letterSpacing="0.07"
                 android:text="@string/home_title"
-                android:textColor="@color/mehene_white"
+                android:textColor="@color/menene_white"
                 android:textSize="29sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -68,8 +68,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-rounded"
-                    android:text="@string/start_mehene_tv"
-                    android:textColor="@color/mehene_white"
+                    android:text="@string/start_menene_tv"
+                    android:textColor="@color/menene_white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
@@ -80,7 +80,7 @@
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/mehene_white_88"
+                    android:textColor="@color/menene_white_88"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-rounded"
                     android:text="@string/continue_watching"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -114,7 +114,7 @@
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textColor="@color/mehene_ink"
+                    android:textColor="@color/menene_ink"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -155,7 +155,7 @@
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-rounded"
             android:gravity="center"
-            android:textColor="@color/mehene_ink"
+            android:textColor="@color/menene_ink"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -166,7 +166,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:lineSpacingExtra="2dp"
-            android:textColor="@color/mehene_ink_70"
+            android:textColor="@color/menene_ink_70"
             android:textSize="16sp" />
 
         <Button
@@ -178,7 +178,7 @@
             android:minWidth="220dp"
             android:text="@string/setup_library"
             android:textAllCaps="false"
-            android:textColor="@color/mehene_ink"
+            android:textColor="@color/menene_ink"
             android:textSize="17sp"
             android:textStyle="bold"
             android:visibility="gone" />
@@ -190,6 +190,6 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/mehene_yellow"
+        android:indeterminateTint="@color/menene_yellow"
         android:visibility="gone" />
 </FrameLayout>

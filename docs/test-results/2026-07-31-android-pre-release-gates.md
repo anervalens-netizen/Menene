@@ -1,9 +1,9 @@
-# Mehene Android pre-release gates — 2026-07-31
+# Menene Android pre-release gates — 2026-07-31
 
 ## Identitate și scope
 
 - Host: `dell-standby`.
-- Worktree de integrare: `/tmp/mehene-manager-integration`, branch `manager/mehene-release-gates`, bază `7d86ee1e67171382445e80da66d7fc65fe968abf`.
+- Worktree de integrare: `/tmp/menene-manager-integration`, branch `manager/menene-release-gates`, bază `7d86ee1e67171382445e80da66d7fc65fe968abf`.
 - Device: Samsung SM-T585, Android 8.1/API 27.
 - Fără cheie release, Device Owner sau kiosk; bibliotecile Pilot și Validation au fost folosite numai pentru calificare.
 

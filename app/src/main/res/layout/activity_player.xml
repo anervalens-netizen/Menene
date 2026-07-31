@@ -23,7 +23,7 @@
         android:ellipsize="end"
         android:maxWidth="600dp"
         android:maxLines="1"
-        android:textColor="@color/mehene_white"
+        android:textColor="@color/menene_white"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/mehene_yellow"
+        android:indeterminateTint="@color/menene_yellow"
         android:visibility="gone" />
 
     <LinearLayout
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/video_error_child"
-            android:textColor="@color/mehene_ink"
+            android:textColor="@color/menene_ink"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
             android:background="@drawable/bg_button_primary"
             android:text="@string/retry_video"
             android:textAllCaps="false"
-            android:textColor="@color/mehene_ink"
+            android:textColor="@color/menene_ink"
             android:textSize="17sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next_episode"
-            android:textColor="@color/mehene_ink_70"
+            android:textColor="@color/menene_ink_70"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
             android:layout_marginTop="6dp"
             android:gravity="center"
             android:maxLines="2"
-            android:textColor="@color/mehene_ink"
+            android:textColor="@color/menene_ink"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/mehene_ink_70"
+            android:textColor="@color/menene_ink_70"
             android:textSize="16sp" />
 
         <Button
@@ -113,7 +113,7 @@
             android:background="@drawable/bg_button_secondary"
             android:text="@string/stop_playback"
             android:textAllCaps="false"
-            android:textColor="@color/mehene_ink"
+            android:textColor="@color/menene_ink"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -163,7 +163,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="28dp"
         android:background="@drawable/bg_pill"
-        android:textColor="@color/mehene_white"
+        android:textColor="@color/menene_white"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />

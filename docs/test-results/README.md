@@ -1,4 +1,4 @@
-# Dovezi de validare Mehene
+# Dovezi de validare Menene
 
 Acest folder păstrează rezultatele verificărilor obligatorii. Nu se includ fișiere video, APK-uri, chei sau parole.
 
@@ -15,7 +15,7 @@ docs/test-results/
 ## Șablon raport
 
 ```markdown
-# Test Mehene
+# Test Menene
 
 - Data:
 - Commit:

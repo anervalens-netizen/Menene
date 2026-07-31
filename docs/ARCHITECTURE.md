@@ -1,4 +1,4 @@
-# Arhitectură Mehene 2.1
+# Arhitectură Menene 2.1
 
 ## Principii
 
@@ -13,7 +13,7 @@
 ## Componente Android
 
 ```text
-MeheneApplication / AppContainer
+MeneneApplication / AppContainer
 ├── LibraryRepository
 │   ├── Storage Access Framework
 │   ├── CatalogJsonCodec + CatalogValidator
@@ -99,7 +99,7 @@ Playerul aplică:
 - buffering timeout;
 - checkpoint periodic și critic;
 - restaurarea sesiunii și countdownului;
-- coadă pentru continuarea serialului și Mehene TV.
+- coadă pentru continuarea serialului și Menene TV.
 
 ## Kiosk
 
