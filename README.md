@@ -33,19 +33,6 @@ Menene este utilizată de un copil supravegheat. Nu există PIN, parolă, autent
 
 Detalii: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) și [docs/STABILITY.md](docs/STABILITY.md).
 
-## Audit și roadmap
-
-Auditul final este fixat pe commitul `f12b7b4b3af94bdca2a5ba0e98fea0a3d197156a`.
-
-- [Audit final](docs/FINAL_AUDIT.md)
-- [Roadmap detaliat](docs/ROADMAP.md)
-- [Porți de validare](docs/VALIDATION_PLAN.md)
-
-Verdict curent:
-
-- **GO condiționat** pentru build și etapa Release Candidate;
-- **NO-GO** pentru instalarea definitivă până la buildul complet, testele Samsung și închiderea constatărilor P1.
-
 ## Biblioteca Menene recomandată
 
 ```text
@@ -89,7 +76,9 @@ Cu tableta conectată prin USB, adăugarea unei biblioteci noi se face într-o s
 ./tools/add-to-tablet.sh "/folderul/cu/desene" Povesti
 ```
 
-Comanda construiește într-un staging temporar, verifică rezultatul, copiază pe microSD într-un folder nou cu timestamp și verifică hash-ul catalogului. La final, deschide Administrare prin cinci atingeri pe siglă în cel mult opt secunde și alege folderul afișat.
+Comanda construiește într-un staging temporar, verifică rezultatul, copiază pe microSD într-un folder nou cu timestamp și verifică hash-ul catalogului. Dacă sunt conectate mai multe device-uri, setează mai întâi `ADB_SERIAL`.
+
+Comanda nu schimbă automat folderul activ. După terminare, pe tabletă deschizi manual Administrare prin cinci atingeri pe siglă în cel mult opt secunde, alegi „Schimbă folderul” și selectezi folderul afișat.
 
 Detalii și limitări: [docs/LIBRARY_BUILDER.md](docs/LIBRARY_BUILDER.md).
 

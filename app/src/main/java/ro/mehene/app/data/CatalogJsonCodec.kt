@@ -33,28 +33,25 @@ object CatalogJsonCodec {
         val pathResolver = CatalogPathResolver(rootDocument)
         var missingSeriesArtwork = 0
         var missingEpisodeArtwork = 0
-        var ignoredEpisodes = 0
 
         val series = root.optJSONArray("series").toObjectList { seriesJson ->
             val id = seriesJson.getString("id")
             val seriesPath = seriesJson.optString("path")
-            val directoryUri = pathResolver.resolve(seriesPath)
+            val directoryUri = pathResolver.resolveDirectory(seriesPath)
                 ?: error("Directorul serialului lipsește: $seriesPath")
-            val coverUri = pathResolver.resolve(seriesJson.optNullableString("cover"))
+            val coverUri = pathResolver.resolveFile(seriesJson.optNullableString("cover"))
             if (coverUri == null) missingSeriesArtwork += 1
 
             val seasons = seriesJson.optJSONArray("seasons").toObjectList { seasonJson ->
                 val seasonNumber = seasonJson.optInt("number", 1)
                 val seasonTitle = seasonJson.optString("title", "Sezonul $seasonNumber")
                 val episodes = seasonJson.optJSONArray("episodes").toObjectListNotNull { episodeJson ->
-                    val mediaUri = pathResolver.resolve(episodeJson.optString("media"))
-                    if (mediaUri == null) {
-                        ignoredEpisodes += 1
-                        return@toObjectListNotNull null
-                    }
-                    val artworkUri = pathResolver.resolve(episodeJson.optNullableString("artwork"))
+                    val mediaPath = episodeJson.optString("media")
+                    val mediaUri = pathResolver.resolveFile(mediaPath)
+                        ?: error("Fișierul episodului lipsește: $mediaPath")
+                    val artworkUri = pathResolver.resolveFile(episodeJson.optNullableString("artwork"))
                     if (artworkUri == null) missingEpisodeArtwork += 1
-                    val subtitleUri = pathResolver.resolve(episodeJson.optNullableString("subtitle"))
+                    val subtitleUri = pathResolver.resolveFile(episodeJson.optNullableString("subtitle"))
                     EpisodeItem(
                         id = episodeJson.getString("id"),
                         seriesId = id,
@@ -91,7 +88,7 @@ object CatalogJsonCodec {
             rootUri = rootUri,
             series = series,
             diagnostics = LibraryDiagnostics(
-                ignoredVideoCount = ignoredEpisodes,
+                ignoredVideoCount = 0,
                 missingSeriesArtworkCount = missingSeriesArtwork,
                 missingEpisodeArtworkCount = missingEpisodeArtwork,
                 seriesCount = series.size,
@@ -110,9 +107,13 @@ object CatalogJsonCodec {
             ?.let { runCatching { DocumentsContract.getTreeDocumentId(it) }.getOrNull() }
         private val childrenByDirectory = mutableMapOf<String, Map<String, DocumentFile>>()
 
-        fun resolve(relativePath: String?): Uri? {
+        fun resolveDirectory(relativePath: String?): Uri? = resolve(relativePath, expectedDirectory = true)
+
+        fun resolveFile(relativePath: String?): Uri? = resolve(relativePath, expectedDirectory = false)
+
+        private fun resolve(relativePath: String?, expectedDirectory: Boolean): Uri? {
             val segments = normalizedCatalogSegments(relativePath) ?: return null
-            if (segments.isEmpty()) return rootUri
+            if (segments.isEmpty()) return rootUri.takeIf { expectedDirectory }
 
             externalStorageRootId?.let { rootId ->
                 val documentId = "$rootId/${segments.joinToString("/")}"
@@ -128,7 +129,9 @@ object CatalogJsonCodec {
                 current = children[segment] ?: return null
                 currentPath = if (currentPath.isEmpty()) segment else "$currentPath/$segment"
             }
-            return current.uri
+            return current.takeIf {
+                if (expectedDirectory) it.isDirectory else it.isFile
+            }?.uri
         }
 
         companion object {

@@ -56,7 +56,7 @@ Schimbarea folderului este tranzacțională la nivelul aplicației: noul folder 
 
 Cache-ul intern folosește `AtomicFile`, checksum SHA-256 și validare semantică. Pentru cataloage generate, fingerprint-ul este hash-ul textului `catalog.json`; pentru scanarea folderelor se aplică TTL.
 
-Pe providerul microSD Android, căile validate din catalog sunt transformate direct în URI-uri SAF, fără câte un query pentru fiecare fișier. Pentru alți provideri, rezolvarea păstrează un cache per director. Builderul validează existența fișierelor înainte de publicarea catalogului.
+Pe providerul microSD Android, căile validate din catalog sunt transformate direct în URI-uri SAF. Înainte de publicare, existența și tipul fiecărui director și fișier sunt verificate prin interogări grupate per director; orice abatere declanșează atomic scanarea folderelor. Pentru alți provideri, rezolvarea păstrează un cache per director. Builderul validează existența fișierelor înainte de publicarea catalogului.
 
 ### Limită actuală
 

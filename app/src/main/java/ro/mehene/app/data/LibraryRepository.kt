@@ -186,6 +186,9 @@ class LibraryRepository(
                     catalog = try {
                         CatalogJsonCodec.decode(root, rootUri, generatedCatalogText, 0L).also {
                             CatalogValidator.requireValid(it)
+                            check(validateGeneratedCatalogDocuments(root.uri, it)) {
+                                "catalog.json conține fișiere sau directoare lipsă"
+                            }
                         }
                     } catch (error: Throwable) {
                         generatedCatalogFailure = "catalog.json invalid; scanare foldere: ${error.message.orEmpty()}"
@@ -222,6 +225,41 @@ class LibraryRepository(
         } catch (error: Throwable) {
             LibraryResult.Failure(error)
         }
+    }
+
+    private fun validateGeneratedCatalogDocuments(treeUri: Uri, catalog: LibraryCatalog): Boolean {
+        val rootDocumentId = runCatching { DocumentsContract.getTreeDocumentId(treeUri) }.getOrNull()
+            ?: return true
+        val expectations = buildList {
+            catalog.series.forEach { series ->
+                add(DocumentExpectation(series.directoryUri, expectedDirectory = true))
+                series.coverUri?.let { add(DocumentExpectation(it, expectedDirectory = false)) }
+                series.episodes.forEach { episode ->
+                    add(DocumentExpectation(episode.mediaUri, expectedDirectory = false))
+                    episode.artworkUri?.let { add(DocumentExpectation(it, expectedDirectory = false)) }
+                    episode.subtitleUri?.let { add(DocumentExpectation(it, expectedDirectory = false)) }
+                }
+            }
+        }
+        val listingsByParent = mutableMapOf<String, List<SafDocument>>()
+        for (expectation in expectations) {
+            val uri = runCatching { Uri.parse(expectation.uriString) }.getOrNull() ?: return false
+            if (uri.authority != treeUri.authority) return false
+            val documentId = runCatching { DocumentsContract.getDocumentId(uri) }.getOrNull()
+                ?: return false
+            if (!isDocumentWithinRoot(rootDocumentId, documentId)) return false
+            if (documentId == rootDocumentId) {
+                if (!expectation.expectedDirectory) return false
+                continue
+            }
+            val parentId = parentDocumentId(documentId) ?: return false
+            val siblings = listingsByParent[parentId] ?: listSafChildren(treeUri, parentId)
+                ?.also { listingsByParent[parentId] = it }
+                ?: return false
+            val document = siblings.firstOrNull { it.documentId == documentId } ?: return false
+            if (document.isDirectory != expectation.expectedDirectory) return false
+        }
+        return true
     }
 
     private suspend fun scanFolders(root: DocumentFile, rootUri: String): LibraryCatalog {
@@ -554,6 +592,11 @@ class LibraryRepository(
     private fun isSubtitle(file: DocumentFile): Boolean =
         file.isFile && LibraryFileRules.isSubtitleName(file.name.orEmpty())
 
+    private data class DocumentExpectation(
+        val uriString: String,
+        val expectedDirectory: Boolean,
+    )
+
     private data class SafDocument(
         val documentId: String,
         val uri: Uri,
@@ -595,3 +638,10 @@ class LibraryRepository(
         private const val MAX_GENERATED_CATALOG_BYTES = 8 * 1024 * 1024L
     }
 }
+
+internal fun parentDocumentId(documentId: String): String? =
+    documentId.substringBeforeLast('/', missingDelimiterValue = "")
+        .takeIf(String::isNotEmpty)
+
+internal fun isDocumentWithinRoot(rootDocumentId: String, documentId: String): Boolean =
+    documentId == rootDocumentId || documentId.startsWith("$rootDocumentId/")
