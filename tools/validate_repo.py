@@ -146,8 +146,8 @@ def validate_builder(root: Path) -> None:
 
 def validate_version(root: Path) -> None:
     gradle = (root / "app/build.gradle.kts").read_text(encoding="utf-8")
-    if 'versionName = "2.1.0"' not in gradle or "versionCode = 4" not in gradle:
-        fail("Versiunea Android nu este 2.1.0 / 4")
+    if 'versionName = "2.1.0"' not in gradle or "versionCode = 5" not in gradle:
+        fail("Versiunea Android nu este 2.1.0 / 5")
 
 
 def run_android(root: Path) -> None:
