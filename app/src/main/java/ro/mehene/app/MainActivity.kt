@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val adapter = SeriesAdapter(::openSeries)
 
-    private var logoTapCount = 0
-    private var firstLogoTapAt = 0L
+    private val adminTapDetector = AdminTapDetector(clock = SystemClock::elapsedRealtime)
+    private var touchTapHandled = false
     private var folderPickerActive = false
     private var skipNextResumeRefresh = false
 
@@ -59,7 +59,28 @@ class MainActivity : AppCompatActivity() {
         binding.seriesList.adapter = adapter
         binding.seriesList.setHasFixedSize(true)
         binding.setupButton.setOnClickListener { chooseLibraryFolder() }
-        binding.logo.setOnClickListener { registerAdministrationTap() }
+        binding.logo.setOnClickListener {
+            if (!touchTapHandled) openAdministrationIfReady()
+            touchTapHandled = false
+        }
+        binding.logo.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    touchTapHandled = true
+                    openAdministrationIfReady()
+                    true
+                }
+                android.view.MotionEvent.ACTION_UP -> {
+                    view.performClick()
+                    true
+                }
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    touchTapHandled = false
+                    true
+                }
+                else -> true
+            }
+        }
         binding.tvCard.setOnClickListener {
             (binding.tvCard.tag as? EpisodeItem)?.let { openEpisode(it, PlaybackMode.MEHENE_TV) }
         }
@@ -187,22 +208,14 @@ class MainActivity : AppCompatActivity() {
         else KioskController.applyImmersive(this)
     }
 
-    private fun registerAdministrationTap() {
-        val now = SystemClock.elapsedRealtime()
-        if (now - firstLogoTapAt > ADMIN_TAP_WINDOW_MS) {
-            firstLogoTapAt = now
-            logoTapCount = 0
-        }
-        logoTapCount += 1
-        if (logoTapCount >= ADMIN_TAP_COUNT) {
-            logoTapCount = 0
+    private fun openAdministrationIfReady() {
+        val opened = adminTapDetector.onTap()
+        if (opened) {
             startActivity(Intent(this, AdminActivity::class.java))
         }
     }
 
     companion object {
-        private const val ADMIN_TAP_COUNT = 5
-        private const val ADMIN_TAP_WINDOW_MS = 3_000L
         private const val STATE_FOLDER_PICKER_ACTIVE = "folder_picker_active"
     }
 }
