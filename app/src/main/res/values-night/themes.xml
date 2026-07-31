@@ -14,7 +14,7 @@
 
     <style name="Theme.Mehene.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/mehene_yellow</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_mehene_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/menene_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.Mehene</item>
     </style>
 </resources>

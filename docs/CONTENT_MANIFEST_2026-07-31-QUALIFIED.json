@@ -1,0 +1,60 @@
+{
+  "manifestVersion": 1,
+  "accessedAt": "2026-07-31",
+  "supersedes": "CONTENT_MANIFEST_2026-07-30.json",
+  "builder": "Menene 2.1.0",
+  "targetProfile": "MP4/H.264 Main Level 3.1/AAC 48kHz stereo, 1280x720/30",
+  "catalogSha256": "838aa6486f5830f84e716f3bd36672edc074c2ad6c624171445e92f98d3a3263",
+  "sourceFingerprint": "7b77833570a46ca02dc4291d10d18f357b431f156323a9e45ddad09cccf4abdc",
+  "items": [
+    {
+      "series": "Masinuta",
+      "episode": "Episod 01",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:CarAnimation1.webm",
+      "author": "DanielT200",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "sourceSha256": "5752eafe60b8c9e652e49bec8b17a24314cc7fd07e734127e668181e9a4b8485",
+      "outputSha256": "91e930e02d2d14f97f250c02e6e688e60c22962cbb933296b7bfbae2b13ceb3e",
+      "durationSeconds": 30.0,
+      "modification": "sursa WebM VP9 3.9s repetata pana la 30s, transcodificata MP4 H.264 Main Level 3.1/AAC stereo 48kHz, 1280x720/30; pista audio tacuta adaugata",
+      "ageVerdict": "potrivit 3-5: animatie low-poly simpla cu masina; fara dialog/audio; supraveghere recomandata",
+      "attribution": "CarAnimation1 by DanielT200, CC BY-SA 4.0; adaptare Menene sub CC BY-SA 4.0"
+    },
+    {
+      "series": "Calut",
+      "episode": "Episod 01",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Horse_in_Motion_-_Sallie_Gardner_(animation).webm",
+      "author": "Eadweard Muybridge; animatie reconstruite de Avelludo",
+      "license": "Public Domain Mark 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceSha256": "70e73e930860c48e752bad8059ccef3ae7efdddb9af9aaacd0eafcae6fc8a136",
+      "outputSha256": "f8160b9c2b835278079e5b7b27f4287fcb2d723a31006b3edb1378250089d602",
+      "durationSeconds": 30.0,
+      "modification": "sursa WebM VP9 1.3s repetata pana la 30s, transcodificata MP4 H.264 Main Level 3.1/AAC stereo 48kHz, 1280x720/30; pista audio tacuta adaugata",
+      "ageVerdict": "potrivit 3-5: miscare simpla a unui cal; alb-negru, fara dialog/audio; supraveghere recomandata",
+      "attribution": "Horse in Motion - Sallie Gardner, Eadweard Muybridge, Public Domain Mark 1.0; animatie Commons de Avelludo, reutilizare ca domeniu public"
+    },
+    {
+      "series": "Capybara",
+      "episode": "Episod 01",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Animal_Locomotion_Pl.746_-_Capybara_Walking.webm",
+      "author": "Eadweard Muybridge; animatie reconstruite de Avelludo",
+      "license": "Public Domain Mark 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "sourceSha256": "cbce7fb7049974eaaa1265b6daf94dde9f02a1de73be66ccc97f8ad8a4fec708",
+      "outputSha256": "7cced1e5d94e1b325273a683839dbec1e038d0bb0c4ce89678aa9b292fdac4b1",
+      "durationSeconds": 30.0,
+      "modification": "sursa WebM VP9 1.0s repetata pana la 30s, transcodificata MP4 H.264 Main Level 3.1/AAC stereo 48kHz, 1280x720/30; pista audio tacuta adaugata",
+      "ageVerdict": "potrivit 3-5: miscare simpla a unui animal; alb-negru, fara dialog/audio; supraveghere recomandata",
+      "attribution": "Animal Locomotion Pl.746 - Capybara Walking, Eadweard Muybridge, Public Domain Mark 1.0; animatie Commons de Avelludo, reutilizare ca domeniu public"
+    }
+  ],
+  "excluded": [
+    "Andy’s Animal Alphabet: test-only, exclus din biblioteca calificata",
+    "Did You Ever See a Rabbit: test-only, exclus din biblioteca calificata",
+    "Cocomelon: fara licenta explicita",
+    "Caminandes: licenta directa a fisierului nu a fost confirmata",
+    "orice sursa YouTube"
+  ]
+}

@@ -1,4 +1,4 @@
-# Configurarea tabletei
+# Configurarea tabletei Menene
 
 ## Precondiție obligatorie
 
@@ -24,7 +24,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 3. Configurează o bibliotecă de test.
-4. Testează seriale, sezoane, subtitrări, volum, progres și Mehene TV.
+4. Testează seriale, sezoane, subtitrări, volum, progres și Menene TV.
 5. Testează process death, microSD și minimum două ore de redare.
 6. Nu activa încă Device Owner.
 
@@ -36,7 +36,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 
 Verifică:
 
-- versiunea afișată în Admin;
+- versiunea Menene afișată în Admin;
 - progresul și setările;
 - update peste versiunea anterioară;
 - semnătura și checksum-ul artefactului.
@@ -63,7 +63,7 @@ După pornire:
 
 ## Recuperare
 
-Administrarea nu are PIN. `Deschide Android temporar` oprește Lock Task fără să dezactiveze configurația. La revenirea în Mehene, kiosk se reactivează.
+Administrarea nu are PIN. `Deschide Android temporar` oprește Lock Task fără să dezactiveze configurația. La revenirea în Menene, kiosk se reactivează.
 
 Păstrează înainte de Device Owner:
 

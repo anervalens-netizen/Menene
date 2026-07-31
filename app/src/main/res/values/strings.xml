@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mehene</string>
-    <string name="home_title">MEHENE</string>
-    <string name="start_mehene_tv">▶ MEHENE TV</string>
+    <string name="app_name">Menene</string>
+    <string name="home_title">MENENE</string>
+    <string name="start_mehene_tv">▶ MENENE TV</string>
     <string name="tv_starts_with">Începe cu: %1$s</string>
     <string name="continue_watching">Continuă</string>
     <string name="continue_short">CONTINUĂ</string>
@@ -40,7 +40,7 @@
         <item quantity="other">Pornește în %1$d de secunde</item>
     </plurals>
 
-    <string name="administration_menu_title">Administrare Mehene</string>
+    <string name="administration_menu_title">Administrare Menene</string>
     <string name="close_admin">Închide administrarea</string>
     <string name="admin_library">Bibliotecă</string>
     <string name="admin_playback">Redare</string>
@@ -51,10 +51,10 @@
     <string name="admin_library_summary">%1$d seriale • %2$d episoade • sursă %3$s</string>
     <string name="admin_diagnostics_summary">Fișiere ignorate: %1$d\nSeriale fără copertă: %2$d\nEpisoade fără miniatură: %3$d\nScanare: %4$d ms</string>
     <string name="admin_diagnostics_unavailable">Diagnosticul nu este disponibil.</string>
-    <string name="admin_version">Mehene %1$s (%2$d)</string>
+    <string name="admin_version">Menene %1$s (%2$d)</string>
     <string name="mode_single">Un singur episod</string>
     <string name="mode_continue_series">Continuă serialul</string>
-    <string name="mode_mehene_tv">Mehene TV – seriale alternate</string>
+    <string name="mode_mehene_tv">Menene TV – seriale alternate</string>
     <string name="audio_language">Limba audio preferată</string>
     <string name="audio_romanian">Română</string>
     <string name="audio_english">Engleză</string>
@@ -72,5 +72,5 @@
     <string name="kiosk_screen_pinning">Screen pinning activ</string>
     <string name="kiosk_soft">Fullscreen; pentru kiosk complet este necesar Device Owner</string>
     <string name="kiosk_disabled_status">Kiosk dezactivat</string>
-    <string name="device_admin_description">Configurează tableta pentru modul kiosk Mehene.</string>
+    <string name="device_admin_description">Configurează tableta pentru modul kiosk Menene.</string>
 </resources>

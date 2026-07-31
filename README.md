@@ -1,13 +1,13 @@
-# Mehene
+# Menene
 
-Mehene este un „Cartoon Network personal” complet offline pentru Samsung SM-T585, calificat pe Android 8.1/API 27, aproximativ 2 GB RAM și biblioteci pe microSD.
+Menene este un „Cartoon Network personal” complet offline pentru Samsung SM-T585, calificat pe Android 8.1/API 27, aproximativ 2 GB RAM și biblioteci pe microSD.
 
 ## Experiență
 
 - catalog vizual cu seriale, sezoane și episoade;
 - `Continuă` pentru ultimul episod început;
-- `Mehene TV`, cu alternarea serialelor și episoade nevăzute;
-- moduri: un episod, continuă serialul sau Mehene TV;
+- `Menene TV`, cu alternarea serialelor și episoade nevăzute;
+- moduri: un episod, continuă serialul sau Menene TV;
 - player fullscreen cu X, pauză la atingere, volum, buffering, retry și auto-next;
 - progres local: nevăzut, început, terminat;
 - subtitrări `.srt`/`.vtt` și preferință audio;
@@ -16,7 +16,7 @@ Mehene este un „Cartoon Network personal” complet offline pentru Samsung SM-
 
 ## Fără securitate
 
-Mehene este utilizată de un copil supravegheat. Nu există PIN, parolă, autentificare sau criptare specială. Administrarea se deschide prin cinci atingeri pe siglă numai pentru a păstra interfața curată. Regula obligatorie este în [docs/NO_SECURITY.md](docs/NO_SECURITY.md).
+Menene este utilizată de un copil supravegheat. Nu există PIN, parolă, autentificare sau criptare specială. Administrarea se deschide prin cinci atingeri pe siglă numai pentru a păstra interfața curată. Regula obligatorie este în [docs/NO_SECURITY.md](docs/NO_SECURITY.md).
 
 ## Arhitectură
 
@@ -46,10 +46,10 @@ Verdict curent:
 - **GO condiționat** pentru build și etapa Release Candidate;
 - **NO-GO** pentru instalarea definitivă până la buildul complet, testele Samsung și închiderea constatărilor P1.
 
-## Biblioteca recomandată
+## Biblioteca Menene recomandată
 
 ```text
-Mehene/
+Menene/
 ├── catalog.json
 ├── Bluey/
 │   ├── cover.webp
@@ -68,7 +68,7 @@ Format: MP4, H.264 Main, AAC stereo, maximum 1280×720 și 30 fps.
 ## Library Builder
 
 ```bash
-python3 tools/mehene_builder.py "/Desene originale" "/Folder staging/Mehene" --audio-language ron
+python3 tools/mehene_builder.py "/Desene originale" "/Folder staging/Menene" --audio-language ron
 ```
 
 Wrapper-ele recomandate:
@@ -78,7 +78,7 @@ Wrapper-ele recomandate:
 ```
 
 ```powershell
-.\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Mehene-Staging" -AudioLanguage ron
+.\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Menene-Staging" -AudioLanguage ron
 ```
 
 Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori. În versiunea 2.1 se recomandă construirea într-o destinație staging, nu direct într-o bibliotecă citită simultan de tabletă.
