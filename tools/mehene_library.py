@@ -17,7 +17,11 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
-VIDEO_EXTENSIONS = {'.mp4', '.m4v', '.mkv', '.webm', '.avi', '.mov'}
+VIDEO_EXTENSIONS = {
+    '.3g2', '.3gp', '.asf', '.avi', '.divx', '.flv', '.m2ts', '.m4v', '.mkv',
+    '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.rm', '.rmvb', '.ts',
+    '.vob', '.webm', '.wmv',
+}
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp'}
 SUBTITLE_EXTENSIONS = {'.srt', '.vtt'}
 COVER_NAMES = ('cover', 'poster', 'folder', 'serial')

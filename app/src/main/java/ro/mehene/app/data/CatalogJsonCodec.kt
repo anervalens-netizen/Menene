@@ -1,5 +1,7 @@
 package ro.mehene.app.data
 
+import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import ro.mehene.app.model.CatalogSource
 import ro.mehene.app.model.EpisodeItem
@@ -27,6 +29,8 @@ object CatalogJsonCodec {
         require(root.optInt("schemaVersion", 0) == SCHEMA_VERSION) {
             "Unsupported catalog schema"
         }
+        val generatedAtEpochMs = root.optLong("generatedAtEpochMs", System.currentTimeMillis())
+        val pathResolver = CatalogPathResolver(rootDocument)
         var missingSeriesArtwork = 0
         var missingEpisodeArtwork = 0
         var ignoredEpisodes = 0
@@ -34,27 +38,23 @@ object CatalogJsonCodec {
         val series = root.optJSONArray("series").toObjectList { seriesJson ->
             val id = seriesJson.getString("id")
             val seriesPath = seriesJson.optString("path")
-            val directory = resolveRelative(rootDocument, seriesPath)
-                ?.takeIf(DocumentFile::isDirectory)
+            val directoryUri = pathResolver.resolve(seriesPath)
                 ?: error("Directorul serialului lipsește: $seriesPath")
-            val cover = resolveRelative(rootDocument, seriesJson.optNullableString("cover"))
-                ?.takeIf(DocumentFile::isFile)
-            if (cover == null) missingSeriesArtwork += 1
+            val coverUri = pathResolver.resolve(seriesJson.optNullableString("cover"))
+            if (coverUri == null) missingSeriesArtwork += 1
 
             val seasons = seriesJson.optJSONArray("seasons").toObjectList { seasonJson ->
                 val seasonNumber = seasonJson.optInt("number", 1)
                 val seasonTitle = seasonJson.optString("title", "Sezonul $seasonNumber")
                 val episodes = seasonJson.optJSONArray("episodes").toObjectListNotNull { episodeJson ->
-                    val media = resolveRelative(rootDocument, episodeJson.optString("media"))
-                    if (media == null || !media.isFile) {
+                    val mediaUri = pathResolver.resolve(episodeJson.optString("media"))
+                    if (mediaUri == null) {
                         ignoredEpisodes += 1
                         return@toObjectListNotNull null
                     }
-                    val artwork = resolveRelative(rootDocument, episodeJson.optNullableString("artwork"))
-                        ?.takeIf(DocumentFile::isFile)
-                    if (artwork == null) missingEpisodeArtwork += 1
-                    val subtitle = resolveRelative(rootDocument, episodeJson.optNullableString("subtitle"))
-                        ?.takeIf(DocumentFile::isFile)
+                    val artworkUri = pathResolver.resolve(episodeJson.optNullableString("artwork"))
+                    if (artworkUri == null) missingEpisodeArtwork += 1
+                    val subtitleUri = pathResolver.resolve(episodeJson.optNullableString("subtitle"))
                     EpisodeItem(
                         id = episodeJson.getString("id"),
                         seriesId = id,
@@ -63,10 +63,10 @@ object CatalogJsonCodec {
                         number = episodeJson.optInt("number", 1),
                         sortOrder = episodeJson.optInt("sortOrder", episodeJson.optInt("number", 1)),
                         title = episodeJson.optString("title", "Episodul ${episodeJson.optInt("number", 1)}"),
-                        mediaUri = media.uri.toString(),
-                        subtitleUri = subtitle?.uri?.toString(),
-                        artworkUri = artwork?.uri?.toString(),
-                        artworkVersion = artwork?.lastModified() ?: 0L,
+                        mediaUri = mediaUri.toString(),
+                        subtitleUri = subtitleUri?.toString(),
+                        artworkUri = artworkUri?.toString(),
+                        artworkVersion = generatedAtEpochMs.takeIf { artworkUri != null } ?: 0L,
                         durationMs = episodeJson.optLong("durationMs", 0L),
                     )
                 }
@@ -79,10 +79,10 @@ object CatalogJsonCodec {
 
             SeriesItem(
                 id = id,
-                title = seriesJson.optString("title", directory.name.orEmpty()),
-                directoryUri = directory.uri.toString(),
-                coverUri = cover?.uri?.toString(),
-                coverVersion = cover?.lastModified() ?: 0L,
+                title = seriesJson.optString("title", catalogPathName(seriesPath)),
+                directoryUri = directoryUri.toString(),
+                coverUri = coverUri?.toString(),
+                coverVersion = generatedAtEpochMs.takeIf { coverUri != null } ?: 0L,
                 seasons = seasons,
             )
         }.filter { it.episodeCount > 0 }
@@ -98,23 +98,55 @@ object CatalogJsonCodec {
                 episodeCount = series.sumOf { it.episodeCount },
                 scanDurationMs = scanDurationMs,
             ),
-            generatedAtEpochMs = root.optLong("generatedAtEpochMs", System.currentTimeMillis()),
+            generatedAtEpochMs = generatedAtEpochMs,
             source = CatalogSource.GENERATED_CATALOG,
         )
     }
 
-    private fun resolveRelative(root: DocumentFile, relativePath: String?): DocumentFile? {
-        if (relativePath.isNullOrBlank()) return null
-        if (relativePath == ".") return root
-        val segments = relativePath.replace('\\', '/').split('/').filter(String::isNotBlank)
-        if (segments.any { it == "." || it == ".." || it.indexOf('\u0000') >= 0 }) return null
-        var current: DocumentFile = root
-        segments.forEach { segment ->
-            current = current.findFile(segment) ?: return null
+    private class CatalogPathResolver(private val root: DocumentFile) {
+        private val rootUri = root.uri
+        private val externalStorageRootId = rootUri
+            .takeIf { it.authority == EXTERNAL_STORAGE_AUTHORITY }
+            ?.let { runCatching { DocumentsContract.getTreeDocumentId(it) }.getOrNull() }
+        private val childrenByDirectory = mutableMapOf<String, Map<String, DocumentFile>>()
+
+        fun resolve(relativePath: String?): Uri? {
+            val segments = normalizedCatalogSegments(relativePath) ?: return null
+            if (segments.isEmpty()) return rootUri
+
+            externalStorageRootId?.let { rootId ->
+                val documentId = "$rootId/${segments.joinToString("/")}"
+                return DocumentsContract.buildDocumentUriUsingTree(rootUri, documentId)
+            }
+
+            var current = root
+            var currentPath = ""
+            segments.forEach { segment ->
+                val children = childrenByDirectory.getOrPut(currentPath) {
+                    current.listFiles().associateBy { it.name.orEmpty() }
+                }
+                current = children[segment] ?: return null
+                currentPath = if (currentPath.isEmpty()) segment else "$currentPath/$segment"
+            }
+            return current.uri
         }
-        return current
+
+        companion object {
+            private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
+        }
     }
 }
+
+internal fun normalizedCatalogSegments(relativePath: String?): List<String>? {
+    if (relativePath.isNullOrBlank()) return null
+    if (relativePath == ".") return emptyList()
+    val segments = relativePath.replace('\\', '/').split('/').filter(String::isNotBlank)
+    if (segments.isEmpty() || segments.any { it == "." || it == ".." || it.indexOf('\u0000') >= 0 }) return null
+    return segments
+}
+
+private fun catalogPathName(relativePath: String): String =
+    normalizedCatalogSegments(relativePath)?.lastOrNull().orEmpty()
 
 internal inline fun <T : Any> org.json.JSONArray?.toObjectListNotNull(
     mapper: (JSONObject) -> T?,

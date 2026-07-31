@@ -120,11 +120,26 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/seriesLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-rounded"
+            android:includeFontPadding="false"
+            android:letterSpacing="0.08"
+            android:text="@string/my_series"
+            android:textColor="@color/mehene_white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/seriesList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:clipToPadding="false"
             android:overScrollMode="never"

@@ -1,4 +1,4 @@
-# Arhitectură Mehene 2.1
+# Arhitectură Menene 2.2
 
 ## Principii
 
@@ -56,6 +56,8 @@ Schimbarea folderului este tranzacțională la nivelul aplicației: noul folder 
 
 Cache-ul intern folosește `AtomicFile`, checksum SHA-256 și validare semantică. Pentru cataloage generate, fingerprint-ul este hash-ul textului `catalog.json`; pentru scanarea folderelor se aplică TTL.
 
+Pe providerul microSD Android, căile validate din catalog sunt transformate direct în URI-uri SAF, fără câte un query pentru fiecare fișier. Pentru alți provideri, rezolvarea păstrează un cache per director. Builderul validează existența fișierelor înainte de publicarea catalogului.
+
 ### Limită actuală
 
 Library Builder 2.1 restaurează catalogul anterior după o eroare, dar nucleul legacy scrie candidatul în destinație înainte de validarea finală. Refactorizarea pe generații/staging este prevăzută în roadmap.
@@ -79,11 +81,7 @@ Room păstrează:
 - terminat/început;
 - ultima redare.
 
-### Limită actuală
-
-Progresul nu este încă separat prin `libraryId`. Schimbarea catalogului declanșează prune pentru ID-urile absente. Roadmapul cere namespace pe bibliotecă și eliminarea ștergerii automate globale.
-
-De asemenea, Room poate deschide baza de date la prima interogare. Prin urmare, DAO-ul în memorie nu este o garanție de comutare pentru orice corupere apărută la query-time; continuitatea reală este oferită de runtime state și backup.
+Progresul este separat prin `libraryId` în schema Room v2. Migrarea v1→v2 este nedistructivă, iar backupul atomic poate reface o bază goală. Health probe-ul de startup și DAO-ul rezilient comută pe fallback în memorie la erori de query/read/write; checkpoint-urile critice rămân sincrone și atomice.
 
 ## Player
 

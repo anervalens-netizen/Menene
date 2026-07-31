@@ -146,8 +146,8 @@ def validate_builder(root: Path) -> None:
 
 def validate_version(root: Path) -> None:
     gradle = (root / "app/build.gradle.kts").read_text(encoding="utf-8")
-    if 'versionName = "2.1.0"' not in gradle or "versionCode = 5" not in gradle:
-        fail("Versiunea Android nu este 2.1.0 / 5")
+    if 'versionName = "2.2.0"' not in gradle or "versionCode = 6" not in gradle:
+        fail("Versiunea Android nu este 2.2.0 / 6")
 
 
 def run_android(root: Path) -> None:
@@ -185,7 +185,7 @@ def main() -> int:
     print("✓ manifest offline și Application corecte")
     print("✓ politica fără securitate prezentă")
     print("✓ Builder: sintaxă, catalog, scriere atomică, lock și fail-closed")
-    print("✓ versiune Android 2.1.0")
+    print("✓ versiune Android 2.2.0")
     if args.android:
         print("✓ teste, lint și APK debug/release")
     else:

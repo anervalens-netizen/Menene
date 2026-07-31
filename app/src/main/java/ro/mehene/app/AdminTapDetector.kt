@@ -27,6 +27,6 @@ internal class AdminTapDetector(
 
     companion object {
         const val DEFAULT_REQUIRED_TAPS = 5
-        const val DEFAULT_WINDOW_MS = 3_000L
+        const val DEFAULT_WINDOW_MS = 8_000L
     }
 }

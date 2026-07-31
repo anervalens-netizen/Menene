@@ -3,6 +3,7 @@ package ro.mehene.app.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import java.io.FileNotFoundException
 import java.security.MessageDigest
@@ -224,6 +225,114 @@ class LibraryRepository(
     }
 
     private suspend fun scanFolders(root: DocumentFile, rootUri: String): LibraryCatalog {
+        val treeUri = root.uri
+        val rootDocumentId = runCatching { DocumentsContract.getTreeDocumentId(treeUri) }.getOrNull()
+        if (rootDocumentId != null) {
+            listSafChildren(treeUri, rootDocumentId)?.let { rootChildren ->
+                scanSafFolders(treeUri, rootUri, rootChildren)?.let { return it }
+            }
+        }
+        return scanDocumentFolders(root, rootUri)
+    }
+
+    private suspend fun scanSafFolders(
+        treeUri: Uri,
+        rootUri: String,
+        rootChildren: List<SafDocument>,
+    ): LibraryCatalog? {
+        var ignoredVideoCount = 0
+        var missingSeriesArtworkCount = 0
+        var missingEpisodeArtworkCount = 0
+        val seriesItems = mutableListOf<SeriesItem>()
+
+        val seriesDirectories = rootChildren
+            .filter { it.isDirectory && !it.name.startsWith('.') }
+            .sortedWith(compareBy(NaturalOrderComparator) { it.name })
+
+        for (seriesDirectory in seriesDirectories) {
+            currentCoroutineContext().ensureActive()
+            val seriesId = stableId(seriesDirectory.uri.toString())
+            val directFiles = listSafChildren(treeUri, seriesDirectory.documentId)
+                ?: return null
+            val seasonDirectories = directFiles
+                .filter(SafDocument::isDirectory)
+                .mapNotNull { directory ->
+                    LibraryFileRules.seasonNumber(directory.name)?.let { number -> number to directory }
+                }
+                .sortedBy { it.first }
+            val seasonSources = if (seasonDirectories.isEmpty()) {
+                listOf(1 to seriesDirectory)
+            } else {
+                seasonDirectories
+            }
+            val seasons = mutableListOf<SeasonItem>()
+
+            for ((seasonNumber, seasonDirectory) in seasonSources) {
+                currentCoroutineContext().ensureActive()
+                val files = if (seasonDirectory === seriesDirectory) {
+                    directFiles
+                } else {
+                    listSafChildren(treeUri, seasonDirectory.documentId)
+                        ?: return null
+                }
+                ignoredVideoCount += files.count { it.looksLikeVideo() && !it.isSupportedVideo() }
+                val imagesByBase = files.filter(SafDocument::isImage)
+                    .associateBy { LibraryFileRules.baseName(it.name).lowercase() }
+                val subtitlesByBase = files.filter(SafDocument::isSubtitle)
+                    .associateBy { LibraryFileRules.baseName(it.name).lowercase() }
+                val videos = files.filter(SafDocument::isSupportedVideo)
+                    .sortedWith(compareBy(NaturalOrderComparator) { it.name })
+                if (videos.isEmpty()) continue
+
+                val seasonTitle = seasonDirectory.name
+                    .takeIf { seasonDirectories.isNotEmpty() }
+                    ?.let(NameFormatter::displayName)
+                    ?: "Sezonul $seasonNumber"
+                val episodes = videos.mapIndexed { index, file ->
+                    val baseName = LibraryFileRules.baseName(file.name).lowercase()
+                    val artwork = imagesByBase[baseName]
+                    if (artwork == null) missingEpisodeArtworkCount += 1
+                    val number = LibraryFileRules.episodeNumber(file.name, index + 1)
+                    EpisodeItem(
+                        id = stableId("${seriesDirectory.uri}|${file.uri}|${file.size}|${file.lastModified}"),
+                        seriesId = seriesId,
+                        seasonNumber = seasonNumber,
+                        seasonTitle = seasonTitle,
+                        number = number,
+                        sortOrder = index + 1,
+                        title = NameFormatter.displayName(file.name),
+                        mediaUri = file.uri.toString(),
+                        subtitleUri = subtitlesByBase[baseName]?.uri?.toString(),
+                        artworkUri = artwork?.uri?.toString(),
+                        artworkVersion = artwork?.lastModified ?: 0L,
+                    )
+                }
+                seasons += SeasonItem(seasonNumber, seasonTitle, episodes)
+            }
+            if (seasons.isEmpty()) continue
+
+            val cover = findSeriesArtwork(directFiles)
+            if (cover == null) missingSeriesArtworkCount += 1
+            seriesItems += SeriesItem(
+                id = seriesId,
+                title = NameFormatter.displayName(seriesDirectory.name),
+                directoryUri = seriesDirectory.uri.toString(),
+                coverUri = cover?.uri?.toString(),
+                coverVersion = cover?.lastModified ?: 0L,
+                seasons = seasons,
+            )
+        }
+
+        return catalogFromSeries(
+            rootUri = rootUri,
+            seriesItems = seriesItems,
+            ignoredVideoCount = ignoredVideoCount,
+            missingSeriesArtworkCount = missingSeriesArtworkCount,
+            missingEpisodeArtworkCount = missingEpisodeArtworkCount,
+        )
+    }
+
+    private suspend fun scanDocumentFolders(root: DocumentFile, rootUri: String): LibraryCatalog {
         var ignoredVideoCount = 0
         var missingSeriesArtworkCount = 0
         var missingEpisodeArtworkCount = 0
@@ -302,6 +411,22 @@ class LibraryRepository(
             )
         }
 
+        return catalogFromSeries(
+            rootUri = rootUri,
+            seriesItems = seriesItems,
+            ignoredVideoCount = ignoredVideoCount,
+            missingSeriesArtworkCount = missingSeriesArtworkCount,
+            missingEpisodeArtworkCount = missingEpisodeArtworkCount,
+        )
+    }
+
+    private fun catalogFromSeries(
+        rootUri: String,
+        seriesItems: List<SeriesItem>,
+        ignoredVideoCount: Int,
+        missingSeriesArtworkCount: Int,
+        missingEpisodeArtworkCount: Int,
+    ): LibraryCatalog {
         val sortedSeries = seriesItems.sortedWith(compareBy(NaturalOrderComparator) { it.title })
         return LibraryCatalog(
             rootUri = rootUri,
@@ -319,13 +444,57 @@ class LibraryRepository(
     }
 
     private fun readGeneratedCatalog(root: DocumentFile): String? = runCatching {
-        val catalogFile = root.findFile(CatalogJsonCodec.FILE_NAME)?.takeIf(DocumentFile::isFile)
-            ?: return@runCatching null
-        if (catalogFile.length() > MAX_GENERATED_CATALOG_BYTES) return@runCatching null
-        context.contentResolver.openInputStream(catalogFile.uri)
+        val treeUri = root.uri
+        val rootDocumentId = runCatching { DocumentsContract.getTreeDocumentId(treeUri) }.getOrNull()
+        val catalogUri: Uri
+        val catalogSize: Long
+        val safChildren = rootDocumentId?.let { listSafChildren(treeUri, it) }
+        if (safChildren != null) {
+            val safCatalog = safChildren.firstOrNull {
+                !it.isDirectory && it.name == CatalogJsonCodec.FILE_NAME
+            } ?: return@runCatching null
+            catalogUri = safCatalog.uri
+            catalogSize = safCatalog.size
+        } else {
+            val catalogFile = root.findFile(CatalogJsonCodec.FILE_NAME)?.takeIf(DocumentFile::isFile)
+                ?: return@runCatching null
+            catalogUri = catalogFile.uri
+            catalogSize = catalogFile.length()
+        }
+        if (catalogSize > MAX_GENERATED_CATALOG_BYTES) return@runCatching null
+        context.contentResolver.openInputStream(catalogUri)
             ?.bufferedReader()
             ?.use { it.readText() }
             ?.takeIf(String::isNotBlank)
+    }.getOrNull()
+
+    private fun listSafChildren(treeUri: Uri, directoryDocumentId: String): List<SafDocument>? = runCatching {
+        val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, directoryDocumentId)
+        context.contentResolver.query(childrenUri, SAF_PROJECTION, null, null, null)?.use { cursor ->
+            val idIndex = cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_DOCUMENT_ID)
+            val nameIndex = cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_DISPLAY_NAME)
+            val mimeIndex = cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_MIME_TYPE)
+            val sizeIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_SIZE)
+            val modifiedIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED)
+            buildList {
+                while (cursor.moveToNext()) {
+                    val documentId = cursor.getString(idIndex)
+                    val mimeType = cursor.getString(mimeIndex)
+                    add(
+                        SafDocument(
+                            documentId = documentId,
+                            uri = DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId),
+                            name = cursor.getString(nameIndex).orEmpty(),
+                            mimeType = mimeType,
+                            size = sizeIndex.takeIf { it >= 0 && !cursor.isNull(it) }?.let(cursor::getLong) ?: 0L,
+                            lastModified = modifiedIndex.takeIf { it >= 0 && !cursor.isNull(it) }
+                                ?.let(cursor::getLong) ?: 0L,
+                            isDirectory = mimeType == DocumentsContract.Document.MIME_TYPE_DIR,
+                        ),
+                    )
+                }
+            }
+        }
     }.getOrNull()
 
     private fun resolveRoot(
@@ -364,6 +533,15 @@ class LibraryRepository(
         }
     }
 
+    private fun findSeriesArtwork(files: List<SafDocument>): SafDocument? {
+        val images = files.filter(SafDocument::isImage)
+        return LibraryFileRules.coverPriorityNames.firstNotNullOfOrNull { priority ->
+            images.firstOrNull {
+                LibraryFileRules.baseName(it.name).equals(priority, ignoreCase = true)
+            }
+        }
+    }
+
     private fun isSupportedVideo(file: DocumentFile): Boolean =
         file.isFile && (LibraryFileRules.isSupportedVideoName(file.name.orEmpty()) || file.type in SUPPORTED_VIDEO_MIME_TYPES)
 
@@ -376,6 +554,27 @@ class LibraryRepository(
     private fun isSubtitle(file: DocumentFile): Boolean =
         file.isFile && LibraryFileRules.isSubtitleName(file.name.orEmpty())
 
+    private data class SafDocument(
+        val documentId: String,
+        val uri: Uri,
+        val name: String,
+        val mimeType: String?,
+        val size: Long,
+        val lastModified: Long,
+        val isDirectory: Boolean,
+    ) {
+        fun isSupportedVideo(): Boolean = !isDirectory &&
+            (LibraryFileRules.isSupportedVideoName(name) || mimeType in SUPPORTED_VIDEO_MIME_TYPES)
+
+        fun looksLikeVideo(): Boolean = !isDirectory &&
+            (LibraryFileRules.isKnownVideoName(name) || mimeType?.startsWith("video/") == true)
+
+        fun isImage(): Boolean = !isDirectory &&
+            (LibraryFileRules.isImageName(name) || mimeType?.startsWith("image/") == true)
+
+        fun isSubtitle(): Boolean = !isDirectory && LibraryFileRules.isSubtitleName(name)
+    }
+
     private fun stableId(value: String): String = sha256(value).take(24)
 
     private fun sha256(value: String): String = MessageDigest.getInstance("SHA-256")
@@ -383,6 +582,13 @@ class LibraryRepository(
         .joinToString(separator = "") { "%02x".format(it) }
 
     companion object {
+        private val SAF_PROJECTION = arrayOf(
+            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            DocumentsContract.Document.COLUMN_MIME_TYPE,
+            DocumentsContract.Document.COLUMN_SIZE,
+            DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+        )
         private val SUPPORTED_VIDEO_MIME_TYPES = setOf("video/mp4", "video/x-m4v")
         private const val MEMORY_FOLDER_SCAN_TTL_MS = 2 * 60 * 1000L
         private const val DISK_FOLDER_SCAN_TTL_MS = 15 * 60 * 1000L

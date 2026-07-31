@@ -23,12 +23,19 @@ class SeriesAdapter(
         Color.rgb(244, 151, 58),
         Color.rgb(42, 178, 194),
     )
+    private val fallbackArtworks = intArrayOf(
+        R.drawable.menene_series_story,
+        R.drawable.menene_series_cars,
+        R.drawable.menene_series_space,
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesViewHolder =
         SeriesViewHolder(ItemSeriesBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: SeriesViewHolder, position: Int) {
-        holder.bind(getItem(position), palette[position % palette.size])
+        val item = getItem(position)
+        val artwork = fallbackArtworks[Math.floorMod(item.id.hashCode(), fallbackArtworks.size)]
+        holder.bind(item, palette[position % palette.size], artwork)
     }
 
     override fun onViewRecycled(holder: SeriesViewHolder) {
@@ -39,7 +46,7 @@ class SeriesAdapter(
     inner class SeriesViewHolder(
         private val binding: ItemSeriesBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: SeriesItem, fallbackColor: Int) = with(binding) {
+        fun bind(item: SeriesItem, fallbackColor: Int, fallbackArtwork: Int) = with(binding) {
             card.background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = card.resources.getDimension(R.dimen.corner_large)
@@ -55,15 +62,18 @@ class SeriesAdapter(
             card.contentDescription = "${item.title}, ${count.text}"
 
             ArtworkLoader.cancel(cover)
+            fun showFallbackArtwork() {
+                cover.setImageResource(fallbackArtwork)
+                cover.visibility = View.VISIBLE
+                fallbackInitial.visibility = View.GONE
+            }
             if (item.coverUri == null) {
-                cover.visibility = View.GONE
-                fallbackInitial.visibility = View.VISIBLE
+                showFallbackArtwork()
             } else {
                 cover.visibility = View.VISIBLE
                 fallbackInitial.visibility = View.GONE
                 ArtworkLoader.load(card.context, item.coverUri, item.coverVersion, cover) {
-                    cover.visibility = View.GONE
-                    fallbackInitial.visibility = View.VISIBLE
+                    showFallbackArtwork()
                 }
             }
             card.setOnClickListener { onSeriesClick(item) }

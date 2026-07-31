@@ -63,7 +63,7 @@ Menene/
     └── Episod 01.mp4
 ```
 
-Format: MP4, H.264 Main, AAC stereo, maximum 1280×720 și 30 fps.
+Pe tabletă, Builderul publică MP4/H.264/AAC la maximum 1280×720 și 30 fps. Ca sursă acceptă containerele video uzuale pe care FFmpeg le poate decoda, inclusiv MP4/M4V, MKV, WebM, AVI, MOV, MPEG/MPG, TS/MTS/M2TS, VOB, WMV, FLV, 3GP, OGV și RM/RMVB.
 
 ## Library Builder
 
@@ -81,7 +81,15 @@ Wrapper-ele recomandate:
 .\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Menene-Staging" -AudioLanguage ron
 ```
 
-Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori. În versiunea 2.1 se recomandă construirea într-o destinație staging, nu direct într-o bibliotecă citită simultan de tabletă.
+Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori.
+
+Cu tableta conectată prin USB, adăugarea unei biblioteci noi se face într-o singură comandă:
+
+```bash
+./tools/add-to-tablet.sh "/folderul/cu/desene" Povesti
+```
+
+Comanda construiește într-un staging temporar, verifică rezultatul, copiază pe microSD într-un folder nou cu timestamp și verifică hash-ul catalogului. La final, deschide Administrare prin cinci atingeri pe siglă în cel mult opt secunde și alege folderul afișat.
 
 Detalii și limitări: [docs/LIBRARY_BUILDER.md](docs/LIBRARY_BUILDER.md).
 
@@ -125,6 +133,4 @@ Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
 
 ## Stadiu
 
-Versiunea **2.1.0** implementează funcțiile premium și hardening pentru catalog, progres, setări, player și Builder. Următoarea etapă obligatorie este R1 din roadmap: build Android reproductibil, schema Room, APK release semnat și test de update. Nu se recomandă adăugarea de funcții noi înainte de trecerea porților Release Candidate.
-
-Pre-release Android gates: Room v2 namespacează progresul pe bibliotecă, backupul atomic este sursa de recuperare, iar DAO-ul are health probe și fallback la erori de query/read/write. Migrarea legacy rămâne nedistructivă, sticky și reluabilă idempotent după process-death în prima bibliotecă activă; connected/device gates sunt PASS pe SM-T585, iar release-ul semnat rămâne blocat până la update/rollback, performanță, soak și kiosk.
+Versiunea **2.2.0** păstrează identitatea internă `ro.mehene.app` pentru update și date, dar afișează Menene peste tot. Include recovery prin cinci atingeri, catalog mare accelerat pe microSD, fallback-uri ilustrate originale, grid adaptiv și fluxul de adăugare pe tabletă. Verdictul exact al buildului și probelor pe SM-T585 este în cel mai nou raport din `docs/test-results/`.

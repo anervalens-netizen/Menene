@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences: LibraryPreferences
     private val viewModel: MainViewModel by viewModels()
     private val adapter = SeriesAdapter(::openSeries)
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     private val adminTapDetector = AdminTapDetector(clock = SystemClock::elapsedRealtime)
     private var touchTapHandled = false
@@ -55,7 +56,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         preferences = LibraryPreferences(this)
 
-        binding.seriesList.layoutManager = GridLayoutManager(this, meheneGridColumns())
+        gridLayoutManager = GridLayoutManager(this, meheneGridColumns())
+        binding.seriesList.layoutManager = gridLayoutManager
         binding.seriesList.adapter = adapter
         binding.seriesList.setHasFixedSize(true)
         binding.setupButton.setOnClickListener { chooseLibraryFolder() }
@@ -126,6 +128,7 @@ class MainActivity : AppCompatActivity() {
     private fun render(state: MainUiState) = with(binding) {
         loading.visibility = if (state is MainUiState.Loading) View.VISIBLE else View.GONE
         seriesList.visibility = View.GONE
+        seriesLabel.visibility = View.GONE
         emptyPanel.visibility = View.GONE
         premiumActions.visibility = View.GONE
 
@@ -150,6 +153,9 @@ class MainActivity : AppCompatActivity() {
                 if (state.catalog.series.isEmpty()) {
                     showMessage(R.string.empty_title, R.string.no_series, allowSetup = false)
                 } else {
+                    gridLayoutManager.spanCount = meheneGridColumns()
+                        .coerceAtMost(state.catalog.series.size.coerceAtLeast(1))
+                    seriesLabel.visibility = View.VISIBLE
                     seriesList.visibility = View.VISIBLE
                     bindPremiumActions(state.continueEpisode, state.tvEpisode)
                 }

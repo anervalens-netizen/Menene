@@ -36,3 +36,19 @@ The following remain unchanged because they are package, component, storage, tes
 ## QA focus
 
 The final visual gate must verify landscape rendering on SM-T585/API27, text/card contrast, clipping and safe-area behavior of the adaptive icon, adult recovery readability, and no perceptible performance regression.
+
+## Fallback-uri ilustrate 2.2
+
+Pentru serialele adăugate fără `cover.webp`, aplicația folosește determinist unul dintre trei tile-uri originale generate prin skillul built-in imagegen. Coperta reală din bibliotecă are întotdeauna prioritate.
+
+Prompturile finale:
+
+- Story: original preschool storybook adventure with cottage, winding path, castle towers and open storybook; soft 3D clay-and-paper, ages 3–5, teal/yellow/coral/lavender, square, no text/logos/franchise characters.
+- Cars: three original toy-like cars on a colorful countryside road; soft rounded 3D clay, ages 3–5, square, no text/brands/recognizable movie characters.
+- Space: original gentle twilight adventure with moon balloon, round rocket and woodland animals; soft 3D clay-and-felt, ages 3–5, square, no text/logos/franchise characters.
+
+Derivatele Android sunt 512×512 WebP quality 82:
+
+- `menene_series_story.webp`: `963f8ed181ef165d1046cbe1dc2dbe59d7367f60ad89641bb4bb6baf501378c9`
+- `menene_series_cars.webp`: `94d2b72c1cae99a7b49c3e5f6c9680dff42402bb6041439861cf292654e25573`
+- `menene_series_space.webp`: `357a73fdfd45f2ace363f03fb6c426c0123d6ede01efdad1f4c523f44d43c209`
