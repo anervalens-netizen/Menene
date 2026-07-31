@@ -4,14 +4,12 @@ import android.util.Log
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import ro.mehene.app.db.PlaybackProgressDao
 import ro.mehene.app.db.PlaybackProgressEntity
+import ro.mehene.app.db.ResilientPlaybackProgressDao
 
 class ProgressRepository(
     private val dao: PlaybackProgressDao,
@@ -20,33 +18,67 @@ class ProgressRepository(
 ) {
     private val writeMutex = Mutex()
     private val recoveryStarted = AtomicBoolean(false)
-    private val initialized = AtomicBoolean(false)
-    private val mutableProgress = MutableStateFlow<Map<String, EpisodeProgress>>(emptyMap())
+    private val mutableProgress = kotlinx.coroutines.flow.MutableStateFlow<Map<String, EpisodeProgress>>(emptyMap())
 
-    /**
-     * Application-owned state is the runtime source of truth. Room and the atomic backup
-     * are persistence layers; a failure in either one must not break the child UI.
-     */
-    val progress: StateFlow<Map<String, EpisodeProgress>> = mutableProgress.asStateFlow()
+    @Volatile
+    private var activeLibraryId: String? = null
+    private var initialized = false
+
+    /** The active library namespace is the only progress exposed to the UI. */
+    val progress: kotlinx.coroutines.flow.StateFlow<Map<String, EpisodeProgress>> = mutableProgress
 
     fun warmUp(): Job = applicationScope.launch {
         if (!recoveryStarted.compareAndSet(false, true)) return@launch
-        writeMutex.withLock { loadInitialStateUnlocked() }
+        if (dao is ResilientPlaybackProgressDao) dao.healthProbe()
+    }
+
+    suspend fun activateLibrary(libraryId: String) = writeMutex.withLock {
+        require(libraryId.isNotBlank())
+        if (initialized && activeLibraryId == libraryId) return@withLock
+        val legacyTargetLibraryId = if (libraryId != LibraryId.LEGACY) {
+            runCatching { backupStore.migrateLegacyTo(libraryId) }
+                .onFailure { Log.e(TAG, "Legacy backup target migration failed", it) }
+                .getOrNull()
+        } else {
+            null
+        }
+        if (legacyTargetLibraryId != null) {
+            runCatching { dao.getAll(LibraryId.LEGACY) }
+                .onFailure { Log.e(TAG, "Legacy Room progress read failed", it) }
+                .getOrDefault(emptyList())
+                .forEach { legacy ->
+                    val migrated = legacy.copy(libraryId = legacyTargetLibraryId)
+                    val current = runCatching { dao.get(legacyTargetLibraryId, legacy.episodeId) }
+                        .onFailure { Log.e(TAG, "Legacy target progress read failed", it) }
+                        .getOrNull()
+                    if (current == null || migrated.lastPlayedAtEpochMs >= current.lastPlayedAtEpochMs) {
+                        runCatching { dao.upsert(migrated) }
+                            .onFailure { Log.e(TAG, "Legacy Room progress migration failed", it) }
+                    }
+                    runCatching { backupStore.upsertIfNewer(migrated) }
+                        .onFailure { Log.e(TAG, "Legacy backup progress migration failed", it) }
+                }
+        }
+        activeLibraryId = libraryId
+        mutableProgress.value = loadStateUnlocked(libraryId)
+        initialized = true
     }
 
     suspend fun snapshot(): Map<String, EpisodeProgress> = writeMutex.withLock {
-        if (!initialized.get()) loadInitialStateUnlocked()
+        ensureActiveLibraryUnlocked()
         mutableProgress.value
     }
 
     suspend fun get(episodeId: String): EpisodeProgress? = writeMutex.withLock {
+        ensureActiveLibraryUnlocked()
         mutableProgress.value[episodeId]?.let { return@withLock it }
-        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs() }.getOrDefault(0L)
-        val databaseValue = runCatching { dao.get(episodeId) }
+        val libraryId = requireNotNull(activeLibraryId)
+        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs(libraryId) }.getOrDefault(0L)
+        val databaseValue = runCatching { dao.get(libraryId, episodeId) }
             .onFailure { Log.e(TAG, "Room get failed", it) }
             .getOrNull()
             ?.takeIf { it.lastPlayedAtEpochMs >= clearedAtEpochMs }
-        val entity = databaseValue ?: runCatching { backupStore.get(episodeId) }
+        val entity = databaseValue ?: runCatching { backupStore.get(libraryId, episodeId) }
             .onFailure { Log.e(TAG, "Progress backup get failed", it) }
             .getOrNull()
         entity?.toDomain()?.also { domain ->
@@ -55,11 +87,13 @@ class ProgressRepository(
     }
 
     suspend fun clear() = writeMutex.withLock {
+        ensureActiveLibraryUnlocked()
+        val libraryId = requireNotNull(activeLibraryId)
         mutableProgress.value = emptyMap()
-        initialized.set(true)
-        runCatching { backupStore.clear() }
+        initialized = true
+        runCatching { backupStore.clear(libraryId) }
             .onFailure { Log.e(TAG, "Progress backup clear failed", it) }
-        runCatching { dao.clear() }
+        runCatching { dao.clear(libraryId) }
             .onFailure { Log.e(TAG, "Room clear failed", it) }
     }
 
@@ -97,13 +131,30 @@ class ProgressRepository(
         )
     }
 
-    fun enqueueCheckpoint(
+    fun checkpointCritical(
         episodeId: String,
         positionMs: Long,
         durationMs: Long,
         nowEpochMs: Long = System.currentTimeMillis(),
-    ): Job = applicationScope.launch {
-        checkpoint(episodeId, positionMs, durationMs, nowEpochMs)
+    ): Job {
+        val entity = PlaybackProgressPolicy.evaluate(
+            episodeId = episodeId,
+            positionMs = positionMs,
+            durationMs = durationMs,
+            lastPlayedAtEpochMs = nowEpochMs,
+        ).toEntity(activeLibraryId ?: LibraryId.LEGACY)
+        runCatching { backupStore.upsertIfNewer(entity) }
+            .onFailure { Log.e(TAG, "Critical progress backup write failed before close", it) }
+        return applicationScope.launch {
+            writeMutex.withLock {
+                ensureActiveLibraryUnlocked()
+                if (activeLibraryId == entity.libraryId) {
+                    mutableProgress.value = mutableProgress.value + (entity.episodeId to entity.toDomain())
+                }
+                runCatching { dao.upsert(entity) }
+                    .onFailure { Log.e(TAG, "Room critical progress write failed; backup retained", it) }
+            }
+        }
     }
 
     suspend fun markCompleted(
@@ -113,6 +164,7 @@ class ProgressRepository(
     ) {
         persist(
             PlaybackProgressEntity(
+                libraryId = requireActiveLibrary(),
                 episodeId = episodeId,
                 positionMs = 0L,
                 durationMs = durationMs.coerceAtLeast(0L),
@@ -123,90 +175,70 @@ class ProgressRepository(
         )
     }
 
-    suspend fun prune(validEpisodeIds: Set<String>) = writeMutex.withLock {
-        if (!initialized.get()) loadInitialStateUnlocked()
-        if (validEpisodeIds.isEmpty()) {
-            mutableProgress.value = emptyMap()
-            runCatching { backupStore.clear() }
-                .onFailure { Log.e(TAG, "Progress backup prune clear failed", it) }
-            runCatching { dao.clear() }
-                .onFailure { Log.e(TAG, "Room prune clear failed", it) }
-            return@withLock
-        }
-
-        val staleIds = mutableProgress.value.keys.filterNot(validEpisodeIds::contains)
-        if (staleIds.isEmpty()) return@withLock
-        mutableProgress.value = mutableProgress.value - staleIds.toSet()
-        runCatching { backupStore.deleteByIds(staleIds) }
-            .onFailure { Log.e(TAG, "Progress backup prune failed", it) }
-        staleIds.chunked(400).forEach { chunk ->
-            runCatching { dao.deleteByIds(chunk) }
-                .onFailure { Log.e(TAG, "Room prune failed", it) }
-        }
-    }
-
     private suspend fun persist(entity: PlaybackProgressEntity, backupRequired: Boolean) = writeMutex.withLock {
-        if (!initialized.get()) loadInitialStateUnlocked()
-        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs() }.getOrDefault(0L)
-        if (entity.lastPlayedAtEpochMs < clearedAtEpochMs) return@withLock
-        val current = mutableProgress.value[entity.episodeId]
-        if (current != null && entity.lastPlayedAtEpochMs < current.lastPlayedAtEpochMs) return@withLock
+        ensureActiveLibraryUnlocked()
+        val libraryId = requireNotNull(activeLibraryId)
+        val namespaced = entity.copy(libraryId = libraryId)
+        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs(libraryId) }.getOrDefault(0L)
+        if (namespaced.lastPlayedAtEpochMs < clearedAtEpochMs) return@withLock
+        val current = mutableProgress.value[namespaced.episodeId]
+        if (current != null && namespaced.lastPlayedAtEpochMs < current.lastPlayedAtEpochMs) return@withLock
 
-        // Publish to the UI first. Persistence failures remain recoverable and must not freeze the app.
-        mutableProgress.value = mutableProgress.value + (entity.episodeId to entity.toDomain())
-
+        mutableProgress.value = mutableProgress.value + (namespaced.episodeId to namespaced.toDomain())
         if (backupRequired) {
-            runCatching { backupStore.upsertIfNewer(entity) }
+            runCatching { backupStore.upsertIfNewer(namespaced) }
                 .onFailure { Log.e(TAG, "Critical progress backup write failed", it) }
         }
-        val databaseWrite = runCatching { dao.upsert(entity) }
+        val databaseWrite = runCatching { dao.upsert(namespaced) }
             .onFailure { Log.e(TAG, "Room progress write failed; backup retained", it) }
         if (databaseWrite.isFailure && !backupRequired) {
-            runCatching { backupStore.upsertIfNewer(entity) }
+            runCatching { backupStore.upsertIfNewer(namespaced) }
                 .onFailure { Log.e(TAG, "Fallback progress backup write failed", it) }
         }
     }
 
-    private suspend fun loadInitialStateUnlocked() {
-        if (initialized.get()) return
-        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs() }
+    private suspend fun ensureActiveLibraryUnlocked() {
+        if (!initialized) {
+            activeLibraryId = LibraryId.LEGACY
+            mutableProgress.value = loadStateUnlocked(LibraryId.LEGACY)
+            initialized = true
+        }
+    }
+
+    private suspend fun loadStateUnlocked(libraryId: String): Map<String, EpisodeProgress> {
+        val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs(libraryId) }
             .onFailure { Log.e(TAG, "Progress reset marker read failed", it) }
             .getOrDefault(0L)
-        val backup = runCatching { backupStore.loadAll() }
+        val backup = runCatching { backupStore.loadAll(libraryId) }
             .onFailure { Log.e(TAG, "Progress backup read failed", it) }
             .getOrDefault(emptyList())
-        val database = runCatching { dao.getAll() }
-            .onFailure { Log.e(TAG, "Room startup read failed; continuing from backup", it) }
-            .getOrNull()
+        val database = runCatching { dao.getAll(libraryId) }
+            .onFailure { Log.e(TAG, "Room progress read failed; continuing from backup", it) }
+            .getOrDefault(emptyList())
 
         val merged = linkedMapOf<String, PlaybackProgressEntity>()
-        backup.forEach { mergeNewer(merged, it) }
-        database.orEmpty()
-            .filter { it.lastPlayedAtEpochMs >= clearedAtEpochMs }
-            .forEach { mergeNewer(merged, it) }
-        mutableProgress.value = merged.values.associate { it.episodeId to it.toDomain() }
-        initialized.set(true)
-
-        if (database != null && backup.isNotEmpty()) {
-            backup.forEach { backupEntity ->
+        backup.filter { it.lastPlayedAtEpochMs >= clearedAtEpochMs }.forEach { mergeNewer(merged, it) }
+        database.filter { it.lastPlayedAtEpochMs >= clearedAtEpochMs }.forEach { mergeNewer(merged, it) }
+        backup.forEach { backupEntity ->
                 val databaseEntity = database.firstOrNull { it.episodeId == backupEntity.episodeId }
-                if (databaseEntity == null || backupEntity.lastPlayedAtEpochMs > databaseEntity.lastPlayedAtEpochMs) {
+                if (backupEntity.lastPlayedAtEpochMs >= clearedAtEpochMs &&
+                    (databaseEntity == null || backupEntity.lastPlayedAtEpochMs > databaseEntity.lastPlayedAtEpochMs)
+                ) {
                     runCatching { dao.upsert(backupEntity) }
                         .onFailure { Log.e(TAG, "Room backup restore failed", it) }
                 }
             }
-        }
+        return merged.values.associate { it.episodeId to it.toDomain() }
     }
 
-    private fun mergeNewer(
-        target: MutableMap<String, PlaybackProgressEntity>,
-        entity: PlaybackProgressEntity,
-    ) {
+    private fun mergeNewer(target: MutableMap<String, PlaybackProgressEntity>, entity: PlaybackProgressEntity) {
         val current = target[entity.episodeId]
         if (current == null || entity.lastPlayedAtEpochMs >= current.lastPlayedAtEpochMs) {
             target[entity.episodeId] = entity
         }
     }
+
+    private fun requireActiveLibrary(): String = activeLibraryId ?: LibraryId.LEGACY
 
     private fun PlaybackProgressEntity.toDomain(): EpisodeProgress = EpisodeProgress(
         episodeId = episodeId,
@@ -220,7 +252,8 @@ class ProgressRepository(
         lastPlayedAtEpochMs = lastPlayedAtEpochMs,
     )
 
-    private fun EpisodeProgress.toEntity(): PlaybackProgressEntity = PlaybackProgressEntity(
+    private fun EpisodeProgress.toEntity(libraryId: String = requireActiveLibrary()): PlaybackProgressEntity = PlaybackProgressEntity(
+        libraryId = libraryId,
         episodeId = episodeId,
         positionMs = positionMs,
         durationMs = durationMs,

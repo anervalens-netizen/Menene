@@ -50,6 +50,7 @@ class AdminActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         folderPickerActive = savedInstanceState?.getBoolean(STATE_FOLDER_PICKER_ACTIVE) ?: false
+        restoreAfterSettings = savedInstanceState?.getBoolean(STATE_RESTORE_AFTER_SETTINGS) ?: false
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         preferences = LibraryPreferences(this)
@@ -112,6 +113,7 @@ class AdminActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_FOLDER_PICKER_ACTIVE, folderPickerActive)
+        outState.putBoolean(STATE_RESTORE_AFTER_SETTINGS, restoreAfterSettings)
         super.onSaveInstanceState(outState)
     }
 
@@ -255,5 +257,6 @@ class AdminActivity : AppCompatActivity() {
 
     companion object {
         private const val STATE_FOLDER_PICKER_ACTIVE = "folder_picker_active"
+        private const val STATE_RESTORE_AFTER_SETTINGS = "restore_after_settings"
     }
 }

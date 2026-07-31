@@ -25,7 +25,8 @@ Mehene este utilizată de un copil supravegheat. Nu există PIN, parolă, autent
 - Storage Access Framework;
 - `catalog.json` generat extern, scanare foldere ca fallback;
 - cache intern atomic, verificat prin checksum, fingerprint și TTL;
-- runtime StateFlow + Room + backup atomic pentru progres;
+- runtime StateFlow + Room v2 + backup atomic pentru progres, namespace-uit pe biblioteca;
+- health probe Room la startup si DAO comutabil la erori de query/read/write;
 - DataStore cu recuperare la corupere;
 - Media3 ExoPlayer cu lifecycle adaptat versiunii Android;
 - Library Builder Python cu lock și rezultat final fail-closed.
@@ -125,3 +126,5 @@ Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
 ## Stadiu
 
 Versiunea **2.1.0** implementează funcțiile premium și hardening pentru catalog, progres, setări, player și Builder. Următoarea etapă obligatorie este R1 din roadmap: build Android reproductibil, schema Room, APK release semnat și test de update. Nu se recomandă adăugarea de funcții noi înainte de trecerea porților Release Candidate.
+
+Pre-release Android gates: Room v2 namespacează progresul pe bibliotecă, backupul atomic este sursa de recuperare, iar DAO-ul are health probe și fallback la erori de query/read/write. Migrarea legacy rămâne nedistructivă, sticky și reluabilă idempotent după process-death în prima bibliotecă activă; connected/device gates sunt PASS pe SM-T585, iar release-ul semnat rămâne blocat până la update/rollback, performanță, soak și kiosk.

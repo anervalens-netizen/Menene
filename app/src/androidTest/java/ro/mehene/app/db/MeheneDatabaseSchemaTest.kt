@@ -46,14 +46,20 @@ class MeheneDatabaseSchemaTest {
             )
             close()
         }
+        migrationHelper.runMigrationsAndValidate(
+            TEST_DATABASE,
+            2,
+            true,
+            MeheneDatabase.MIGRATION_1_2,
+        ).close()
 
         database = Room.databaseBuilder(
             context,
             MeheneDatabase::class.java,
             TEST_DATABASE,
-        ).build()
+        ).addMigrations(MeheneDatabase.MIGRATION_1_2).build()
 
-        assertEquals(1200L, database!!.playbackProgressDao().get("episode-1")?.positionMs)
+        assertEquals(1200L, database!!.playbackProgressDao().get("legacy", "episode-1")?.positionMs)
     }
 
     companion object {

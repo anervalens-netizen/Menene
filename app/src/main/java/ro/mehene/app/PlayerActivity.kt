@@ -372,7 +372,8 @@ class PlayerActivity : AppCompatActivity() {
     private fun saveProgress(critical: Boolean) {
         val checkpoint = captureProgress() ?: return
         if (critical) {
-            container.progressRepository.enqueueCheckpoint(
+            // The critical API commits the atomic backup synchronously before finish or force-kill.
+            container.progressRepository.checkpointCritical(
                 checkpoint.episodeId,
                 checkpoint.positionMs,
                 checkpoint.durationMs,

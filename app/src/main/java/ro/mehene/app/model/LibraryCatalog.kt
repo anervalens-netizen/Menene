@@ -7,6 +7,9 @@ data class LibraryCatalog(
     val generatedAtEpochMs: Long,
     val source: CatalogSource,
 ) {
+    val libraryId: String
+        get() = ro.mehene.app.data.LibraryId.fromRootUri(rootUri)
+
     val episodeCount: Int
         get() = series.sumOf { it.episodeCount }
 

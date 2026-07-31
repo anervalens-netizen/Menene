@@ -220,11 +220,19 @@ Mehene poate fi considerată gata numai când:
 
 Mehene 2.1 este o aplicație bine proiectată și mult peste nivelul unui prototip. Următoarea etapă nu trebuie să fie adăugarea de funcții. Prioritatea este transformarea codului într-un Release Candidate demonstrat prin build, teste și calificarea tabletei. După aceea, puținele lucrări P1 rămase pot ridica produsul la un nivel personal premium și predictibil operațional.
 
-## Decizie de acceptare P1 — 2026-07-30
+## Decizie P1 inițială — 2026-07-30 (supersedată la 2026-07-31)
 
-MEH-103 și MEH-104 nu au fost remediate structural în MVP. Sunt acceptate explicit numai pentru debug-ul personal calificat pe SM-T585, deoarece continuitatea curentă rămâne protejată de starea runtime și backupul atomic, iar selecția bibliotecii este acum validată prin SAF.
+La 2026-07-30, MEH-103 și MEH-104 nu erau remediate structural și fuseseră acceptate temporar numai pentru debug-ul personal calificat pe SM-T585. Această acceptare este istorică și este înlocuită de rezultatul gates din 2026-07-31.
 
-- MEH-103: nu se schimbă biblioteca în mod curent; progresul poate fi pierdut la comutarea unei biblioteci/catalog gol. Înainte de release semnat: namespace `libraryId`, migrare Room și test de comutare.
-- MEH-104: Room rămâne best-effort după pornire; UI-ul nu se oprește, iar backupul atomic rămâne fallback. Înainte de release semnat: health-probe și DAO comutabil, cu test de defect la query.
+- MEH-103 cerea namespace `libraryId`, migrare Room și test de comutare.
+- MEH-104 cerea health probe, DAO comutabil și test de defect la query.
 
-Nu sunt motive de a crea o cheie release sau de a instala definitiv APK-ul până la închiderea acestor condiții și verificarea update/rollback.
+Cheia release și instalarea definitivă rămân blocate separat până la verificarea update/rollback.
+
+## Rezultat gates Android - 2026-07-31
+
+Patchul pornit din `7d86ee1e67171382445e80da66d7fc65fe968abf` închide structural MEH-103 (namespace per bibliotecă, catalog gol fără prune, migrare Room v1→v2 nedistructivă), MEH-104 (health probe și fallback comutabil la query/read/write) și P3 `restoreAfterSettings` la recreate. PlayerActivity folosește checkpoint critic cu scrierea backupului atomic sincron înaintea mutexului DAO. Markerul primei biblioteci legacy este sticky, iar replay-ul Room idempotent închide fereastra de process-death dintre marker și copiere.
+
+`connectedDebugAndroidTest` este PASS 17/17 pe SM-T585/API27, inclusiv `MigrationTestHelper` cu schema v1 împachetată. Pilot→Validation→Pilot, recovery Room gol/corupt, checkpoint+force-stop, Admin recreate și logcat au trecut. Dovezile canonice sunt în `docs/test-results/2026-07-31-android-pre-release-gates.md`.
+
+Verdict: GO pentru integrarea patchului; NO-GO pentru release semnat până la cheia release, update/rollback, performanță, soak și kiosk.

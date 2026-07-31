@@ -60,10 +60,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         refreshJob = viewModelScope.launch {
             val result = libraryRepository.loadCatalog(force)
             if (generation != requestGeneration) return@launch
-            catalogResult.value = result
             if (result is LibraryResult.Success) {
-                progressRepository.prune(result.value.episodes.map { it.id }.toSet())
+                progressRepository.activateLibrary(result.value.libraryId)
             }
+            catalogResult.value = result
         }
     }
 
@@ -73,10 +73,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         refreshJob = viewModelScope.launch {
             val result = libraryRepository.persistLibraryUri(uri)
             if (generation != requestGeneration) return@launch
-            catalogResult.value = result
             if (result is LibraryResult.Success) {
-                progressRepository.prune(result.value.episodes.map { it.id }.toSet())
+                progressRepository.activateLibrary(result.value.libraryId)
             }
+            catalogResult.value = result
         }
     }
 }

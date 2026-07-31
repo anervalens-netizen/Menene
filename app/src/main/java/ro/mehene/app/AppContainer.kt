@@ -10,18 +10,20 @@ import ro.mehene.app.data.LibraryRepository
 import ro.mehene.app.data.ProgressBackupStore
 import ro.mehene.app.data.ProgressRepository
 import ro.mehene.app.data.SettingsRepository
-import ro.mehene.app.db.InMemoryPlaybackProgressDao
+import ro.mehene.app.db.ResilientPlaybackProgressDao
 import ro.mehene.app.db.MeheneDatabase
 
 class AppContainer(context: Context) {
     private val appContext = context.applicationContext
-    private val playbackProgressDao by lazy {
-        runCatching { MeheneDatabase.get(appContext).playbackProgressDao() }
-            .onFailure { Log.e("MeheneDatabase", "Room unavailable; using in-memory progress DAO", it) }
-            .getOrElse { InMemoryPlaybackProgressDao() }
-    }
 
     val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val playbackProgressDao by lazy {
+        val primary = runCatching { MeheneDatabase.get(appContext).playbackProgressDao() }
+            .onFailure { Log.e("MeheneDatabase", "Room unavailable; using in-memory progress DAO", it) }
+            .getOrNull()
+        ResilientPlaybackProgressDao(primary)
+    }
+
     val settingsRepository by lazy { SettingsRepository(appContext) }
     val progressRepository by lazy {
         ProgressRepository(

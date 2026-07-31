@@ -31,8 +31,8 @@ class PlaybackProgressDaoTest {
     @Test
     fun upsertReplacesProgress() = runBlocking {
         val dao = database.playbackProgressDao()
-        dao.upsert(PlaybackProgressEntity("e1", 10, 100, false, 1))
-        dao.upsert(PlaybackProgressEntity("e1", 50, 100, false, 2))
-        assertEquals(50, dao.get("e1")?.positionMs)
+        dao.upsert(PlaybackProgressEntity("library-a", "e1", 10, 100, false, 1))
+        dao.upsert(PlaybackProgressEntity("library-a", "e1", 50, 100, false, 2))
+        assertEquals(50L, dao.get("library-a", "e1")?.positionMs)
     }
 }
