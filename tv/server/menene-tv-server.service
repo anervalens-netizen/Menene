@@ -1,0 +1,22 @@
+[Unit]
+Description=Menene TV read-only media server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=andrei
+Group=andrei
+WorkingDirectory=/opt/Menene
+ExecStart=/usr/bin/python3 /opt/Menene/tv/server/menene_tv_server.py --library /srv/menene/library/current --bind 192.168.0.43 --port 8765 --allow-subnet 192.168.0.0/24
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadOnlyPaths=/srv/menene/library/current
+RestrictAddressFamilies=AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
