@@ -122,4 +122,4 @@ Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
 
 ## Stadiu
 
-Versiunea **2.2.0** păstrează identitatea internă `ro.mehene.app` pentru update și date, dar afișează Menene peste tot. Include recovery prin cinci atingeri, catalog mare accelerat pe microSD, fallback-uri ilustrate originale, grid adaptiv și fluxul de adăugare pe tabletă. Verdictul exact al buildului și probelor pe SM-T585 este în cel mai nou raport din `docs/test-results/`.
+Versiunea **2.2.0** păstrează identitatea internă `ro.mehene.app` pentru update și date, dar afișează Menene peste tot. Include recovery prin cinci atingeri, catalog mare accelerat pe microSD, fallback-uri ilustrate originale, grid adaptiv și fluxul de adăugare pe tabletă. Verdictul exact al buildului și probelor pe SM-T585 este în [raportul final Menene 2.2](docs/test-results/2026-08-01-menene-2.2-final.md).
