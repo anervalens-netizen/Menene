@@ -31,9 +31,11 @@ object ArtworkLoader {
         uriString: String,
         version: Long,
         imageView: ImageView,
+        requestedWidth: Int = 480,
+        requestedHeight: Int = 300,
         onFailure: () -> Unit = {},
     ) {
-        val cacheKey = "$uriString#$version"
+        val cacheKey = "$uriString#$version@${requestedWidth}x$requestedHeight"
         imageView.setTag(R.id.artwork_uri_tag, cacheKey)
         cache.get(cacheKey)?.let { cached ->
             imageView.setImageBitmap(cached)
@@ -55,7 +57,7 @@ object ArtworkLoader {
 
         val appContext = context.applicationContext
         executor.execute {
-            val bitmap = decodeSampledBitmap(appContext, Uri.parse(uriString), 480, 300)
+            val bitmap = decodeSampledBitmap(appContext, Uri.parse(uriString), requestedWidth, requestedHeight)
             if (bitmap != null) cache.put(cacheKey, bitmap)
             val requests = synchronized(pending) { pending.remove(cacheKey).orEmpty() }
             mainHandler.post {

@@ -193,7 +193,7 @@ def generate_thumbnail(ffmpeg: str, source: Path, destination: Path, duration_ms
 
     def extract_at(position_seconds: float) -> bool:
         temporary.unlink(missing_ok=True)
-        run([ffmpeg, '-hide_banner', '-loglevel', 'warning', '-y', '-ss', f'{position_seconds:.3f}', '-i', str(source), '-frames:v', '1', '-vf', 'scale=640:360:force_original_aspect_ratio=decrease', '-c:v', 'libwebp', '-quality', '78', str(temporary)])
+        run([ffmpeg, '-hide_banner', '-loglevel', 'warning', '-y', '-ss', f'{position_seconds:.3f}', '-i', str(source), '-frames:v', '1', '-vf', 'scale=1280:720:force_original_aspect_ratio=decrease', '-c:v', 'libwebp', '-quality', '82', str(temporary)])
         return temporary.is_file() and temporary.stat().st_size > 0
     try:
         if not extract_at(seek_seconds) and seek_seconds > 0:
@@ -267,7 +267,7 @@ def build_library(source: Path, destination: Path, preferred_language: str) -> d
                     artwork_source = sidecar(source_video, IMAGE_EXTENSIONS)
                     artwork_destination = season_destination / f'{source_video.stem}.webp'
                     if artwork_source:
-                        artwork_destination = optimize_image(ffmpeg, artwork_source, artwork_destination, 640, 360, quality=80)
+                        artwork_destination = optimize_image(ffmpeg, artwork_source, artwork_destination, 1280, 720, quality=82)
                     elif not (artwork_destination.is_file() and artwork_destination.stat().st_size > 0 and (artwork_destination.stat().st_mtime_ns >= destination_video.stat().st_mtime_ns)):
                         generate_thumbnail(ffmpeg, destination_video, artwork_destination, info.duration_ms)
                         report['thumbnailsGenerated'] += 1

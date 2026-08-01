@@ -46,8 +46,9 @@ ViewModel-urile anulează operația anterioară și folosesc o generație de req
 Home-ul folosește o ierarhie cinematică optimizată pentru landscape: logo compact,
 hero 16:9 dominant cu miniatura episodului curent și fallback local, acțiune play
 clară, apoi biblioteca în maximum cinci coloane. Coperta reală din bibliotecă are
-prioritate; fallback-urile originale sunt decodate asincron prin `ArtworkLoader`.
-Toate suprafețele rămân offline și păstrează limita de memorie necesară pe
+prioritate; ArtworkLoader separă cache-ul cardurilor de decode-ul hero 1280×720,
+iar Builderul publică artwork episodic la aceeași limită. Toate suprafețele rămân
+offline și păstrează limita de memorie necesară pe
 SM-T585.
 
 ## Catalog

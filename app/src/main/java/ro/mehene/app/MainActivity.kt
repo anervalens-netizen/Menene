@@ -185,7 +185,14 @@ class MainActivity : AppCompatActivity() {
             showHeroFallback()
         } else {
             showHeroFallback()
-            ArtworkLoader.load(this@MainActivity, heroArtworkUri, tvEpisode.artworkVersion, heroArtwork) {
+            ArtworkLoader.load(
+                context = this@MainActivity,
+                uriString = heroArtworkUri,
+                version = tvEpisode.artworkVersion,
+                imageView = heroArtwork,
+                requestedWidth = 1280,
+                requestedHeight = 720,
+            ) {
                 showHeroFallback()
             }
         }

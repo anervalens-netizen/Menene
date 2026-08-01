@@ -63,6 +63,16 @@ prioritate în hero, iar imaginea generată este fallback.
 Asset-urile au fost generate prin skillul built-in imagegen, fără text,
 logo-uri, mărci sau personaje recognoscibile:
 
+Sursele PNG canonicale sunt păstrate în
+`/home/andrei/.buzz/OUTBOX/MENENE_VISUALS_2_3/`:
+
+- `MENENE_HERO_ADVENTURE_2_3.png`: `c2086af3065ce48cbc1d05e8301bc220e1f5ff41d0699e59f6cd4f30411d0741`
+- `MENENE_STORY_2_3.png`: `6ccfe32897280d61b6ac0689c8d5bc8a1c55b9ac1c972e8187c923fd31bcd718`
+- `MENENE_CARS_2_3.png`: `e042b4c6661ea2b852408f03ac4a038f829299173ee5dbc31d6e51336487c123`
+- `MENENE_SPACE_2_3.png`: `d9c2895cd2ee70b534ac68ac7d6c803ef627da8fb3c6dfef227868860ea29275`
+
+Derivatele Android de mai jos sunt singurele copii incluse în APK.
+
 - Hero: vale de poveste la apus, castel în depărtare și vehicul galben original
   pe treimea dreaptă; realism de film 3D, materiale și lumină cinematografică,
   spațiu întunecat în stânga pentru UI, format 16:9.
