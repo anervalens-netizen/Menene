@@ -12,7 +12,7 @@ Prompt set used by the canonical handoff:
 
 - Logo: Original simple preschool emblem for Menene; rounded yellow toy vehicle, teal accent, navy wheels; flat friendly geometric illustration; no text, no characters, no watermark; transparent-ready chroma background.
 - Adventure: Original warm preschool landscape for Menene; rolling hills, winding road, rounded clouds and simple learning motifs; calm negative space for white UI text; no characters, no text, no logos.
-- Evening: Original calm low-detail evening landscape for the Menene player and adult recovery; deep blue sky, soft moon, rounded hills, dark lower band for controls/subtitles; no characters, no text, no logos.
+- Evening: Original calm low-detail evening landscape for the Menene player and adult recovery; deep blue sky, soft moon, rounded hills, dark lower band for controls; no characters, no text, no logos.
 
 Canonical source hashes:
 
@@ -53,9 +53,9 @@ Derivatele Android sunt 512×512 WebP quality 82:
 - `menene_series_cars.webp`: `94d2b72c1cae99a7b49c3e5f6c9680dff42402bb6041439861cf292654e25573`
 - `menene_series_space.webp`: `357a73fdfd45f2ace363f03fb6c426c0123d6ede01efdad1f4c523f44d43c209`
 
-## Sistem vizual cinematic 2.3
+## Sistem vizual cinematic 2.4
 
-Home-ul 2.3 emulează ierarhia referinței Disney fără a copia brandul sau
+Home-ul 2.4 emulează ierarhia referinței Disney fără a copia brandul sau
 personajele: fundal navy-magenta discret, un hero dominant, acțiune play
 circulară și o bibliotecă compactă sub hero. Miniatura reală a episodului are
 prioritate în hero, iar imaginea generată este fallback.

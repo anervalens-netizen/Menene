@@ -1,5 +1,7 @@
 # Audit final Mehene 2.1
 
+> Document istoric, supersedat de [raportul final Menene 2.4](test-results/2026-08-01-menene-2.4-final.md). Verdictul NO-GO de mai jos aparține auditului static din 29 iulie 2026, nu release-ului curent.
+
 ## Identificare
 
 - Repository: `anervalens-netizen/Mehene`

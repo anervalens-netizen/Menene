@@ -1,4 +1,4 @@
-# Arhitectură Menene 2.3
+# Arhitectură Menene 2.4
 
 ## Principii
 
@@ -68,7 +68,7 @@ Pe providerul microSD Android, căile validate din catalog sunt transformate dir
 
 ### Limită actuală
 
-Library Builder 2.1 restaurează catalogul anterior după o eroare, dar nucleul legacy scrie candidatul în destinație înainte de validarea finală. Refactorizarea pe generații/staging este prevăzută în roadmap.
+Library Builder 2.3 restaurează catalogul anterior după o eroare, dar nucleul legacy scrie candidatul în destinație înainte de validarea finală. Refactorizarea pe generații/staging este prevăzută în roadmap.
 
 ## Progres
 
@@ -101,7 +101,8 @@ Media3 folosește lifecycle diferențiat:
 Playerul aplică:
 
 - limba audio preferată;
-- subtitrări sidecar;
+- catalogul publicat nu activează subtitrări;
+- bară de progres glisabilă, timp curent/durată și salturi de 10 secunde;
 - buffering timeout;
 - checkpoint periodic și critic;
 - restaurarea sesiunii și countdownului;
@@ -120,7 +121,7 @@ Ieșirea temporară în Android nu dezactivează preferința kiosk; Lock Task se
 
 ```text
 Sursă media
-  ↓ ffprobe / conversie / imagini / subtitrări
+  ↓ ffprobe / conversie / imagini / excludere subtitrări
 Destinație + catalog candidat
   ↓ validator fail-closed
 Catalog activ sau restaurarea celui anterior

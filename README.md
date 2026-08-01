@@ -8,9 +8,9 @@ Menene este un „Cartoon Network personal” complet offline pentru Samsung SM-
 - `Continuă` pentru ultimul episod început;
 - `Menene TV`, cu alternarea serialelor și episoade nevăzute;
 - moduri: un episod, continuă serialul sau Menene TV;
-- player fullscreen cu X, pauză la atingere, volum, buffering, retry și auto-next;
+- player fullscreen cu X, pauză la atingere, bară glisabilă, salt ±10 secunde, volum, buffering, retry și auto-next;
 - progres local: nevăzut, început, terminat;
-- subtitrări `.srt`/`.vtt` și preferință audio;
+- fără subtitrări, ca regulă de produs pentru copilul pre-lector; preferință audio locală;
 - kiosk Android și pornire după restart în Device Owner;
 - fără internet, reclame, conturi sau telemetrie.
 
@@ -42,8 +42,7 @@ Menene/
 │   ├── cover.webp
 │   ├── Season 01/
 │   │   ├── Episod 01.mp4
-│   │   ├── Episod 01.webp
-│   │   └── Episod 01.srt
+│   │   └── Episod 01.webp
 │   └── Season 02/
 └── Mașini de curse/
     ├── cover.jpg
@@ -68,7 +67,7 @@ Wrapper-ele recomandate:
 .\tools\convert-library.ps1 -Source "D:\Desene" -Destination "E:\Menene-Staging" -AudioLanguage ron
 ```
 
-Builderul convertește numai ce este necesar, generează miniaturi și catalog, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori.
+Builderul convertește numai ce este necesar, generează miniaturi și catalog, ignoră și elimină sidecar-urile `.srt`/`.vtt`, reutilizează fișiere valide și restaurează catalogul anterior dacă întâlnește erori.
 
 Cu tableta conectată prin USB, adăugarea unei biblioteci noi se face într-o singură comandă:
 
@@ -122,4 +121,4 @@ Procedura completă: [docs/DEVICE_SETUP.md](docs/DEVICE_SETUP.md).
 
 ## Stadiu
 
-Versiunea **2.2.0** păstrează identitatea internă `ro.mehene.app` pentru update și date, dar afișează Menene peste tot. Include recovery prin cinci atingeri, catalog mare accelerat pe microSD, fallback-uri ilustrate originale, grid adaptiv și fluxul de adăugare pe tabletă. Verdictul exact al buildului și probelor pe SM-T585 este în [raportul final Menene 2.2](docs/test-results/2026-08-01-menene-2.2-final.md).
+Versiunea **2.4.0** păstrează identitatea internă `ro.mehene.app` pentru update și date. Include Home cinematic cu hero 16:9, artwork original la rezoluție mare, player cu seek direct și salt ±10 secunde, recovery prin cinci atingeri și bibliotecă offline pregătită prin Builder. Verdictul exact al buildului, probelor pe SM-T585 și bibliotecii reale este în [raportul final Menene 2.4](docs/test-results/2026-08-01-menene-2.4-final.md).

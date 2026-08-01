@@ -1,0 +1,3947 @@
+{
+  "schemaVersion": 1,
+  "generatedAtEpochMs": 1785611456226,
+  "series": [
+    {
+      "id": "bluey-546f29bd9e",
+      "title": "Bluey",
+      "path": "Bluey",
+      "cover": "Bluey/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "bluey-546f29bd9e-1-1-01-episodul-1-2bf2d0cad5",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Episodul 1",
+              "media": "Bluey/Season 01/01 - Episodul 1.mp4",
+              "artwork": "Bluey/Season 01/01 - Episodul 1.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-2-02-episodul-2-5af8d5524e",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Episodul 2",
+              "media": "Bluey/Season 01/02 - Episodul 2.mp4",
+              "artwork": "Bluey/Season 01/02 - Episodul 2.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-3-03-episodul-3-6185c4f2e8",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Episodul 3",
+              "media": "Bluey/Season 01/03 - Episodul 3.mp4",
+              "artwork": "Bluey/Season 01/03 - Episodul 3.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-4-04-episodul-4-ab641f8b1a",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Episodul 4",
+              "media": "Bluey/Season 01/04 - Episodul 4.mp4",
+              "artwork": "Bluey/Season 01/04 - Episodul 4.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-5-05-episodul-5-f27d5bca44",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Episodul 5",
+              "media": "Bluey/Season 01/05 - Episodul 5.mp4",
+              "artwork": "Bluey/Season 01/05 - Episodul 5.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-6-06-episodul-6-cd75c5b907",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Episodul 6",
+              "media": "Bluey/Season 01/06 - Episodul 6.mp4",
+              "artwork": "Bluey/Season 01/06 - Episodul 6.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-7-07-episodul-7-84ac2f6d55",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Episodul 7",
+              "media": "Bluey/Season 01/07 - Episodul 7.mp4",
+              "artwork": "Bluey/Season 01/07 - Episodul 7.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-8-08-episodul-8-9836101eca",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Episodul 8",
+              "media": "Bluey/Season 01/08 - Episodul 8.mp4",
+              "artwork": "Bluey/Season 01/08 - Episodul 8.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-9-09-episodul-9-35579b25dc",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Episodul 9",
+              "media": "Bluey/Season 01/09 - Episodul 9.mp4",
+              "artwork": "Bluey/Season 01/09 - Episodul 9.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-10-10-episodul-10-35565f0175",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Episodul 10",
+              "media": "Bluey/Season 01/10 - Episodul 10.mp4",
+              "artwork": "Bluey/Season 01/10 - Episodul 10.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-11-11-episodul-11-5ee8d54c8c",
+              "number": 11,
+              "sortOrder": 11,
+              "title": "11 - Episodul 11",
+              "media": "Bluey/Season 01/11 - Episodul 11.mp4",
+              "artwork": "Bluey/Season 01/11 - Episodul 11.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-12-12-episodul-12-1a7c0b55c0",
+              "number": 12,
+              "sortOrder": 12,
+              "title": "12 - Episodul 12",
+              "media": "Bluey/Season 01/12 - Episodul 12.mp4",
+              "artwork": "Bluey/Season 01/12 - Episodul 12.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-13-13-episodul-13-2876e44b9b",
+              "number": 13,
+              "sortOrder": 13,
+              "title": "13 - Episodul 13",
+              "media": "Bluey/Season 01/13 - Episodul 13.mp4",
+              "artwork": "Bluey/Season 01/13 - Episodul 13.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-14-14-episodul-14-4917aa0401",
+              "number": 14,
+              "sortOrder": 14,
+              "title": "14 - Episodul 14",
+              "media": "Bluey/Season 01/14 - Episodul 14.mp4",
+              "artwork": "Bluey/Season 01/14 - Episodul 14.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-15-15-episodul-15-b5c863c802",
+              "number": 15,
+              "sortOrder": 15,
+              "title": "15 - Episodul 15",
+              "media": "Bluey/Season 01/15 - Episodul 15.mp4",
+              "artwork": "Bluey/Season 01/15 - Episodul 15.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-16-16-episodul-16-30d04d9865",
+              "number": 16,
+              "sortOrder": 16,
+              "title": "16 - Episodul 16",
+              "media": "Bluey/Season 01/16 - Episodul 16.mp4",
+              "artwork": "Bluey/Season 01/16 - Episodul 16.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-17-17-episodul-17-c619a235e8",
+              "number": 17,
+              "sortOrder": 17,
+              "title": "17 - Episodul 17",
+              "media": "Bluey/Season 01/17 - Episodul 17.mp4",
+              "artwork": "Bluey/Season 01/17 - Episodul 17.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-18-18-episodul-18-d330e7aa67",
+              "number": 18,
+              "sortOrder": 18,
+              "title": "18 - Episodul 18",
+              "media": "Bluey/Season 01/18 - Episodul 18.mp4",
+              "artwork": "Bluey/Season 01/18 - Episodul 18.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-19-19-episodul-19-9a102bd4cd",
+              "number": 19,
+              "sortOrder": 19,
+              "title": "19 - Episodul 19",
+              "media": "Bluey/Season 01/19 - Episodul 19.mp4",
+              "artwork": "Bluey/Season 01/19 - Episodul 19.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-20-20-episodul-20-374e5ca920",
+              "number": 20,
+              "sortOrder": 20,
+              "title": "20 - Episodul 20",
+              "media": "Bluey/Season 01/20 - Episodul 20.mp4",
+              "artwork": "Bluey/Season 01/20 - Episodul 20.webp",
+              "subtitle": null,
+              "durationMs": 427178,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-21-21-episodul-21-4821ec9815",
+              "number": 21,
+              "sortOrder": 21,
+              "title": "21 - Episodul 21",
+              "media": "Bluey/Season 01/21 - Episodul 21.mp4",
+              "artwork": "Bluey/Season 01/21 - Episodul 21.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-22-22-episodul-22-2e4858c034",
+              "number": 22,
+              "sortOrder": 22,
+              "title": "22 - Episodul 22",
+              "media": "Bluey/Season 01/22 - Episodul 22.mp4",
+              "artwork": "Bluey/Season 01/22 - Episodul 22.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-23-23-episodul-23-348df19a46",
+              "number": 23,
+              "sortOrder": 23,
+              "title": "23 - Episodul 23",
+              "media": "Bluey/Season 01/23 - Episodul 23.mp4",
+              "artwork": "Bluey/Season 01/23 - Episodul 23.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-24-24-episodul-24-a0a813b818",
+              "number": 24,
+              "sortOrder": 24,
+              "title": "24 - Episodul 24",
+              "media": "Bluey/Season 01/24 - Episodul 24.mp4",
+              "artwork": "Bluey/Season 01/24 - Episodul 24.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-25-25-episodul-25-4e87d5ea18",
+              "number": 25,
+              "sortOrder": 25,
+              "title": "25 - Episodul 25",
+              "media": "Bluey/Season 01/25 - Episodul 25.mp4",
+              "artwork": "Bluey/Season 01/25 - Episodul 25.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-26-26-episodul-26-f009f984f3",
+              "number": 26,
+              "sortOrder": 26,
+              "title": "26 - Episodul 26",
+              "media": "Bluey/Season 01/26 - Episodul 26.mp4",
+              "artwork": "Bluey/Season 01/26 - Episodul 26.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-27-27-episodul-27-6c488969e5",
+              "number": 27,
+              "sortOrder": 27,
+              "title": "27 - Episodul 27",
+              "media": "Bluey/Season 01/27 - Episodul 27.mp4",
+              "artwork": "Bluey/Season 01/27 - Episodul 27.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-28-28-episodul-28-715743e3e2",
+              "number": 28,
+              "sortOrder": 28,
+              "title": "28 - Episodul 28",
+              "media": "Bluey/Season 01/28 - Episodul 28.mp4",
+              "artwork": "Bluey/Season 01/28 - Episodul 28.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-29-29-episodul-29-11b4db99b5",
+              "number": 29,
+              "sortOrder": 29,
+              "title": "29 - Episodul 29",
+              "media": "Bluey/Season 01/29 - Episodul 29.mp4",
+              "artwork": "Bluey/Season 01/29 - Episodul 29.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-30-30-episodul-30-2048f1654f",
+              "number": 30,
+              "sortOrder": 30,
+              "title": "30 - Episodul 30",
+              "media": "Bluey/Season 01/30 - Episodul 30.mp4",
+              "artwork": "Bluey/Season 01/30 - Episodul 30.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-31-31-episodul-31-fc10e580fb",
+              "number": 31,
+              "sortOrder": 31,
+              "title": "31 - Episodul 31",
+              "media": "Bluey/Season 01/31 - Episodul 31.mp4",
+              "artwork": "Bluey/Season 01/31 - Episodul 31.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-32-32-episodul-32-b5fb14dad5",
+              "number": 32,
+              "sortOrder": 32,
+              "title": "32 - Episodul 32",
+              "media": "Bluey/Season 01/32 - Episodul 32.mp4",
+              "artwork": "Bluey/Season 01/32 - Episodul 32.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-33-33-episodul-33-5639ec6153",
+              "number": 33,
+              "sortOrder": 33,
+              "title": "33 - Episodul 33",
+              "media": "Bluey/Season 01/33 - Episodul 33.mp4",
+              "artwork": "Bluey/Season 01/33 - Episodul 33.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-34-34-episodul-34-e8a888d017",
+              "number": 34,
+              "sortOrder": 34,
+              "title": "34 - Episodul 34",
+              "media": "Bluey/Season 01/34 - Episodul 34.mp4",
+              "artwork": "Bluey/Season 01/34 - Episodul 34.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-35-35-episodul-35-47ece2ea2b",
+              "number": 35,
+              "sortOrder": 35,
+              "title": "35 - Episodul 35",
+              "media": "Bluey/Season 01/35 - Episodul 35.mp4",
+              "artwork": "Bluey/Season 01/35 - Episodul 35.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-36-36-episodul-36-29a6bd0433",
+              "number": 36,
+              "sortOrder": 36,
+              "title": "36 - Episodul 36",
+              "media": "Bluey/Season 01/36 - Episodul 36.mp4",
+              "artwork": "Bluey/Season 01/36 - Episodul 36.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-37-37-episodul-37-ee7f56e215",
+              "number": 37,
+              "sortOrder": 37,
+              "title": "37 - Episodul 37",
+              "media": "Bluey/Season 01/37 - Episodul 37.mp4",
+              "artwork": "Bluey/Season 01/37 - Episodul 37.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-38-38-episodul-38-d4578ae1cd",
+              "number": 38,
+              "sortOrder": 38,
+              "title": "38 - Episodul 38",
+              "media": "Bluey/Season 01/38 - Episodul 38.mp4",
+              "artwork": "Bluey/Season 01/38 - Episodul 38.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-39-39-episodul-39-715ddf0464",
+              "number": 39,
+              "sortOrder": 39,
+              "title": "39 - Episodul 39",
+              "media": "Bluey/Season 01/39 - Episodul 39.mp4",
+              "artwork": "Bluey/Season 01/39 - Episodul 39.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-40-40-episodul-40-551be73dab",
+              "number": 40,
+              "sortOrder": 40,
+              "title": "40 - Episodul 40",
+              "media": "Bluey/Season 01/40 - Episodul 40.mp4",
+              "artwork": "Bluey/Season 01/40 - Episodul 40.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-41-41-episodul-41-9e0e5e046c",
+              "number": 41,
+              "sortOrder": 41,
+              "title": "41 - Episodul 41",
+              "media": "Bluey/Season 01/41 - Episodul 41.mp4",
+              "artwork": "Bluey/Season 01/41 - Episodul 41.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-42-42-episodul-42-e41a9510e7",
+              "number": 42,
+              "sortOrder": 42,
+              "title": "42 - Episodul 42",
+              "media": "Bluey/Season 01/42 - Episodul 42.mp4",
+              "artwork": "Bluey/Season 01/42 - Episodul 42.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-43-43-episodul-43-c9d0909a4b",
+              "number": 43,
+              "sortOrder": 43,
+              "title": "43 - Episodul 43",
+              "media": "Bluey/Season 01/43 - Episodul 43.mp4",
+              "artwork": "Bluey/Season 01/43 - Episodul 43.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-44-44-episodul-44-2b81668755",
+              "number": 44,
+              "sortOrder": 44,
+              "title": "44 - Episodul 44",
+              "media": "Bluey/Season 01/44 - Episodul 44.mp4",
+              "artwork": "Bluey/Season 01/44 - Episodul 44.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-45-45-episodul-45-16839bb091",
+              "number": 45,
+              "sortOrder": 45,
+              "title": "45 - Episodul 45",
+              "media": "Bluey/Season 01/45 - Episodul 45.mp4",
+              "artwork": "Bluey/Season 01/45 - Episodul 45.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-46-46-episodul-46-0b0c8afaa6",
+              "number": 46,
+              "sortOrder": 46,
+              "title": "46 - Episodul 46",
+              "media": "Bluey/Season 01/46 - Episodul 46.mp4",
+              "artwork": "Bluey/Season 01/46 - Episodul 46.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-47-47-episodul-47-8644741a8c",
+              "number": 47,
+              "sortOrder": 47,
+              "title": "47 - Episodul 47",
+              "media": "Bluey/Season 01/47 - Episodul 47.mp4",
+              "artwork": "Bluey/Season 01/47 - Episodul 47.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-48-48-episodul-48-9a1c53cc77",
+              "number": 48,
+              "sortOrder": 48,
+              "title": "48 - Episodul 48",
+              "media": "Bluey/Season 01/48 - Episodul 48.mp4",
+              "artwork": "Bluey/Season 01/48 - Episodul 48.webp",
+              "subtitle": null,
+              "durationMs": 420043,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-49-49-episodul-49-fa0dcf799e",
+              "number": 49,
+              "sortOrder": 49,
+              "title": "49 - Episodul 49",
+              "media": "Bluey/Season 01/49 - Episodul 49.mp4",
+              "artwork": "Bluey/Season 01/49 - Episodul 49.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-50-50-episodul-50-bf4bfcb7b5",
+              "number": 50,
+              "sortOrder": 50,
+              "title": "50 - Episodul 50",
+              "media": "Bluey/Season 01/50 - Episodul 50.mp4",
+              "artwork": "Bluey/Season 01/50 - Episodul 50.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-51-51-episodul-51-6b03d94693",
+              "number": 51,
+              "sortOrder": 51,
+              "title": "51 - Episodul 51",
+              "media": "Bluey/Season 01/51 - Episodul 51.mp4",
+              "artwork": "Bluey/Season 01/51 - Episodul 51.webp",
+              "subtitle": null,
+              "durationMs": 428053,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-1-52-52-episodul-52-0422e79c5a",
+              "number": 52,
+              "sortOrder": 52,
+              "title": "52 - Episodul 52",
+              "media": "Bluey/Season 01/52 - Episodul 52.mp4",
+              "artwork": "Bluey/Season 01/52 - Episodul 52.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Sezonul 2",
+          "episodes": [
+            {
+              "id": "bluey-546f29bd9e-2-1-01-episodul-1-e703bdfd7e",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Episodul 1",
+              "media": "Bluey/Season 02/01 - Episodul 1.mp4",
+              "artwork": "Bluey/Season 02/01 - Episodul 1.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-2-02-episodul-2-db62b201fc",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Episodul 2",
+              "media": "Bluey/Season 02/02 - Episodul 2.mp4",
+              "artwork": "Bluey/Season 02/02 - Episodul 2.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-3-03-episodul-3-f9a813a4fe",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Episodul 3",
+              "media": "Bluey/Season 02/03 - Episodul 3.mp4",
+              "artwork": "Bluey/Season 02/03 - Episodul 3.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-4-04-episodul-4-f17d6d636b",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Episodul 4",
+              "media": "Bluey/Season 02/04 - Episodul 4.mp4",
+              "artwork": "Bluey/Season 02/04 - Episodul 4.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-5-05-episodul-5-fb05ad7a04",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Episodul 5",
+              "media": "Bluey/Season 02/05 - Episodul 5.mp4",
+              "artwork": "Bluey/Season 02/05 - Episodul 5.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-6-06-episodul-6-2a072d9f35",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Episodul 6",
+              "media": "Bluey/Season 02/06 - Episodul 6.mp4",
+              "artwork": "Bluey/Season 02/06 - Episodul 6.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-7-07-episodul-7-6a3a5c89c0",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Episodul 7",
+              "media": "Bluey/Season 02/07 - Episodul 7.mp4",
+              "artwork": "Bluey/Season 02/07 - Episodul 7.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-8-08-episodul-8-00bc99876f",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Episodul 8",
+              "media": "Bluey/Season 02/08 - Episodul 8.mp4",
+              "artwork": "Bluey/Season 02/08 - Episodul 8.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-9-09-episodul-9-0e5293637d",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Episodul 9",
+              "media": "Bluey/Season 02/09 - Episodul 9.mp4",
+              "artwork": "Bluey/Season 02/09 - Episodul 9.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-10-10-episodul-10-2fd1e113c6",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Episodul 10",
+              "media": "Bluey/Season 02/10 - Episodul 10.mp4",
+              "artwork": "Bluey/Season 02/10 - Episodul 10.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-11-11-episodul-11-2d456d713d",
+              "number": 11,
+              "sortOrder": 11,
+              "title": "11 - Episodul 11",
+              "media": "Bluey/Season 02/11 - Episodul 11.mp4",
+              "artwork": "Bluey/Season 02/11 - Episodul 11.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-12-12-episodul-12-63a0e2c956",
+              "number": 12,
+              "sortOrder": 12,
+              "title": "12 - Episodul 12",
+              "media": "Bluey/Season 02/12 - Episodul 12.mp4",
+              "artwork": "Bluey/Season 02/12 - Episodul 12.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-13-13-episodul-13-357a151399",
+              "number": 13,
+              "sortOrder": 13,
+              "title": "13 - Episodul 13",
+              "media": "Bluey/Season 02/13 - Episodul 13.mp4",
+              "artwork": "Bluey/Season 02/13 - Episodul 13.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-14-14-episodul-14-c3b90e1d63",
+              "number": 14,
+              "sortOrder": 14,
+              "title": "14 - Episodul 14",
+              "media": "Bluey/Season 02/14 - Episodul 14.mp4",
+              "artwork": "Bluey/Season 02/14 - Episodul 14.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-15-15-episodul-15-30d6390b80",
+              "number": 15,
+              "sortOrder": 15,
+              "title": "15 - Episodul 15",
+              "media": "Bluey/Season 02/15 - Episodul 15.mp4",
+              "artwork": "Bluey/Season 02/15 - Episodul 15.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-16-16-episodul-16-0ccc1540f9",
+              "number": 16,
+              "sortOrder": 16,
+              "title": "16 - Episodul 16",
+              "media": "Bluey/Season 02/16 - Episodul 16.mp4",
+              "artwork": "Bluey/Season 02/16 - Episodul 16.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-17-17-episodul-17-b0c668008a",
+              "number": 17,
+              "sortOrder": 17,
+              "title": "17 - Episodul 17",
+              "media": "Bluey/Season 02/17 - Episodul 17.mp4",
+              "artwork": "Bluey/Season 02/17 - Episodul 17.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-18-18-episodul-18-1ee74af64e",
+              "number": 18,
+              "sortOrder": 18,
+              "title": "18 - Episodul 18",
+              "media": "Bluey/Season 02/18 - Episodul 18.mp4",
+              "artwork": "Bluey/Season 02/18 - Episodul 18.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-19-19-episodul-19-376f51f66c",
+              "number": 19,
+              "sortOrder": 19,
+              "title": "19 - Episodul 19",
+              "media": "Bluey/Season 02/19 - Episodul 19.mp4",
+              "artwork": "Bluey/Season 02/19 - Episodul 19.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-20-20-episodul-20-0dc886c832",
+              "number": 20,
+              "sortOrder": 20,
+              "title": "20 - Episodul 20",
+              "media": "Bluey/Season 02/20 - Episodul 20.mp4",
+              "artwork": "Bluey/Season 02/20 - Episodul 20.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-21-21-episodul-21-eb30451b9c",
+              "number": 21,
+              "sortOrder": 21,
+              "title": "21 - Episodul 21",
+              "media": "Bluey/Season 02/21 - Episodul 21.mp4",
+              "artwork": "Bluey/Season 02/21 - Episodul 21.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-22-22-episodul-22-1ac7dccd12",
+              "number": 22,
+              "sortOrder": 22,
+              "title": "22 - Episodul 22",
+              "media": "Bluey/Season 02/22 - Episodul 22.mp4",
+              "artwork": "Bluey/Season 02/22 - Episodul 22.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-23-23-episodul-23-1d6a0fa838",
+              "number": 23,
+              "sortOrder": 23,
+              "title": "23 - Episodul 23",
+              "media": "Bluey/Season 02/23 - Episodul 23.mp4",
+              "artwork": "Bluey/Season 02/23 - Episodul 23.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-24-24-episodul-24-8da98e47ea",
+              "number": 24,
+              "sortOrder": 24,
+              "title": "24 - Episodul 24",
+              "media": "Bluey/Season 02/24 - Episodul 24.mp4",
+              "artwork": "Bluey/Season 02/24 - Episodul 24.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-25-25-episodul-25-d02ede49db",
+              "number": 25,
+              "sortOrder": 25,
+              "title": "25 - Episodul 25",
+              "media": "Bluey/Season 02/25 - Episodul 25.mp4",
+              "artwork": "Bluey/Season 02/25 - Episodul 25.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-26-26-episodul-26-110b25df75",
+              "number": 26,
+              "sortOrder": 26,
+              "title": "26 - Episodul 26",
+              "media": "Bluey/Season 02/26 - Episodul 26.mp4",
+              "artwork": "Bluey/Season 02/26 - Episodul 26.webp",
+              "subtitle": null,
+              "durationMs": 469333,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-27-27-episodul-27-817b7c14b6",
+              "number": 27,
+              "sortOrder": 27,
+              "title": "27 - Episodul 27",
+              "media": "Bluey/Season 02/27 - Episodul 27.mp4",
+              "artwork": "Bluey/Season 02/27 - Episodul 27.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-28-28-episodul-28-8ebb3e621d",
+              "number": 28,
+              "sortOrder": 28,
+              "title": "28 - Episodul 28",
+              "media": "Bluey/Season 02/28 - Episodul 28.mp4",
+              "artwork": "Bluey/Season 02/28 - Episodul 28.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-29-29-episodul-29-14cd00a12a",
+              "number": 29,
+              "sortOrder": 29,
+              "title": "29 - Episodul 29",
+              "media": "Bluey/Season 02/29 - Episodul 29.mp4",
+              "artwork": "Bluey/Season 02/29 - Episodul 29.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-30-30-episodul-30-e028bdc6c5",
+              "number": 30,
+              "sortOrder": 30,
+              "title": "30 - Episodul 30",
+              "media": "Bluey/Season 02/30 - Episodul 30.mp4",
+              "artwork": "Bluey/Season 02/30 - Episodul 30.webp",
+              "subtitle": null,
+              "durationMs": 438997,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-31-31-episodul-31-01289326fc",
+              "number": 31,
+              "sortOrder": 31,
+              "title": "31 - Episodul 31",
+              "media": "Bluey/Season 02/31 - Episodul 31.mp4",
+              "artwork": "Bluey/Season 02/31 - Episodul 31.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-32-32-episodul-32-63d1316e73",
+              "number": 32,
+              "sortOrder": 32,
+              "title": "32 - Episodul 32",
+              "media": "Bluey/Season 02/32 - Episodul 32.mp4",
+              "artwork": "Bluey/Season 02/32 - Episodul 32.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-33-33-episodul-33-9c0a6f704d",
+              "number": 33,
+              "sortOrder": 33,
+              "title": "33 - Episodul 33",
+              "media": "Bluey/Season 02/33 - Episodul 33.mp4",
+              "artwork": "Bluey/Season 02/33 - Episodul 33.webp",
+              "subtitle": null,
+              "durationMs": 440042,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-34-34-episodul-34-354ceb1648",
+              "number": 34,
+              "sortOrder": 34,
+              "title": "34 - Episodul 34",
+              "media": "Bluey/Season 02/34 - Episodul 34.mp4",
+              "artwork": "Bluey/Season 02/34 - Episodul 34.webp",
+              "subtitle": null,
+              "durationMs": 438997,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-35-35-episodul-35-1ca7915a91",
+              "number": 35,
+              "sortOrder": 35,
+              "title": "35 - Episodul 35",
+              "media": "Bluey/Season 02/35 - Episodul 35.mp4",
+              "artwork": "Bluey/Season 02/35 - Episodul 35.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-36-36-episodul-36-a3ea997449",
+              "number": 36,
+              "sortOrder": 36,
+              "title": "36 - Episodul 36",
+              "media": "Bluey/Season 02/36 - Episodul 36.mp4",
+              "artwork": "Bluey/Season 02/36 - Episodul 36.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-37-37-episodul-37-9183f8a3ed",
+              "number": 37,
+              "sortOrder": 37,
+              "title": "37 - Episodul 37",
+              "media": "Bluey/Season 02/37 - Episodul 37.mp4",
+              "artwork": "Bluey/Season 02/37 - Episodul 37.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-38-38-episodul-38-7612e35742",
+              "number": 38,
+              "sortOrder": 38,
+              "title": "38 - Episodul 38",
+              "media": "Bluey/Season 02/38 - Episodul 38.mp4",
+              "artwork": "Bluey/Season 02/38 - Episodul 38.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-39-39-episodul-39-4d1d0516d0",
+              "number": 39,
+              "sortOrder": 39,
+              "title": "39 - Episodul 39",
+              "media": "Bluey/Season 02/39 - Episodul 39.mp4",
+              "artwork": "Bluey/Season 02/39 - Episodul 39.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-40-40-episodul-40-2110a89edd",
+              "number": 40,
+              "sortOrder": 40,
+              "title": "40 - Episodul 40",
+              "media": "Bluey/Season 02/40 - Episodul 40.mp4",
+              "artwork": "Bluey/Season 02/40 - Episodul 40.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-41-41-episodul-41-e7a83c1348",
+              "number": 41,
+              "sortOrder": 41,
+              "title": "41 - Episodul 41",
+              "media": "Bluey/Season 02/41 - Episodul 41.mp4",
+              "artwork": "Bluey/Season 02/41 - Episodul 41.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-42-42-episodul-42-a7c8d8fbec",
+              "number": 42,
+              "sortOrder": 42,
+              "title": "42 - Episodul 42",
+              "media": "Bluey/Season 02/42 - Episodul 42.mp4",
+              "artwork": "Bluey/Season 02/42 - Episodul 42.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-43-43-episodul-43-4d0e8d2098",
+              "number": 43,
+              "sortOrder": 43,
+              "title": "43 - Episodul 43",
+              "media": "Bluey/Season 02/43 - Episodul 43.mp4",
+              "artwork": "Bluey/Season 02/43 - Episodul 43.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-44-44-episodul-44-f75060ed33",
+              "number": 44,
+              "sortOrder": 44,
+              "title": "44 - Episodul 44",
+              "media": "Bluey/Season 02/44 - Episodul 44.mp4",
+              "artwork": "Bluey/Season 02/44 - Episodul 44.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-45-45-episodul-45-6ec918acfc",
+              "number": 45,
+              "sortOrder": 45,
+              "title": "45 - Episodul 45",
+              "media": "Bluey/Season 02/45 - Episodul 45.mp4",
+              "artwork": "Bluey/Season 02/45 - Episodul 45.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-46-46-episodul-46-ec38786235",
+              "number": 46,
+              "sortOrder": 46,
+              "title": "46 - Episodul 46",
+              "media": "Bluey/Season 02/46 - Episodul 46.mp4",
+              "artwork": "Bluey/Season 02/46 - Episodul 46.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-47-47-episodul-47-9fbb106b97",
+              "number": 47,
+              "sortOrder": 47,
+              "title": "47 - Episodul 47",
+              "media": "Bluey/Season 02/47 - Episodul 47.mp4",
+              "artwork": "Bluey/Season 02/47 - Episodul 47.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-48-48-episodul-48-30754f4317",
+              "number": 48,
+              "sortOrder": 48,
+              "title": "48 - Episodul 48",
+              "media": "Bluey/Season 02/48 - Episodul 48.mp4",
+              "artwork": "Bluey/Season 02/48 - Episodul 48.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-49-49-episodul-49-7f21982b88",
+              "number": 49,
+              "sortOrder": 49,
+              "title": "49 - Episodul 49",
+              "media": "Bluey/Season 02/49 - Episodul 49.mp4",
+              "artwork": "Bluey/Season 02/49 - Episodul 49.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-50-50-episodul-50-a1768e796d",
+              "number": 50,
+              "sortOrder": 50,
+              "title": "50 - Episodul 50",
+              "media": "Bluey/Season 02/50 - Episodul 50.mp4",
+              "artwork": "Bluey/Season 02/50 - Episodul 50.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-51-51-episodul-51-c6423d82e7",
+              "number": 51,
+              "sortOrder": 51,
+              "title": "51 - Episodul 51",
+              "media": "Bluey/Season 02/51 - Episodul 51.mp4",
+              "artwork": "Bluey/Season 02/51 - Episodul 51.webp",
+              "subtitle": null,
+              "durationMs": 438101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-2-52-52-episodul-52-f21de9e0ec",
+              "number": 52,
+              "sortOrder": 52,
+              "title": "52 - Episodul 52",
+              "media": "Bluey/Season 02/52 - Episodul 52.mp4",
+              "artwork": "Bluey/Season 02/52 - Episodul 52.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Sezonul 3",
+          "episodes": [
+            {
+              "id": "bluey-546f29bd9e-3-1-01-episodul-1-ec6e663a64",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Episodul 1",
+              "media": "Bluey/Season 03/01 - Episodul 1.mp4",
+              "artwork": "Bluey/Season 03/01 - Episodul 1.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-2-02-episodul-2-efa716b90e",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Episodul 2",
+              "media": "Bluey/Season 03/02 - Episodul 2.mp4",
+              "artwork": "Bluey/Season 03/02 - Episodul 2.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-3-03-episodul-3-3365bf5a94",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Episodul 3",
+              "media": "Bluey/Season 03/03 - Episodul 3.mp4",
+              "artwork": "Bluey/Season 03/03 - Episodul 3.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-4-04-episodul-4-ba54997e5b",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Episodul 4",
+              "media": "Bluey/Season 03/04 - Episodul 4.mp4",
+              "artwork": "Bluey/Season 03/04 - Episodul 4.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-5-05-episodul-5-3d1e71363b",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Episodul 5",
+              "media": "Bluey/Season 03/05 - Episodul 5.mp4",
+              "artwork": "Bluey/Season 03/05 - Episodul 5.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-6-06-episodul-6-3d5a726ff3",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Episodul 6",
+              "media": "Bluey/Season 03/06 - Episodul 6.mp4",
+              "artwork": "Bluey/Season 03/06 - Episodul 6.webp",
+              "subtitle": null,
+              "durationMs": 438037,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-7-07-episodul-7-0e499dc155",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Episodul 7",
+              "media": "Bluey/Season 03/07 - Episodul 7.mp4",
+              "artwork": "Bluey/Season 03/07 - Episodul 7.webp",
+              "subtitle": null,
+              "durationMs": 435370,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-8-08-episodul-8-34ea1e585b",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Episodul 8",
+              "media": "Bluey/Season 03/08 - Episodul 8.mp4",
+              "artwork": "Bluey/Season 03/08 - Episodul 8.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-9-09-episodul-9-b81210434e",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Episodul 9",
+              "media": "Bluey/Season 03/09 - Episodul 9.mp4",
+              "artwork": "Bluey/Season 03/09 - Episodul 9.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-10-10-episodul-10-83892e24cb",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Episodul 10",
+              "media": "Bluey/Season 03/10 - Episodul 10.mp4",
+              "artwork": "Bluey/Season 03/10 - Episodul 10.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-11-11-episodul-11-8593f4910a",
+              "number": 11,
+              "sortOrder": 11,
+              "title": "11 - Episodul 11",
+              "media": "Bluey/Season 03/11 - Episodul 11.mp4",
+              "artwork": "Bluey/Season 03/11 - Episodul 11.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-12-12-episodul-12-92546047a8",
+              "number": 12,
+              "sortOrder": 12,
+              "title": "12 - Episodul 12",
+              "media": "Bluey/Season 03/12 - Episodul 12.mp4",
+              "artwork": "Bluey/Season 03/12 - Episodul 12.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-13-13-episodul-13-4c46486516",
+              "number": 13,
+              "sortOrder": 13,
+              "title": "13 - Episodul 13",
+              "media": "Bluey/Season 03/13 - Episodul 13.mp4",
+              "artwork": "Bluey/Season 03/13 - Episodul 13.webp",
+              "subtitle": null,
+              "durationMs": 422101,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-14-14-episodul-14-1d563c3df1",
+              "number": 14,
+              "sortOrder": 14,
+              "title": "14 - Episodul 14",
+              "media": "Bluey/Season 03/14 - Episodul 14.mp4",
+              "artwork": "Bluey/Season 03/14 - Episodul 14.webp",
+              "subtitle": null,
+              "durationMs": 502570,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-15-15-episodul-15-d8929a5b88",
+              "number": 15,
+              "sortOrder": 15,
+              "title": "15 - Episodul 15",
+              "media": "Bluey/Season 03/15 - Episodul 15.mp4",
+              "artwork": "Bluey/Season 03/15 - Episodul 15.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-16-16-episodul-16-54f4fe2771",
+              "number": 16,
+              "sortOrder": 16,
+              "title": "16 - Episodul 16",
+              "media": "Bluey/Season 03/16 - Episodul 16.mp4",
+              "artwork": "Bluey/Season 03/16 - Episodul 16.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-17-17-episodul-17-99b9a61975",
+              "number": 17,
+              "sortOrder": 17,
+              "title": "17 - Episodul 17",
+              "media": "Bluey/Season 03/17 - Episodul 17.mp4",
+              "artwork": "Bluey/Season 03/17 - Episodul 17.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-18-18-episodul-18-1e7b094875",
+              "number": 18,
+              "sortOrder": 18,
+              "title": "18 - Episodul 18",
+              "media": "Bluey/Season 03/18 - Episodul 18.mp4",
+              "artwork": "Bluey/Season 03/18 - Episodul 18.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-19-19-episodul-19-16c292e2c3",
+              "number": 19,
+              "sortOrder": 19,
+              "title": "19 - Episodul 19",
+              "media": "Bluey/Season 03/19 - Episodul 19.mp4",
+              "artwork": "Bluey/Season 03/19 - Episodul 19.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-20-20-episodul-20-ad79097693",
+              "number": 20,
+              "sortOrder": 20,
+              "title": "20 - Episodul 20",
+              "media": "Bluey/Season 03/20 - Episodul 20.mp4",
+              "artwork": "Bluey/Season 03/20 - Episodul 20.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-21-21-episodul-21-54ec348518",
+              "number": 21,
+              "sortOrder": 21,
+              "title": "21 - Episodul 21",
+              "media": "Bluey/Season 03/21 - Episodul 21.mp4",
+              "artwork": "Bluey/Season 03/21 - Episodul 21.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-22-22-episodul-22-90d0e0f1a5",
+              "number": 22,
+              "sortOrder": 22,
+              "title": "22 - Episodul 22",
+              "media": "Bluey/Season 03/22 - Episodul 22.mp4",
+              "artwork": "Bluey/Season 03/22 - Episodul 22.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-23-23-episodul-23-2cf4295c75",
+              "number": 23,
+              "sortOrder": 23,
+              "title": "23 - Episodul 23",
+              "media": "Bluey/Season 03/23 - Episodul 23.mp4",
+              "artwork": "Bluey/Season 03/23 - Episodul 23.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-24-24-episodul-24-79739800a8",
+              "number": 24,
+              "sortOrder": 24,
+              "title": "24 - Episodul 24",
+              "media": "Bluey/Season 03/24 - Episodul 24.mp4",
+              "artwork": "Bluey/Season 03/24 - Episodul 24.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-25-25-episodul-25-489e798b04",
+              "number": 25,
+              "sortOrder": 25,
+              "title": "25 - Episodul 25",
+              "media": "Bluey/Season 03/25 - Episodul 25.mp4",
+              "artwork": "Bluey/Season 03/25 - Episodul 25.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-26-26-episodul-26-ce9bbd5698",
+              "number": 26,
+              "sortOrder": 26,
+              "title": "26 - Episodul 26",
+              "media": "Bluey/Season 03/26 - Episodul 26.mp4",
+              "artwork": "Bluey/Season 03/26 - Episodul 26.webp",
+              "subtitle": null,
+              "durationMs": 440021,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-27-27-episodul-27-1e3d6412b1",
+              "number": 27,
+              "sortOrder": 27,
+              "title": "27 - Episodul 27",
+              "media": "Bluey/Season 03/27 - Episodul 27.mp4",
+              "artwork": "Bluey/Season 03/27 - Episodul 27.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-28-28-episodul-28-b259eb138e",
+              "number": 28,
+              "sortOrder": 28,
+              "title": "28 - Episodul 28",
+              "media": "Bluey/Season 03/28 - Episodul 28.mp4",
+              "artwork": "Bluey/Season 03/28 - Episodul 28.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-29-29-episodul-29-d1e1751f3d",
+              "number": 29,
+              "sortOrder": 29,
+              "title": "29 - Episodul 29",
+              "media": "Bluey/Season 03/29 - Episodul 29.mp4",
+              "artwork": "Bluey/Season 03/29 - Episodul 29.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-30-30-episodul-30-5f0d32ff42",
+              "number": 30,
+              "sortOrder": 30,
+              "title": "30 - Episodul 30",
+              "media": "Bluey/Season 03/30 - Episodul 30.mp4",
+              "artwork": "Bluey/Season 03/30 - Episodul 30.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-31-31-episodul-31-0de4ce0f82",
+              "number": 31,
+              "sortOrder": 31,
+              "title": "31 - Episodul 31",
+              "media": "Bluey/Season 03/31 - Episodul 31.mp4",
+              "artwork": "Bluey/Season 03/31 - Episodul 31.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-32-32-episodul-32-1b55e71185",
+              "number": 32,
+              "sortOrder": 32,
+              "title": "32 - Episodul 32",
+              "media": "Bluey/Season 03/32 - Episodul 32.mp4",
+              "artwork": "Bluey/Season 03/32 - Episodul 32.webp",
+              "subtitle": null,
+              "durationMs": 480126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-33-33-episodul-33-c2188b1931",
+              "number": 33,
+              "sortOrder": 33,
+              "title": "33 - Episodul 33",
+              "media": "Bluey/Season 03/33 - Episodul 33.mp4",
+              "artwork": "Bluey/Season 03/33 - Episodul 33.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-34-34-episodul-34-fee73c0fff",
+              "number": 34,
+              "sortOrder": 34,
+              "title": "34 - Episodul 34",
+              "media": "Bluey/Season 03/34 - Episodul 34.mp4",
+              "artwork": "Bluey/Season 03/34 - Episodul 34.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-35-35-episodul-35-2155a02c2b",
+              "number": 35,
+              "sortOrder": 35,
+              "title": "35 - Episodul 35",
+              "media": "Bluey/Season 03/35 - Episodul 35.mp4",
+              "artwork": "Bluey/Season 03/35 - Episodul 35.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-36-36-episodul-36-5098da980c",
+              "number": 36,
+              "sortOrder": 36,
+              "title": "36 - Episodul 36",
+              "media": "Bluey/Season 03/36 - Episodul 36.mp4",
+              "artwork": "Bluey/Season 03/36 - Episodul 36.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "bluey-546f29bd9e-3-37-37-episodul-37-47f5af88a8",
+              "number": 37,
+              "sortOrder": 37,
+              "title": "37 - Episodul 37",
+              "media": "Bluey/Season 03/37 - Episodul 37.mp4",
+              "artwork": "Bluey/Season 03/37 - Episodul 37.webp",
+              "subtitle": null,
+              "durationMs": 420126,
+              "audioLanguage": "eng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cocomelon-8838009a7b",
+      "title": "CoComelon",
+      "path": "CoComelon",
+      "cover": "CoComelon/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "cocomelon-8838009a7b-1-1-01-playdate-wit-00355607b8",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Playdate with JJ",
+              "media": "CoComelon/Season 01/01 - Playdate with JJ.mp4",
+              "artwork": "CoComelon/Season 01/01 - Playdate with JJ.webp",
+              "subtitle": null,
+              "durationMs": 3641416,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "cocomelon-8838009a7b-1-2-02-fun-pack-0690bbb3fe",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Fun Pack",
+              "media": "CoComelon/Season 01/02 - Fun Pack.mp4",
+              "artwork": "CoComelon/Season 01/02 - Fun Pack.webp",
+              "subtitle": null,
+              "durationMs": 3424499,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "cocomelon-8838009a7b-1-3-03-kids-favorit-b812891667",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Kids Favorites",
+              "media": "CoComelon/Season 01/03 - Kids Favorites.mp4",
+              "artwork": "CoComelon/Season 01/03 - Kids Favorites.webp",
+              "subtitle": null,
+              "durationMs": 3813749,
+              "audioLanguage": "eng"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Sezonul 2",
+          "episodes": [
+            {
+              "id": "cocomelon-8838009a7b-2-1-01-learn-and-pl-c813e69f71",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Learn and Play with JJ",
+              "media": "CoComelon/Season 02/01 - Learn and Play with JJ.mp4",
+              "artwork": "CoComelon/Season 02/01 - Learn and Play with JJ.webp",
+              "subtitle": null,
+              "durationMs": 3435958,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "cocomelon-8838009a7b-2-2-02-family-jams-105efc7f72",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Family Jams",
+              "media": "CoComelon/Season 02/02 - Family Jams.mp4",
+              "artwork": "CoComelon/Season 02/02 - Family Jams.webp",
+              "subtitle": null,
+              "durationMs": 3296333,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "cocomelon-8838009a7b-2-3-03-playtime-fav-a0a3f336e6",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Playtime Favorites",
+              "media": "CoComelon/Season 02/03 - Playtime Favorites.mp4",
+              "artwork": "CoComelon/Season 02/03 - Playtime Favorites.webp",
+              "subtitle": null,
+              "durationMs": 3393208,
+              "audioLanguage": "eng"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Sezonul 3",
+          "episodes": [
+            {
+              "id": "cocomelon-8838009a7b-3-1-01-a-sunny-day--6c2ff7260a",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - A Sunny Day for Play",
+              "media": "CoComelon/Season 03/01 - A Sunny Day for Play.mp4",
+              "artwork": "CoComelon/Season 03/01 - A Sunny Day for Play.webp",
+              "subtitle": null,
+              "durationMs": 3365666,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "cocomelon-8838009a7b-3-2-02-learning-wit-8a6705db0e",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Learning with JJ",
+              "media": "CoComelon/Season 03/02 - Learning with JJ.mp4",
+              "artwork": "CoComelon/Season 03/02 - Learning with JJ.webp",
+              "subtitle": null,
+              "durationMs": 3524208,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "cocomelon-8838009a7b-3-3-03-lets-be-frie-fe6cc6365d",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Lets be Friends",
+              "media": "CoComelon/Season 03/03 - Lets be Friends.mp4",
+              "artwork": "CoComelon/Season 03/03 - Lets be Friends.webp",
+              "subtitle": null,
+              "durationMs": 3354125,
+              "audioLanguage": "eng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daniel-tiger-dc3523daef",
+      "title": "Daniel Tiger",
+      "path": "Daniel Tiger",
+      "cover": "Daniel Tiger/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "daniel-tiger-dc3523daef-1-1-01-daniel-s--e06a351e7a",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Daniel's Birthday Daniel's Picnic",
+              "media": "Daniel Tiger/Season 01/01 - Daniel's Birthday Daniel's Picnic.mp4",
+              "artwork": "Daniel Tiger/Season 01/01 - Daniel's Birthday Daniel's Picnic.webp",
+              "subtitle": null,
+              "durationMs": 1588592,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-2-02-daniel-vi-214ce6b4ff",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Daniel Visits School Daniel Visits The Doctor",
+              "media": "Daniel Tiger/Season 01/02 - Daniel Visits School Daniel Visits The Doctor.mp4",
+              "artwork": "Daniel Tiger/Season 01/02 - Daniel Visits School Daniel Visits The Doctor.webp",
+              "subtitle": null,
+              "durationMs": 1588894,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-3-03-daniel-s--be9f35570e",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Daniel's Babysitter Daniel Goes To School",
+              "media": "Daniel Tiger/Season 01/03 - Daniel's Babysitter Daniel Goes To School.mp4",
+              "artwork": "Daniel Tiger/Season 01/03 - Daniel's Babysitter Daniel Goes To School.webp",
+              "subtitle": null,
+              "durationMs": 1588871,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-4-04-daniel-ge-4c1df2a1bc",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Daniel Gets Mad Katerina Gets Mad",
+              "media": "Daniel Tiger/Season 01/04 - Daniel Gets Mad Katerina Gets Mad.mp4",
+              "artwork": "Daniel Tiger/Season 01/04 - Daniel Gets Mad Katerina Gets Mad.webp",
+              "subtitle": null,
+              "durationMs": 1588825,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-5-05-prince-we-6a758917d4",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Prince Wednesday Finds A Way To Play Finding A Way To Play On Backwards Day",
+              "media": "Daniel Tiger/Season 01/05 - Prince Wednesday Finds A Way To Play Finding A Way To Play On Backwards Day.mp4",
+              "artwork": "Daniel Tiger/Season 01/05 - Prince Wednesday Finds A Way To Play Finding A Way To Play On Backwards Day.webp",
+              "subtitle": null,
+              "durationMs": 1588894,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-6-06-daniel-an-a75d00742e",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Daniel And Miss Elaina Play Rocketship Daniel Plays At The Castle",
+              "media": "Daniel Tiger/Season 01/06 - Daniel And Miss Elaina Play Rocketship Daniel Plays At The Castle.mp4",
+              "artwork": "Daniel Tiger/Season 01/06 - Daniel And Miss Elaina Play Rocketship Daniel Plays At The Castle.webp",
+              "subtitle": null,
+              "durationMs": 1589614,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-7-07-friends-h-51c008f35b",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Friends Help Each Other Daniel Helps O Tell A Story",
+              "media": "Daniel Tiger/Season 01/07 - Friends Help Each Other Daniel Helps O Tell A Story.mp4",
+              "artwork": "Daniel Tiger/Season 01/07 - Friends Help Each Other Daniel Helps O Tell A Story.webp",
+              "subtitle": null,
+              "durationMs": 1589057,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-8-08-something-f360efcb60",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Something Special For Dad I Love You, Mom",
+              "media": "Daniel Tiger/Season 01/08 - Something Special For Dad I Love You, Mom.mp4",
+              "artwork": "Daniel Tiger/Season 01/08 - Something Special For Dad I Love You, Mom.webp",
+              "subtitle": null,
+              "durationMs": 1589034,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-9-09-a-trip-to-f722ae80dd",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - A Trip To The Enchanted Garden A Trip To The Crayon Factory",
+              "media": "Daniel Tiger/Season 01/09 - A Trip To The Enchanted Garden A Trip To The Crayon Factory.mp4",
+              "artwork": "Daniel Tiger/Season 01/09 - A Trip To The Enchanted Garden A Trip To The Crayon Factory.webp",
+              "subtitle": null,
+              "durationMs": 1588755,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-1-10-10-daniel-s-868d0317d8",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Daniel Shares His Tigertastic Car Katerina Shares Her Tutu",
+              "media": "Daniel Tiger/Season 01/10 - Daniel Shares His Tigertastic Car Katerina Shares Her Tutu.mp4",
+              "artwork": "Daniel Tiger/Season 01/10 - Daniel Shares His Tigertastic Car Katerina Shares Her Tutu.webp",
+              "subtitle": null,
+              "durationMs": 1588499,
+              "audioLanguage": "und"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Sezonul 2",
+          "episodes": [
+            {
+              "id": "daniel-tiger-dc3523daef-2-1-01-prince-we-74fbad3a08",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Prince Wednesday Goes to the Potty Daniel Goes to the Potty",
+              "media": "Daniel Tiger/Season 02/01 - Prince Wednesday Goes to the Potty _ Daniel Goes to the Potty.mp4",
+              "artwork": "Daniel Tiger/Season 02/01 - Prince Wednesday Goes to the Potty _ Daniel Goes to the Potty.webp",
+              "subtitle": null,
+              "durationMs": 1592725,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-2-02-fruit-pic-107eca003e",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Fruit Picking Day Daniel Is Big Enough To Help Dad",
+              "media": "Daniel Tiger/Season 02/02 - Fruit Picking Day Daniel Is Big Enough To Help Dad.mp4",
+              "artwork": "Daniel Tiger/Season 02/02 - Fruit Picking Day Daniel Is Big Enough To Help Dad.webp",
+              "subtitle": null,
+              "durationMs": 1592841,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-3-03-daniel-wa-31b4beba87",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Daniel Waits For Show And Tell A Night Out At The Restaurant",
+              "media": "Daniel Tiger/Season 02/03 - Daniel Waits For Show And Tell A Night Out At The Restaurant.mp4",
+              "artwork": "Daniel Tiger/Season 02/03 - Daniel Waits For Show And Tell A Night Out At The Restaurant.webp",
+              "subtitle": null,
+              "durationMs": 1592377,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-4-04-thank-you-f80c1441bc",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Thank You, Grandpere Tiger! Neighborhood Thank You Day",
+              "media": "Daniel Tiger/Season 02/04 - Thank You, Grandpere Tiger! Neighborhood Thank You Day.mp4",
+              "artwork": "Daniel Tiger/Season 02/04 - Thank You, Grandpere Tiger! Neighborhood Thank You Day.webp",
+              "subtitle": null,
+              "durationMs": 1592516,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-5-05-the-neigh-266d925564",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - The Neighborhood Votes The Class Votes",
+              "media": "Daniel Tiger/Season 02/05 - The Neighborhood Votes The Class Votes.mp4",
+              "artwork": "Daniel Tiger/Season 02/05 - The Neighborhood Votes The Class Votes.webp",
+              "subtitle": null,
+              "durationMs": 1592447,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-6-06-be-a-vege-d7d260fb60",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Be A Vegetable Taster! Daniel Tries A New Food",
+              "media": "Daniel Tiger/Season 02/06 - Be A Vegetable Taster! Daniel Tries A New Food.mp4",
+              "artwork": "Daniel Tiger/Season 02/06 - Be A Vegetable Taster! Daniel Tries A New Food.webp",
+              "subtitle": null,
+              "durationMs": 1593120,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-7-07-good-morn-2fe5e7c209",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Good Morning Daniel Goodnight Daniel",
+              "media": "Daniel Tiger/Season 02/07 - Good Morning Daniel Goodnight Daniel.mp4",
+              "artwork": "Daniel Tiger/Season 02/07 - Good Morning Daniel Goodnight Daniel.webp",
+              "subtitle": null,
+              "durationMs": 1592098,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-8-08-daniel-pl-68efc29519",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Daniel Plays Ball O Builds A Tower",
+              "media": "Daniel Tiger/Season 02/08 - Daniel Plays Ball O Builds A Tower.mp4",
+              "artwork": "Daniel Tiger/Season 02/08 - Daniel Plays Ball O Builds A Tower.webp",
+              "subtitle": null,
+              "durationMs": 1592168,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-9-09-daniel-ge-16b8d2590b",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Daniel Gets A Shot A Stormy Night",
+              "media": "Daniel Tiger/Season 02/09 - Daniel Gets A Shot A Stormy Night.mp4",
+              "artwork": "Daniel Tiger/Season 02/09 - Daniel Gets A Shot A Stormy Night.webp",
+              "subtitle": null,
+              "durationMs": 1592609,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-2-10-10-daniel-s-fa40fc8e55",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Daniel's Sleepover Backyard Camping",
+              "media": "Daniel Tiger/Season 02/10 - Daniel's Sleepover Backyard Camping.mp4",
+              "artwork": "Daniel Tiger/Season 02/10 - Daniel's Sleepover Backyard Camping.webp",
+              "subtitle": null,
+              "durationMs": 1592725,
+              "audioLanguage": "und"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Sezonul 3",
+          "episodes": [
+            {
+              "id": "daniel-tiger-dc3523daef-3-1-01-you-are-s-993db9e2af",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - You Are Special Daniel Is Special",
+              "media": "Daniel Tiger/Season 03/01 - You Are Special Daniel Is Special.mp4",
+              "artwork": "Daniel Tiger/Season 03/01 - You Are Special Daniel Is Special.webp",
+              "subtitle": null,
+              "durationMs": 1592168,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-2-02-clean-up--787d8d4349",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Clean Up Time Neighborhood Cleanup",
+              "media": "Daniel Tiger/Season 03/02 - Clean Up Time Neighborhood Cleanup.mp4",
+              "artwork": "Daniel Tiger/Season 03/02 - Clean Up Time Neighborhood Cleanup.webp",
+              "subtitle": null,
+              "durationMs": 1589800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-3-03-the-drago-7afd9eac01",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - The Dragon Dance Teacher Harriet's Birthday",
+              "media": "Daniel Tiger/Season 03/03 - The Dragon Dance Teacher Harriet's Birthday.mp4",
+              "artwork": "Daniel Tiger/Season 03/03 - The Dragon Dance Teacher Harriet's Birthday.webp",
+              "subtitle": null,
+              "durationMs": 1589428,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-4-04-play-pret-5330862e76",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Play Pretend Super Daniel!",
+              "media": "Daniel Tiger/Season 03/04 - Play Pretend Super Daniel!.mp4",
+              "artwork": "Daniel Tiger/Season 03/04 - Play Pretend Super Daniel!.webp",
+              "subtitle": null,
+              "durationMs": 1589335,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-5-05-daniel-us-185ee3f043",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Daniel Uses His Words All Aboard!",
+              "media": "Daniel Tiger/Season 03/05 - Daniel Uses His Words All Aboard!.mp4",
+              "artwork": "Daniel Tiger/Season 03/05 - Daniel Uses His Words All Aboard!.webp",
+              "subtitle": null,
+              "durationMs": 1589219,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-6-06-the-royal-4e40cde370",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - The Royal Sandbox Daniel Says I'm Sorry",
+              "media": "Daniel Tiger/Season 03/06 - The Royal Sandbox Daniel Says I'm Sorry.mp4",
+              "artwork": "Daniel Tiger/Season 03/06 - The Royal Sandbox Daniel Says I'm Sorry.webp",
+              "subtitle": null,
+              "durationMs": 1588941,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-7-07-calm-at-t-3de8065e17",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Calm At The Clock Factory Calm For Storytime",
+              "media": "Daniel Tiger/Season 03/07 - Calm At The Clock Factory Calm For Storytime.mp4",
+              "artwork": "Daniel Tiger/Season 03/07 - Calm At The Clock Factory Calm For Storytime.webp",
+              "subtitle": null,
+              "durationMs": 1588523,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-8-08-it-s-time-6eaa6bb989",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - It's Time To Go Daniel Doesn't Want To Stop Playing",
+              "media": "Daniel Tiger/Season 03/08 - It's Time To Go Daniel Doesn't Want To Stop Playing.mp4",
+              "artwork": "Daniel Tiger/Season 03/08 - It's Time To Go Daniel Doesn't Want To Stop Playing.webp",
+              "subtitle": null,
+              "durationMs": 1588639,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-9-09-safety-pa-65e5a34ea6",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Safety Patrol Safety At The Beach",
+              "media": "Daniel Tiger/Season 03/09 - Safety Patrol Safety At The Beach.mp4",
+              "artwork": "Daniel Tiger/Season 03/09 - Safety Patrol Safety At The Beach.webp",
+              "subtitle": null,
+              "durationMs": 1589266,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-3-10-10-neighbor-bc7c1ee686",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Neighbor Day",
+              "media": "Daniel Tiger/Season 03/10 - Neighbor Day.mp4",
+              "artwork": "Daniel Tiger/Season 03/10 - Neighbor Day.webp",
+              "subtitle": null,
+              "durationMs": 1589475,
+              "audioLanguage": "und"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "title": "Sezonul 4",
+          "episodes": [
+            {
+              "id": "daniel-tiger-dc3523daef-4-1-01-katerina--f4b61e6392",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Katerina's Costume Dress Up Day",
+              "media": "Daniel Tiger/Season 04/01 - Katerina's Costume Dress Up Day.mp4",
+              "artwork": "Daniel Tiger/Season 04/01 - Katerina's Costume Dress Up Day.webp",
+              "subtitle": null,
+              "durationMs": 1589126,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-2-02-a-snowy-d-660e5df989",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - A Snowy Day Tutu All The Time",
+              "media": "Daniel Tiger/Season 04/02 - A Snowy Day Tutu All The Time.mp4",
+              "artwork": "Daniel Tiger/Season 04/02 - A Snowy Day Tutu All The Time.webp",
+              "subtitle": null,
+              "durationMs": 1589707,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-3-03-daniel-s--9f541e99c0",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Daniel's New Friend Same And Different",
+              "media": "Daniel Tiger/Season 04/03 - Daniel's New Friend Same And Different.mp4",
+              "artwork": "Daniel Tiger/Season 04/03 - Daniel's New Friend Same And Different.webp",
+              "subtitle": null,
+              "durationMs": 1589475,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-4-04-daniel-ge-93fcb9d360",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Daniel Gets A Cold Mom Tiger Is Sick",
+              "media": "Daniel Tiger/Season 04/04 - Daniel Gets A Cold Mom Tiger Is Sick.mp4",
+              "artwork": "Daniel Tiger/Season 04/04 - Daniel Gets A Cold Mom Tiger Is Sick.webp",
+              "subtitle": null,
+              "durationMs": 1589753,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-5-05-snowflake-6c57224df7",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Snowflake Day!",
+              "media": "Daniel Tiger/Season 04/05 - Snowflake Day!.mp4",
+              "artwork": "Daniel Tiger/Season 04/05 - Snowflake Day!.webp",
+              "subtitle": null,
+              "durationMs": 1589777,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-6-06-duckling--1c5b747857",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Duckling Goes Home Daniel Feels Left Out",
+              "media": "Daniel Tiger/Season 04/06 - Duckling Goes Home Daniel Feels Left Out.mp4",
+              "artwork": "Daniel Tiger/Season 04/06 - Duckling Goes Home Daniel Feels Left Out.webp",
+              "subtitle": null,
+              "durationMs": 1589637,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-7-07-daniel-ge-c01603e8b5",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Daniel Gets Frustrated Frustration At School",
+              "media": "Daniel Tiger/Season 04/07 - Daniel Gets Frustrated Frustration At School.mp4",
+              "artwork": "Daniel Tiger/Season 04/07 - Daniel Gets Frustrated Frustration At School.webp",
+              "subtitle": null,
+              "durationMs": 1589661,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-8-08-daniel-is-5eb036bea1",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Daniel Is Jealous Jealousy At The Treehouse",
+              "media": "Daniel Tiger/Season 04/08 - Daniel Is Jealous Jealousy At The Treehouse.mp4",
+              "artwork": "Daniel Tiger/Season 04/08 - Daniel Is Jealous Jealousy At The Treehouse.webp",
+              "subtitle": null,
+              "durationMs": 1589405,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-9-09-someone-e-e7a605cdcb",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Someone Else's Feelings Empathy At School",
+              "media": "Daniel Tiger/Season 04/09 - Someone Else's Feelings Empathy At School.mp4",
+              "artwork": "Daniel Tiger/Season 04/09 - Someone Else's Feelings Empathy At School.webp",
+              "subtitle": null,
+              "durationMs": 1589661,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "daniel-tiger-dc3523daef-4-10-10-line-lea-5d9e1c5c63",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Line Leader Daniel Neighborhood Jobs",
+              "media": "Daniel Tiger/Season 04/10 - Line Leader Daniel Neighborhood Jobs.mp4",
+              "artwork": "Daniel Tiger/Season 04/10 - Line Leader Daniel Neighborhood Jobs.webp",
+              "subtitle": null,
+              "durationMs": 1589800,
+              "audioLanguage": "und"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desene-clasice-volumul-1-e449d63eb1",
+      "title": "Desene Clasice - Volumul 1",
+      "path": "Desene Clasice - Volumul 1",
+      "cover": "Desene Clasice - Volumul 1/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-1--f8f768e171",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - A Corny Concerto",
+              "media": "Desene Clasice - Volumul 1/Season 01/01 - A Corny Concerto.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/01 - A Corny Concerto.webp",
+              "subtitle": null,
+              "durationMs": 510239,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-2--b78cd72092",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - The Arctic Giant",
+              "media": "Desene Clasice - Volumul 1/Season 01/02 - The Arctic Giant.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/02 - The Arctic Giant.webp",
+              "subtitle": null,
+              "durationMs": 531781,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-3--6ccc9d16ed",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Woody Woodpecker",
+              "media": "Desene Clasice - Volumul 1/Season 01/03 - Woody Woodpecker.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/03 - Woody Woodpecker.webp",
+              "subtitle": null,
+              "durationMs": 446195,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-4--bbe6fa4464",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Felix the Cat",
+              "media": "Desene Clasice - Volumul 1/Season 01/04 - Felix the Cat.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/04 - Felix the Cat.webp",
+              "subtitle": null,
+              "durationMs": 448072,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-5--b3829b604b",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Daffy Duck and the Dinosaur",
+              "media": "Desene Clasice - Volumul 1/Season 01/05 - Daffy Duck and the Dinosaur.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/05 - Daffy Duck and the Dinosaur.webp",
+              "subtitle": null,
+              "durationMs": 470011,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-6--cf197a39c0",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - A Coach for Cinderella",
+              "media": "Desene Clasice - Volumul 1/Season 01/06 - A Coach for Cinderella.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/06 - A Coach for Cinderella.webp",
+              "subtitle": null,
+              "durationMs": 590881,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-1-e449d63eb1-1-7--ad5ae83e02",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Aladdin and His Wonderful Lamp",
+              "media": "Desene Clasice - Volumul 1/Season 01/07 - Aladdin and His Wonderful Lamp.mp4",
+              "artwork": "Desene Clasice - Volumul 1/Season 01/07 - Aladdin and His Wonderful Lamp.webp",
+              "subtitle": null,
+              "durationMs": 1365822,
+              "audioLanguage": "eng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desene-clasice-volumul-2-2fd7682fab",
+      "title": "Desene Clasice - Volumul 2",
+      "path": "Desene Clasice - Volumul 2",
+      "cover": "Desene Clasice - Volumul 2/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-1--8a903cb4a5",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - The Wabbit Who Came to Supper",
+              "media": "Desene Clasice - Volumul 2/Season 01/01 - The Wabbit Who Came to Supper.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/01 - The Wabbit Who Came to Supper.webp",
+              "subtitle": null,
+              "durationMs": 502940,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-2--2eb3698a83",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - The Mechanical Monsters",
+              "media": "Desene Clasice - Volumul 2/Season 01/02 - The Mechanical Monsters.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/02 - The Mechanical Monsters.webp",
+              "subtitle": null,
+              "durationMs": 574949,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-3--85b4fdb487",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Daffy vs Elmer Boxing",
+              "media": "Desene Clasice - Volumul 2/Season 01/03 - Daffy vs Elmer Boxing.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/03 - Daffy vs Elmer Boxing.webp",
+              "subtitle": null,
+              "durationMs": 385218,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-4--dc0e7ff823",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Poor Cinderella",
+              "media": "Desene Clasice - Volumul 2/Season 01/04 - Poor Cinderella.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/04 - Poor Cinderella.webp",
+              "subtitle": null,
+              "durationMs": 642266,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-5--48d876b709",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Balloon Land",
+              "media": "Desene Clasice - Volumul 2/Season 01/05 - Balloon Land.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/05 - Balloon Land.webp",
+              "subtitle": null,
+              "durationMs": 439897,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-6--2c822befbe",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - The Mummy Strikes",
+              "media": "Desene Clasice - Volumul 2/Season 01/06 - The Mummy Strikes.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/06 - The Mummy Strikes.webp",
+              "subtitle": null,
+              "durationMs": 453953,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-2-2fd7682fab-1-7--7723c44a8b",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Popeye Meets Sinbad the Sailor",
+              "media": "Desene Clasice - Volumul 2/Season 01/07 - Popeye Meets Sinbad the Sailor.mp4",
+              "artwork": "Desene Clasice - Volumul 2/Season 01/07 - Popeye Meets Sinbad the Sailor.webp",
+              "subtitle": null,
+              "durationMs": 1015323,
+              "audioLanguage": "eng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desene-clasice-volumul-3-0f4c7e760d",
+      "title": "Desene Clasice - Volumul 3",
+      "path": "Desene Clasice - Volumul 3",
+      "cover": "Desene Clasice - Volumul 3/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-1--e54f1481d5",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Wacky Wabbit",
+              "media": "Desene Clasice - Volumul 3/Season 01/01 - Wacky Wabbit.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/01 - Wacky Wabbit.webp",
+              "subtitle": null,
+              "durationMs": 463192,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-2--f146a00352",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - The Underground World",
+              "media": "Desene Clasice - Volumul 3/Season 01/02 - The Underground World.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/02 - The Underground World.webp",
+              "subtitle": null,
+              "durationMs": 434934,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-3--90d2f14c5b",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Yankee Doodle Daffy",
+              "media": "Desene Clasice - Volumul 3/Season 01/03 - Yankee Doodle Daffy.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/03 - Yankee Doodle Daffy.webp",
+              "subtitle": null,
+              "durationMs": 387303,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-4--8144be6f2d",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Foney Fables",
+              "media": "Desene Clasice - Volumul 3/Season 01/04 - Foney Fables.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/04 - Foney Fables.webp",
+              "subtitle": null,
+              "durationMs": 473848,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-5--8736f07d82",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Wizard of Oz",
+              "media": "Desene Clasice - Volumul 3/Season 01/05 - Wizard of Oz.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/05 - Wizard of Oz.webp",
+              "subtitle": null,
+              "durationMs": 497246,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-6--80efb27654",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Wackiki Wabbit",
+              "media": "Desene Clasice - Volumul 3/Season 01/06 - Wackiki Wabbit.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/06 - Wackiki Wabbit.webp",
+              "subtitle": null,
+              "durationMs": 385426,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-3-0f4c7e760d-1-7--8dc9fb0807",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Popeye Meets Ali Babas Forty Thieves",
+              "media": "Desene Clasice - Volumul 3/Season 01/07 - Popeye Meets Ali Babas Forty Thieves.mp4",
+              "artwork": "Desene Clasice - Volumul 3/Season 01/07 - Popeye Meets Ali Babas Forty Thieves.webp",
+              "subtitle": null,
+              "durationMs": 1076373,
+              "audioLanguage": "eng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desene-clasice-volumul-4-01229826eb",
+      "title": "Desene Clasice - Volumul 4",
+      "path": "Desene Clasice - Volumul 4",
+      "cover": "Desene Clasice - Volumul 4/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-1--a665093c6a",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Falling Hare",
+              "media": "Desene Clasice - Volumul 4/Season 01/01 - Falling Hare.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/01 - Falling Hare.webp",
+              "subtitle": null,
+              "durationMs": 516578,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-2--04658b0684",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Superman WWII Secret Agent",
+              "media": "Desene Clasice - Volumul 4/Season 01/02 - Superman WWII Secret Agent.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/02 - Superman WWII Secret Agent.webp",
+              "subtitle": null,
+              "durationMs": 406197,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-3--6915da2445",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Daffy The Commando",
+              "media": "Desene Clasice - Volumul 4/Season 01/03 - Daffy The Commando.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/03 - Daffy The Commando.webp",
+              "subtitle": null,
+              "durationMs": 418209,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-4--e97d204441",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - The Spirit of 43",
+              "media": "Desene Clasice - Volumul 4/Season 01/04 - The Spirit of 43.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/04 - The Spirit of 43.webp",
+              "subtitle": null,
+              "durationMs": 348139,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-5--abee7f7c8c",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - A Tale of Two Kitties",
+              "media": "Desene Clasice - Volumul 4/Season 01/05 - A Tale of Two Kitties.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/05 - A Tale of Two Kitties.webp",
+              "subtitle": null,
+              "durationMs": 394644,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-6--acaa5961cf",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Ding Dog Daddy",
+              "media": "Desene Clasice - Volumul 4/Season 01/06 - Ding Dog Daddy.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/06 - Ding Dog Daddy.webp",
+              "subtitle": null,
+              "durationMs": 489739,
+              "audioLanguage": "eng"
+            },
+            {
+              "id": "desene-clasice-volumul-4-01229826eb-1-7--094ee19e3e",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Im In The Army Now",
+              "media": "Desene Clasice - Volumul 4/Season 01/07 - Im In The Army Now.mp4",
+              "artwork": "Desene Clasice - Volumul 4/Season 01/07 - Im In The Army Now.webp",
+              "subtitle": null,
+              "durationMs": 416625,
+              "audioLanguage": "eng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pocoyo-67922e0ab6",
+      "title": "Pocoyo",
+      "path": "Pocoyo",
+      "cover": "Pocoyo/cover.webp",
+      "seasons": [
+        {
+          "number": 1,
+          "title": "Sezonul 1",
+          "episodes": [
+            {
+              "id": "pocoyo-67922e0ab6-1-1-01-hush-21853d7e85",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Hush",
+              "media": "Pocoyo/Season 01/01 - Hush.mp4",
+              "artwork": "Pocoyo/Season 01/01 - Hush.webp",
+              "subtitle": null,
+              "durationMs": 434560,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-2-02-pocoyo-dance-fd4bef2a8a",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Pocoyo Dance",
+              "media": "Pocoyo/Season 01/02 - Pocoyo Dance.mp4",
+              "artwork": "Pocoyo/Season 01/02 - Pocoyo Dance.webp",
+              "subtitle": null,
+              "durationMs": 432920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-3-03-drum-roll-pleas-646656fa99",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Drum Roll Please",
+              "media": "Pocoyo/Season 01/03 - Drum Roll Please.mp4",
+              "artwork": "Pocoyo/Season 01/03 - Drum Roll Please.webp",
+              "subtitle": null,
+              "durationMs": 428280,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-4-04-umbrella-umbrel-fbc1ef765f",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Umbrella, Umbrella",
+              "media": "Pocoyo/Season 01/04 - Umbrella, Umbrella.mp4",
+              "artwork": "Pocoyo/Season 01/04 - Umbrella, Umbrella.webp",
+              "subtitle": null,
+              "durationMs": 432769,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-5-05-a-mystery-most--9aebcd330d",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - A Mystery Most Puzzling",
+              "media": "Pocoyo/Season 01/05 - A Mystery Most Puzzling.mp4",
+              "artwork": "Pocoyo/Season 01/05 - A Mystery Most Puzzling.webp",
+              "subtitle": null,
+              "durationMs": 433480,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-6-06-a-present-for-e-1d32cf6d0e",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - A Present for Elly",
+              "media": "Pocoyo/Season 01/06 - A Present for Elly.mp4",
+              "artwork": "Pocoyo/Season 01/06 - A Present for Elly.webp",
+              "subtitle": null,
+              "durationMs": 433240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-7-07-the-big-sneeze-004bc1ef40",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - The Big Sneeze",
+              "media": "Pocoyo/Season 01/07 - The Big Sneeze.mp4",
+              "artwork": "Pocoyo/Season 01/07 - The Big Sneeze.webp",
+              "subtitle": null,
+              "durationMs": 431600,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-8-08-double-bubble-cbd0f63e32",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Double Bubble",
+              "media": "Pocoyo/Season 01/08 - Double Bubble.mp4",
+              "artwork": "Pocoyo/Season 01/08 - Double Bubble.webp",
+              "subtitle": null,
+              "durationMs": 432360,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-9-09-sleepy-bird-s-s-a79512cc6b",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Sleepy Bird's Surprise",
+              "media": "Pocoyo/Season 01/09 - Sleepy Bird's Surprise.mp4",
+              "artwork": "Pocoyo/Season 01/09 - Sleepy Bird's Surprise.webp",
+              "subtitle": null,
+              "durationMs": 433840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-10-10-swept-away-d2ce926a2e",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Swept Away",
+              "media": "Pocoyo/Season 01/10 - Swept Away.mp4",
+              "artwork": "Pocoyo/Season 01/10 - Swept Away.webp",
+              "subtitle": null,
+              "durationMs": 432609,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-11-11-who-s-on-the-p-6639171f43",
+              "number": 11,
+              "sortOrder": 11,
+              "title": "11 - Who's on the Phone",
+              "media": "Pocoyo/Season 01/11 - Who's on the Phone.mp4",
+              "artwork": "Pocoyo/Season 01/11 - Who's on the Phone.webp",
+              "subtitle": null,
+              "durationMs": 433377,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-12-12-fetch-loula-fe-c2a58a5b03",
+              "number": 12,
+              "sortOrder": 12,
+              "title": "12 - Fetch Loula Fetch",
+              "media": "Pocoyo/Season 01/12 - Fetch Loula Fetch.mp4",
+              "artwork": "Pocoyo/Season 01/12 - Fetch Loula Fetch.webp",
+              "subtitle": null,
+              "durationMs": 431617,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-13-13-a-little-cloud-815d0262a2",
+              "number": 13,
+              "sortOrder": 13,
+              "title": "13 - A Little Cloud",
+              "media": "Pocoyo/Season 01/13 - A Little Cloud.mp4",
+              "artwork": "Pocoyo/Season 01/13 - A Little Cloud.webp",
+              "subtitle": null,
+              "durationMs": 433473,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-14-14-table-for-fun-cddcfe18d7",
+              "number": 14,
+              "sortOrder": 14,
+              "title": "14 - Table for Fun",
+              "media": "Pocoyo/Season 01/14 - Table for Fun.mp4",
+              "artwork": "Pocoyo/Season 01/14 - Table for Fun.webp",
+              "subtitle": null,
+              "durationMs": 433601,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-15-15-keep-going-poc-a73404dfcb",
+              "number": 15,
+              "sortOrder": 15,
+              "title": "15 - Keep Going, Pocoyo!",
+              "media": "Pocoyo/Season 01/15 - Keep Going, Pocoyo!.mp4",
+              "artwork": "Pocoyo/Season 01/15 - Keep Going, Pocoyo!.webp",
+              "subtitle": null,
+              "durationMs": 433697,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-16-16-where-s-pocoyo-8041d15289",
+              "number": 16,
+              "sortOrder": 16,
+              "title": "16 - Where's Pocoyo",
+              "media": "Pocoyo/Season 01/16 - Where's Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 01/16 - Where's Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 420641,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-17-17-drummer-boy-b3137fd312",
+              "number": 17,
+              "sortOrder": 17,
+              "title": "17 - Drummer Boy",
+              "media": "Pocoyo/Season 01/17 - Drummer Boy.mp4",
+              "artwork": "Pocoyo/Season 01/17 - Drummer Boy.webp",
+              "subtitle": null,
+              "durationMs": 433313,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-18-18-the-great-race-d8d068b892",
+              "number": 18,
+              "sortOrder": 18,
+              "title": "18 - The Great Race",
+              "media": "Pocoyo/Season 01/18 - The Great Race.mp4",
+              "artwork": "Pocoyo/Season 01/18 - The Great Race.webp",
+              "subtitle": null,
+              "durationMs": 430145,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-19-19-don-t-touch-0575816de3",
+              "number": 19,
+              "sortOrder": 19,
+              "title": "19 - Don't Touch",
+              "media": "Pocoyo/Season 01/19 - Don't Touch.mp4",
+              "artwork": "Pocoyo/Season 01/19 - Don't Touch.webp",
+              "subtitle": null,
+              "durationMs": 433441,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-20-20-mystery-footpr-f272a34b38",
+              "number": 20,
+              "sortOrder": 20,
+              "title": "20 - Mystery Footprints",
+              "media": "Pocoyo/Season 01/20 - Mystery Footprints.mp4",
+              "artwork": "Pocoyo/Season 01/20 - Mystery Footprints.webp",
+              "subtitle": null,
+              "durationMs": 433473,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-21-21-magical-wateri-26afa9768e",
+              "number": 21,
+              "sortOrder": 21,
+              "title": "21 - Magical Watering Can",
+              "media": "Pocoyo/Season 01/21 - Magical Watering Can.mp4",
+              "artwork": "Pocoyo/Season 01/21 - Magical Watering Can.webp",
+              "subtitle": null,
+              "durationMs": 433889,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-22-22-twinkle-twinkl-cef5f83063",
+              "number": 22,
+              "sortOrder": 22,
+              "title": "22 - Twinkle Twinkle",
+              "media": "Pocoyo/Season 01/22 - Twinkle Twinkle.mp4",
+              "artwork": "Pocoyo/Season 01/22 - Twinkle Twinkle.webp",
+              "subtitle": null,
+              "durationMs": 434561,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-23-23-hiccup-836d8e46bf",
+              "number": 23,
+              "sortOrder": 23,
+              "title": "23 - Hiccup",
+              "media": "Pocoyo/Season 01/23 - Hiccup.mp4",
+              "artwork": "Pocoyo/Season 01/23 - Hiccup.webp",
+              "subtitle": null,
+              "durationMs": 433441,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-24-24-pato-s-postal--ec4a25ac04",
+              "number": 24,
+              "sortOrder": 24,
+              "title": "24 - Pato's Postal Service",
+              "media": "Pocoyo/Season 01/24 - Pato's Postal Service.mp4",
+              "artwork": "Pocoyo/Season 01/24 - Pato's Postal Service.webp",
+              "subtitle": null,
+              "durationMs": 434049,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-25-25-puppy-love-c7142d80af",
+              "number": 25,
+              "sortOrder": 25,
+              "title": "25 - Puppy Love",
+              "media": "Pocoyo/Season 01/25 - Puppy Love.mp4",
+              "artwork": "Pocoyo/Season 01/25 - Puppy Love.webp",
+              "subtitle": null,
+              "durationMs": 433633,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-26-26-bat-and-ball-74afc5c1a8",
+              "number": 26,
+              "sortOrder": 26,
+              "title": "26 - Bat and Ball",
+              "media": "Pocoyo/Season 01/26 - Bat and Ball.mp4",
+              "artwork": "Pocoyo/Season 01/26 - Bat and Ball.webp",
+              "subtitle": null,
+              "durationMs": 433921,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-27-27-elly-spots-947982b243",
+              "number": 27,
+              "sortOrder": 27,
+              "title": "27 - Elly Spots",
+              "media": "Pocoyo/Season 01/27 - Elly Spots.mp4",
+              "artwork": "Pocoyo/Season 01/27 - Elly Spots.webp",
+              "subtitle": null,
+              "durationMs": 426840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-28-28-up-up-and-away-690fa4f052",
+              "number": 28,
+              "sortOrder": 28,
+              "title": "28 - Up Up and Away",
+              "media": "Pocoyo/Season 01/28 - Up Up and Away.mp4",
+              "artwork": "Pocoyo/Season 01/28 - Up Up and Away.webp",
+              "subtitle": null,
+              "durationMs": 426840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-29-29-a-surprise-for-9832525db7",
+              "number": 29,
+              "sortOrder": 29,
+              "title": "29 - A Surprise for Pocoyo",
+              "media": "Pocoyo/Season 01/29 - A Surprise for Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 01/29 - A Surprise for Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 426800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-30-30-having-a-ball-21eaa04fda",
+              "number": 30,
+              "sortOrder": 30,
+              "title": "30 - Having a Ball",
+              "media": "Pocoyo/Season 01/30 - Having a Ball.mp4",
+              "artwork": "Pocoyo/Season 01/30 - Having a Ball.webp",
+              "subtitle": null,
+              "durationMs": 424800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-31-31-super-pocoyo-03fcfbaf09",
+              "number": 31,
+              "sortOrder": 31,
+              "title": "31 - Super Pocoyo",
+              "media": "Pocoyo/Season 01/31 - Super Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 01/31 - Super Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 427240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-32-32-let-s-go-campi-41e6b81308",
+              "number": 32,
+              "sortOrder": 32,
+              "title": "32 - Let's Go Camping",
+              "media": "Pocoyo/Season 01/32 - Let's Go Camping.mp4",
+              "artwork": "Pocoyo/Season 01/32 - Let's Go Camping.webp",
+              "subtitle": null,
+              "durationMs": 427880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-33-33-the-key-to-it--6d71221cb1",
+              "number": 33,
+              "sortOrder": 33,
+              "title": "33 - The Key to It All",
+              "media": "Pocoyo/Season 01/33 - The Key to It All.mp4",
+              "artwork": "Pocoyo/Season 01/33 - The Key to It All.webp",
+              "subtitle": null,
+              "durationMs": 427840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-34-34-fussy-duck-c5fb52a2fc",
+              "number": 34,
+              "sortOrder": 34,
+              "title": "34 - Fussy Duck",
+              "media": "Pocoyo/Season 01/34 - Fussy Duck.mp4",
+              "artwork": "Pocoyo/Season 01/34 - Fussy Duck.webp",
+              "subtitle": null,
+              "durationMs": 420400,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-35-35-whale-s-birthd-8a486d998d",
+              "number": 35,
+              "sortOrder": 35,
+              "title": "35 - Whale's Birthday",
+              "media": "Pocoyo/Season 01/35 - Whale's Birthday.mp4",
+              "artwork": "Pocoyo/Season 01/35 - Whale's Birthday.webp",
+              "subtitle": null,
+              "durationMs": 427840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-36-36-elly-s-big-cha-8d8d4fe433",
+              "number": 36,
+              "sortOrder": 36,
+              "title": "36 - Elly's Big Chase",
+              "media": "Pocoyo/Season 01/36 - Elly's Big Chase.mp4",
+              "artwork": "Pocoyo/Season 01/36 - Elly's Big Chase.webp",
+              "subtitle": null,
+              "durationMs": 426840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-37-37-bedtime-7a709bf431",
+              "number": 37,
+              "sortOrder": 37,
+              "title": "37 - Bedtime",
+              "media": "Pocoyo/Season 01/37 - Bedtime.mp4",
+              "artwork": "Pocoyo/Season 01/37 - Bedtime.webp",
+              "subtitle": null,
+              "durationMs": 426840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-38-38-juggling-balls-321fd74768",
+              "number": 38,
+              "sortOrder": 38,
+              "title": "38 - Juggling Balls",
+              "media": "Pocoyo/Season 01/38 - Juggling Balls.mp4",
+              "artwork": "Pocoyo/Season 01/38 - Juggling Balls.webp",
+              "subtitle": null,
+              "durationMs": 427800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-39-39-pocoyo-s-littl-8eec9f6d3b",
+              "number": 39,
+              "sortOrder": 39,
+              "title": "39 - Pocoyo's Little Friend",
+              "media": "Pocoyo/Season 01/39 - Pocoyo's Little Friend.mp4",
+              "artwork": "Pocoyo/Season 01/39 - Pocoyo's Little Friend.webp",
+              "subtitle": null,
+              "durationMs": 426880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-40-40-pocoyo-pocoyo-58edce26d7",
+              "number": 40,
+              "sortOrder": 40,
+              "title": "40 - Pocoyo Pocoyo",
+              "media": "Pocoyo/Season 01/40 - Pocoyo Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 01/40 - Pocoyo Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 424800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-41-41-picture-this-4a61eb2fdc",
+              "number": 41,
+              "sortOrder": 41,
+              "title": "41 - Picture This",
+              "media": "Pocoyo/Season 01/41 - Picture This.mp4",
+              "artwork": "Pocoyo/Season 01/41 - Picture This.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-42-42-musical-blocks-1db23837bd",
+              "number": 42,
+              "sortOrder": 42,
+              "title": "42 - Musical Blocks",
+              "media": "Pocoyo/Season 01/42 - Musical Blocks.mp4",
+              "artwork": "Pocoyo/Season 01/42 - Musical Blocks.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-43-43-paint-me-a-pic-61dcca7a87",
+              "number": 43,
+              "sortOrder": 43,
+              "title": "43 - Paint Me a Picture",
+              "media": "Pocoyo/Season 01/43 - Paint Me a Picture.mp4",
+              "artwork": "Pocoyo/Season 01/43 - Paint Me a Picture.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-44-44-elly-s-doll-f8c5ac6f68",
+              "number": 44,
+              "sortOrder": 44,
+              "title": "44 - Elly's Doll",
+              "media": "Pocoyo/Season 01/44 - Elly's Doll.mp4",
+              "artwork": "Pocoyo/Season 01/44 - Elly's Doll.webp",
+              "subtitle": null,
+              "durationMs": 422840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-45-45-giggle-bug-39ccd557f5",
+              "number": 45,
+              "sortOrder": 45,
+              "title": "45 - Giggle Bug",
+              "media": "Pocoyo/Season 01/45 - Giggle Bug.mp4",
+              "artwork": "Pocoyo/Season 01/45 - Giggle Bug.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-46-46-pocoyo-gets-it-5df916669a",
+              "number": 46,
+              "sortOrder": 46,
+              "title": "46 - Pocoyo Gets It Right",
+              "media": "Pocoyo/Season 01/46 - Pocoyo Gets It Right.mp4",
+              "artwork": "Pocoyo/Season 01/46 - Pocoyo Gets It Right.webp",
+              "subtitle": null,
+              "durationMs": 424880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-47-47-a-dog-s-life-83a60ca55b",
+              "number": 47,
+              "sortOrder": 47,
+              "title": "47 - A Dog's Life",
+              "media": "Pocoyo/Season 01/47 - A Dog's Life.mp4",
+              "artwork": "Pocoyo/Season 01/47 - A Dog's Life.webp",
+              "subtitle": null,
+              "durationMs": 423920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-48-48-what-s-in-the--26c2ae19a3",
+              "number": 48,
+              "sortOrder": 48,
+              "title": "48 - What's in the Box",
+              "media": "Pocoyo/Season 01/48 - What's in the Box.mp4",
+              "artwork": "Pocoyo/Season 01/48 - What's in the Box.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-49-49-pocoyo-lympics-0bb4da7fb1",
+              "number": 49,
+              "sortOrder": 49,
+              "title": "49 - Pocoyo-lympics",
+              "media": "Pocoyo/Season 01/49 - Pocoyo-lympics.mp4",
+              "artwork": "Pocoyo/Season 01/49 - Pocoyo-lympics.webp",
+              "subtitle": null,
+              "durationMs": 420880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-50-50-colour-my-worl-b52db76046",
+              "number": 50,
+              "sortOrder": 50,
+              "title": "50 - Colour My World",
+              "media": "Pocoyo/Season 01/50 - Colour My World.mp4",
+              "artwork": "Pocoyo/Season 01/50 - Colour My World.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-51-51-a-little-somet-5fe0164a3e",
+              "number": 51,
+              "sortOrder": 51,
+              "title": "51 - A Little Something Between Friends",
+              "media": "Pocoyo/Season 01/51 - A Little Something Between Friends.mp4",
+              "artwork": "Pocoyo/Season 01/51 - A Little Something Between Friends.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-1-52-52-wackily-ever-a-fa40e76468",
+              "number": 52,
+              "sortOrder": 52,
+              "title": "52 - Wackily Ever After",
+              "media": "Pocoyo/Season 01/52 - Wackily Ever After.mp4",
+              "artwork": "Pocoyo/Season 01/52 - Wackily Ever After.webp",
+              "subtitle": null,
+              "durationMs": 424800,
+              "audioLanguage": "und"
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Sezonul 2",
+          "episodes": [
+            {
+              "id": "pocoyo-67922e0ab6-2-1-01-pocoyo-s-presen-b72420cb34",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Pocoyo's Present",
+              "media": "Pocoyo/Season 02/01 - Pocoyo's Present.mp4",
+              "artwork": "Pocoyo/Season 02/01 - Pocoyo's Present.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-2-02-mad-mix-machine-3f20be0b28",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Mad Mix Machine",
+              "media": "Pocoyo/Season 02/02 - Mad Mix Machine.mp4",
+              "artwork": "Pocoyo/Season 02/02 - Mad Mix Machine.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-3-03-big-scary-slide-f83057ab25",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Big Scary Slide",
+              "media": "Pocoyo/Season 02/03 - Big Scary Slide.mp4",
+              "artwork": "Pocoyo/Season 02/03 - Big Scary Slide.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-4-04-elly-s-ballet-c-046af21ccd",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - Elly's Ballet Class",
+              "media": "Pocoyo/Season 02/04 - Elly's Ballet Class.mp4",
+              "artwork": "Pocoyo/Season 02/04 - Elly's Ballet Class.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-5-05-guess-what-a679ef37dd",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - Guess What",
+              "media": "Pocoyo/Season 02/05 - Guess What.mp4",
+              "artwork": "Pocoyo/Season 02/05 - Guess What.webp",
+              "subtitle": null,
+              "durationMs": 421840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-6-06-mr-big-duck-a39a26c5a4",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Mr Big Duck",
+              "media": "Pocoyo/Season 02/06 - Mr Big Duck.mp4",
+              "artwork": "Pocoyo/Season 02/06 - Mr Big Duck.webp",
+              "subtitle": null,
+              "durationMs": 424800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-7-07-the-messy-guest-f5a7924d97",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - The Messy Guest",
+              "media": "Pocoyo/Season 02/07 - The Messy Guest.mp4",
+              "artwork": "Pocoyo/Season 02/07 - The Messy Guest.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-8-08-pocoyo-s-balloo-b95e967bd8",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Pocoyo's Balloon",
+              "media": "Pocoyo/Season 02/08 - Pocoyo's Balloon.mp4",
+              "artwork": "Pocoyo/Season 02/08 - Pocoyo's Balloon.webp",
+              "subtitle": null,
+              "durationMs": 423840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-9-09-who-s-calling-m-2ddccc6455",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Who's Calling Me Now",
+              "media": "Pocoyo/Season 02/09 - Who's Calling Me Now.mp4",
+              "artwork": "Pocoyo/Season 02/09 - Who's Calling Me Now.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-10-10-band-of-friend-6f43dbab09",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Band of Friends",
+              "media": "Pocoyo/Season 02/10 - Band of Friends.mp4",
+              "artwork": "Pocoyo/Season 02/10 - Band of Friends.webp",
+              "subtitle": null,
+              "durationMs": 424920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-11-11-upside-down-9dfe3e28a8",
+              "number": 11,
+              "sortOrder": 11,
+              "title": "11 - Upside Down",
+              "media": "Pocoyo/Season 02/11 - Upside Down.mp4",
+              "artwork": "Pocoyo/Season 02/11 - Upside Down.webp",
+              "subtitle": null,
+              "durationMs": 423880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-12-12-new-on-the-pla-67fb495544",
+              "number": 12,
+              "sortOrder": 12,
+              "title": "12 - New on the Planet",
+              "media": "Pocoyo/Season 02/12 - New on the Planet.mp4",
+              "artwork": "Pocoyo/Season 02/12 - New on the Planet.webp",
+              "subtitle": null,
+              "durationMs": 423840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-13-13-all-for-one-b5b9a41473",
+              "number": 13,
+              "sortOrder": 13,
+              "title": "13 - All for One",
+              "media": "Pocoyo/Season 02/13 - All for One.mp4",
+              "artwork": "Pocoyo/Season 02/13 - All for One.webp",
+              "subtitle": null,
+              "durationMs": 423840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-14-14-elly-s-shoes-c6a1f380c2",
+              "number": 14,
+              "sortOrder": 14,
+              "title": "14 - Elly's Shoes",
+              "media": "Pocoyo/Season 02/14 - Elly's Shoes.mp4",
+              "artwork": "Pocoyo/Season 02/14 - Elly's Shoes.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-15-15-duck-stuck-633cd3c0b7",
+              "number": 15,
+              "sortOrder": 15,
+              "title": "15 - Duck Stuck",
+              "media": "Pocoyo/Season 02/15 - Duck Stuck.mp4",
+              "artwork": "Pocoyo/Season 02/15 - Duck Stuck.webp",
+              "subtitle": null,
+              "durationMs": 424800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-16-16-scary-noises-773b62379f",
+              "number": 16,
+              "sortOrder": 16,
+              "title": "16 - Scary Noises",
+              "media": "Pocoyo/Season 02/16 - Scary Noises.mp4",
+              "artwork": "Pocoyo/Season 02/16 - Scary Noises.webp",
+              "subtitle": null,
+              "durationMs": 423080,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-17-17-not-in-my-back-a6dc52797f",
+              "number": 17,
+              "sortOrder": 17,
+              "title": "17 - Not in My Backyard",
+              "media": "Pocoyo/Season 02/17 - Not in My Backyard.mp4",
+              "artwork": "Pocoyo/Season 02/17 - Not in My Backyard.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-18-18-vamoosh-on-the-e531c8e64a",
+              "number": 18,
+              "sortOrder": 18,
+              "title": "18 - Vamoosh on the Loosh",
+              "media": "Pocoyo/Season 02/18 - Vamoosh on the Loosh.mp4",
+              "artwork": "Pocoyo/Season 02/18 - Vamoosh on the Loosh.webp",
+              "subtitle": null,
+              "durationMs": 424840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-19-19-detective-poco-8948467518",
+              "number": 19,
+              "sortOrder": 19,
+              "title": "19 - Detective Pocoyo",
+              "media": "Pocoyo/Season 02/19 - Detective Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 02/19 - Detective Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 422800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-20-20-scooter-madnes-2cdaef343d",
+              "number": 20,
+              "sortOrder": 20,
+              "title": "20 - Scooter Madness",
+              "media": "Pocoyo/Season 02/20 - Scooter Madness.mp4",
+              "artwork": "Pocoyo/Season 02/20 - Scooter Madness.webp",
+              "subtitle": null,
+              "durationMs": 419880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-21-21-lost-in-space-90c55f3777",
+              "number": 21,
+              "sortOrder": 21,
+              "title": "21 - Lost in Space",
+              "media": "Pocoyo/Season 02/21 - Lost in Space.mp4",
+              "artwork": "Pocoyo/Season 02/21 - Lost in Space.webp",
+              "subtitle": null,
+              "durationMs": 422840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-22-22-boo-60815007e3",
+              "number": 22,
+              "sortOrder": 22,
+              "title": "22 - Boo!",
+              "media": "Pocoyo/Season 02/22 - Boo!.mp4",
+              "artwork": "Pocoyo/Season 02/22 - Boo!.webp",
+              "subtitle": null,
+              "durationMs": 422840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-23-23-party-pooper-e01ff0ecf8",
+              "number": 23,
+              "sortOrder": 23,
+              "title": "23 - Party Pooper",
+              "media": "Pocoyo/Season 02/23 - Party Pooper.mp4",
+              "artwork": "Pocoyo/Season 02/23 - Party Pooper.webp",
+              "subtitle": null,
+              "durationMs": 424960,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-24-24-my-pato-4d5fb573a8",
+              "number": 24,
+              "sortOrder": 24,
+              "title": "24 - My Pato!",
+              "media": "Pocoyo/Season 02/24 - My Pato!.mp4",
+              "artwork": "Pocoyo/Season 02/24 - My Pato!.webp",
+              "subtitle": null,
+              "durationMs": 421840,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-25-25-baby-bird-both-e1e7dfd831",
+              "number": 25,
+              "sortOrder": 25,
+              "title": "25 - Baby Bird Bother",
+              "media": "Pocoyo/Season 02/25 - Baby Bird Bother.mp4",
+              "artwork": "Pocoyo/Season 02/25 - Baby Bird Bother.webp",
+              "subtitle": null,
+              "durationMs": 421800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-26-26-dirty-dog-f643639744",
+              "number": 26,
+              "sortOrder": 26,
+              "title": "26 - Dirty Dog",
+              "media": "Pocoyo/Season 02/26 - Dirty Dog.mp4",
+              "artwork": "Pocoyo/Season 02/26 - Dirty Dog.webp",
+              "subtitle": null,
+              "durationMs": 422880,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-27-27-the-seed-ac0d4dfbfd",
+              "number": 27,
+              "sortOrder": 27,
+              "title": "27 - The Seed",
+              "media": "Pocoyo/Season 02/27 - The Seed.mp4",
+              "artwork": "Pocoyo/Season 02/27 - The Seed.webp",
+              "subtitle": null,
+              "durationMs": 420288,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-28-28-runaway-hat-7f561266b1",
+              "number": 28,
+              "sortOrder": 28,
+              "title": "28 - Runaway Hat",
+              "media": "Pocoyo/Season 02/28 - Runaway Hat.mp4",
+              "artwork": "Pocoyo/Season 02/28 - Runaway Hat.webp",
+              "subtitle": null,
+              "durationMs": 430311,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-29-29-invisible-poco-ff124d51fd",
+              "number": 29,
+              "sortOrder": 29,
+              "title": "29 - Invisible Pocoyo",
+              "media": "Pocoyo/Season 02/29 - Invisible Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 02/29 - Invisible Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 420864,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-30-30-noise-to-my-ea-74f3e72ac0",
+              "number": 30,
+              "sortOrder": 30,
+              "title": "30 - Noise to My Ears",
+              "media": "Pocoyo/Season 02/30 - Noise to My Ears.mp4",
+              "artwork": "Pocoyo/Season 02/30 - Noise to My Ears.webp",
+              "subtitle": null,
+              "durationMs": 432455,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-31-31-baby-bird-sitt-77eb2e7aee",
+              "number": 31,
+              "sortOrder": 31,
+              "title": "31 - Baby Bird Sitting",
+              "media": "Pocoyo/Season 02/31 - Baby Bird Sitting.mp4",
+              "artwork": "Pocoyo/Season 02/31 - Baby Bird Sitting.webp",
+              "subtitle": null,
+              "durationMs": 420448,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-32-32-everyone-s-pre-c8eba60bea",
+              "number": 32,
+              "sortOrder": 32,
+              "title": "32 - Everyone's Present",
+              "media": "Pocoyo/Season 02/32 - Everyone's Present.mp4",
+              "artwork": "Pocoyo/Season 02/32 - Everyone's Present.webp",
+              "subtitle": null,
+              "durationMs": 431535,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-33-33-picnic-puzzle-a5b42f9b72",
+              "number": 33,
+              "sortOrder": 33,
+              "title": "33 - Picnic Puzzle",
+              "media": "Pocoyo/Season 02/33 - Picnic Puzzle.mp4",
+              "artwork": "Pocoyo/Season 02/33 - Picnic Puzzle.webp",
+              "subtitle": null,
+              "durationMs": 421480,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-34-34-dance-off-470e482749",
+              "number": 34,
+              "sortOrder": 34,
+              "title": "34 - Dance Off!",
+              "media": "Pocoyo/Season 02/34 - Dance Off!.mp4",
+              "artwork": "Pocoyo/Season 02/34 - Dance Off!.webp",
+              "subtitle": null,
+              "durationMs": 420416,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-35-35-pato-s-egg-a8b69dc222",
+              "number": 35,
+              "sortOrder": 35,
+              "title": "35 - Pato's Egg",
+              "media": "Pocoyo/Season 02/35 - Pato's Egg.mp4",
+              "artwork": "Pocoyo/Season 02/35 - Pato's Egg.webp",
+              "subtitle": null,
+              "durationMs": 421504,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-36-36-pocoyo-s-puppe-9b171026c3",
+              "number": 36,
+              "sortOrder": 36,
+              "title": "36 - Pocoyo's Puppet Show",
+              "media": "Pocoyo/Season 02/36 - Pocoyo's Puppet Show.mp4",
+              "artwork": "Pocoyo/Season 02/36 - Pocoyo's Puppet Show.webp",
+              "subtitle": null,
+              "durationMs": 420224,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-37-37-get-lost-loula-19fd7f209b",
+              "number": 37,
+              "sortOrder": 37,
+              "title": "37 - Get Lost Loula",
+              "media": "Pocoyo/Season 02/37 - Get Lost Loula.mp4",
+              "artwork": "Pocoyo/Season 02/37 - Get Lost Loula.webp",
+              "subtitle": null,
+              "durationMs": 421728,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-38-38-slippery-shoes-78b3d14414",
+              "number": 38,
+              "sortOrder": 38,
+              "title": "38 - Slippery Shoes",
+              "media": "Pocoyo/Season 02/38 - Slippery Shoes.mp4",
+              "artwork": "Pocoyo/Season 02/38 - Slippery Shoes.webp",
+              "subtitle": null,
+              "durationMs": 420672,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-39-39-magic-act-aa3eeacd3b",
+              "number": 39,
+              "sortOrder": 39,
+              "title": "39 - Magic Act",
+              "media": "Pocoyo/Season 02/39 - Magic Act.mp4",
+              "artwork": "Pocoyo/Season 02/39 - Magic Act.webp",
+              "subtitle": null,
+              "durationMs": 419680,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-40-40-shutterbug-3aa6360001",
+              "number": 40,
+              "sortOrder": 40,
+              "title": "40 - Shutterbug",
+              "media": "Pocoyo/Season 02/40 - Shutterbug.mp4",
+              "artwork": "Pocoyo/Season 02/40 - Shutterbug.webp",
+              "subtitle": null,
+              "durationMs": 424440,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-41-41-angry-alien-e94110d863",
+              "number": 41,
+              "sortOrder": 41,
+              "title": "41 - Angry Alien",
+              "media": "Pocoyo/Season 02/41 - Angry Alien.mp4",
+              "artwork": "Pocoyo/Season 02/41 - Angry Alien.webp",
+              "subtitle": null,
+              "durationMs": 429520,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-42-42-pato-underwate-ed2b32e37b",
+              "number": 42,
+              "sortOrder": 42,
+              "title": "42 - Pato Underwater",
+              "media": "Pocoyo/Season 02/42 - Pato Underwater.mp4",
+              "artwork": "Pocoyo/Season 02/42 - Pato Underwater.webp",
+              "subtitle": null,
+              "durationMs": 422016,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-43-43-pato-s-paintin-ae0dd5507d",
+              "number": 43,
+              "sortOrder": 43,
+              "title": "43 - Pato's Paintings",
+              "media": "Pocoyo/Season 02/43 - Pato's Paintings.mp4",
+              "artwork": "Pocoyo/Season 02/43 - Pato's Paintings.webp",
+              "subtitle": null,
+              "durationMs": 419488,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-44-44-monster-myster-1da29473f1",
+              "number": 44,
+              "sortOrder": 44,
+              "title": "44 - Monster Mystery",
+              "media": "Pocoyo/Season 02/44 - Monster Mystery.mp4",
+              "artwork": "Pocoyo/Season 02/44 - Monster Mystery.webp",
+              "subtitle": null,
+              "durationMs": 422080,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-45-45-poczilla-87a44043d6",
+              "number": 45,
+              "sortOrder": 45,
+              "title": "45 - Poczilla",
+              "media": "Pocoyo/Season 02/45 - Poczilla.mp4",
+              "artwork": "Pocoyo/Season 02/45 - Poczilla.webp",
+              "subtitle": null,
+              "durationMs": 418176,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-46-46-elly-on-ice-507bb44bf4",
+              "number": 46,
+              "sortOrder": 46,
+              "title": "46 - Elly on Ice",
+              "media": "Pocoyo/Season 02/46 - Elly on Ice.mp4",
+              "artwork": "Pocoyo/Season 02/46 - Elly on Ice.webp",
+              "subtitle": null,
+              "durationMs": 421696,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-48-48-double-trouble-aa193054d6",
+              "number": 48,
+              "sortOrder": 47,
+              "title": "48 - Double Trouble",
+              "media": "Pocoyo/Season 02/48 - Double Trouble.mp4",
+              "artwork": "Pocoyo/Season 02/48 - Double Trouble.webp",
+              "subtitle": null,
+              "durationMs": 409888,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-49-49-horse-7e0a24f4e2",
+              "number": 49,
+              "sortOrder": 48,
+              "title": "49 - Horse!",
+              "media": "Pocoyo/Season 02/49 - Horse!.mp4",
+              "artwork": "Pocoyo/Season 02/49 - Horse!.webp",
+              "subtitle": null,
+              "durationMs": 407008,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-2-50-50-elly-s-tea-par-df58552801",
+              "number": 50,
+              "sortOrder": 49,
+              "title": "50 - Elly's Tea Party",
+              "media": "Pocoyo/Season 02/50 - Elly's Tea Party.mp4",
+              "artwork": "Pocoyo/Season 02/50 - Elly's Tea Party.webp",
+              "subtitle": null,
+              "durationMs": 419904,
+              "audioLanguage": "und"
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Sezonul 3",
+          "episodes": [
+            {
+              "id": "pocoyo-67922e0ab6-3-1-01-pocoyo-s-band-b680021a80",
+              "number": 1,
+              "sortOrder": 1,
+              "title": "01 - Pocoyo's Band",
+              "media": "Pocoyo/Season 03/01 - Pocoyo's Band.mp4",
+              "artwork": "Pocoyo/Season 03/01 - Pocoyo's Band.webp",
+              "subtitle": null,
+              "durationMs": 426400,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-2-02-picnic-d375067a5e",
+              "number": 2,
+              "sortOrder": 2,
+              "title": "02 - Picnic",
+              "media": "Pocoyo/Season 03/02 - Picnic.mp4",
+              "artwork": "Pocoyo/Season 03/02 - Picnic.webp",
+              "subtitle": null,
+              "durationMs": 427560,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-3-03-pato-s-shower-85fb7cdd48",
+              "number": 3,
+              "sortOrder": 3,
+              "title": "03 - Pato's Shower",
+              "media": "Pocoyo/Season 03/03 - Pato's Shower.mp4",
+              "artwork": "Pocoyo/Season 03/03 - Pato's Shower.webp",
+              "subtitle": null,
+              "durationMs": 426480,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-4-04-the-garden-7bfd5a9437",
+              "number": 4,
+              "sortOrder": 4,
+              "title": "04 - The Garden",
+              "media": "Pocoyo/Season 03/04 - The Garden.mp4",
+              "artwork": "Pocoyo/Season 03/04 - The Garden.webp",
+              "subtitle": null,
+              "durationMs": 426240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-5-05-the-postman-883be4d246",
+              "number": 5,
+              "sortOrder": 5,
+              "title": "05 - The Postman",
+              "media": "Pocoyo/Season 03/05 - The Postman.mp4",
+              "artwork": "Pocoyo/Season 03/05 - The Postman.webp",
+              "subtitle": null,
+              "durationMs": 425360,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-6-06-colours-d45d786779",
+              "number": 6,
+              "sortOrder": 6,
+              "title": "06 - Colours",
+              "media": "Pocoyo/Season 03/06 - Colours.mp4",
+              "artwork": "Pocoyo/Season 03/06 - Colours.webp",
+              "subtitle": null,
+              "durationMs": 426240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-7-07-ready-steady-go-9f42467824",
+              "number": 7,
+              "sortOrder": 7,
+              "title": "07 - Ready, Steady, Go!",
+              "media": "Pocoyo/Season 03/07 - Ready, Steady, Go!.mp4",
+              "artwork": "Pocoyo/Season 03/07 - Ready, Steady, Go!.webp",
+              "subtitle": null,
+              "durationMs": 418240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-8-08-camping-23f5cacc03",
+              "number": 8,
+              "sortOrder": 8,
+              "title": "08 - Camping",
+              "media": "Pocoyo/Season 03/08 - Camping.mp4",
+              "artwork": "Pocoyo/Season 03/08 - Camping.webp",
+              "subtitle": null,
+              "durationMs": 426920,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-9-09-space-mission-1f830a7df5",
+              "number": 9,
+              "sortOrder": 9,
+              "title": "09 - Space Mission",
+              "media": "Pocoyo/Season 03/09 - Space Mission.mp4",
+              "artwork": "Pocoyo/Season 03/09 - Space Mission.webp",
+              "subtitle": null,
+              "durationMs": 426320,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-10-10-travel-with-pa-8d2053f22e",
+              "number": 10,
+              "sortOrder": 10,
+              "title": "10 - Travel with Pato",
+              "media": "Pocoyo/Season 03/10 - Travel with Pato.mp4",
+              "artwork": "Pocoyo/Season 03/10 - Travel with Pato.webp",
+              "subtitle": null,
+              "durationMs": 425680,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-11-11-playtime-01809dc772",
+              "number": 11,
+              "sortOrder": 11,
+              "title": "11 - Playtime",
+              "media": "Pocoyo/Season 03/11 - Playtime.mp4",
+              "artwork": "Pocoyo/Season 03/11 - Playtime.webp",
+              "subtitle": null,
+              "durationMs": 411520,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-12-12-tennis-everyon-f8194fdcd3",
+              "number": 12,
+              "sortOrder": 12,
+              "title": "12 - Tennis Everyone",
+              "media": "Pocoyo/Season 03/12 - Tennis Everyone.mp4",
+              "artwork": "Pocoyo/Season 03/12 - Tennis Everyone.webp",
+              "subtitle": null,
+              "durationMs": 424000,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-13-13-hide-and-seek-e34c8f1300",
+              "number": 13,
+              "sortOrder": 13,
+              "title": "13 - Hide and Seek",
+              "media": "Pocoyo/Season 03/13 - Hide and Seek.mp4",
+              "artwork": "Pocoyo/Season 03/13 - Hide and Seek.webp",
+              "subtitle": null,
+              "durationMs": 421747,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-14-14-party-time-3ff9bbdcd6",
+              "number": 14,
+              "sortOrder": 14,
+              "title": "14 - Party Time",
+              "media": "Pocoyo/Season 03/14 - Party Time.mp4",
+              "artwork": "Pocoyo/Season 03/14 - Party Time.webp",
+              "subtitle": null,
+              "durationMs": 422240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-15-15-wheels-4b98736f81",
+              "number": 15,
+              "sortOrder": 15,
+              "title": "15 - Wheels",
+              "media": "Pocoyo/Season 03/15 - Wheels.mp4",
+              "artwork": "Pocoyo/Season 03/15 - Wheels.webp",
+              "subtitle": null,
+              "durationMs": 422280,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-16-16-elly-s-bath-177add4bae",
+              "number": 16,
+              "sortOrder": 16,
+              "title": "16 - Elly's Bath",
+              "media": "Pocoyo/Season 03/16 - Elly's Bath.mp4",
+              "artwork": "Pocoyo/Season 03/16 - Elly's Bath.webp",
+              "subtitle": null,
+              "durationMs": 420120,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-17-17-the-amazing-to-a92e2414a7",
+              "number": 17,
+              "sortOrder": 17,
+              "title": "17 - The Amazing Tower",
+              "media": "Pocoyo/Season 03/17 - The Amazing Tower.mp4",
+              "artwork": "Pocoyo/Season 03/17 - The Amazing Tower.webp",
+              "subtitle": null,
+              "durationMs": 436000,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-18-18-a-hole-in-one-576ab502e5",
+              "number": 18,
+              "sortOrder": 18,
+              "title": "18 - A Hole in One",
+              "media": "Pocoyo/Season 03/18 - A Hole in One.mp4",
+              "artwork": "Pocoyo/Season 03/18 - A Hole in One.webp",
+              "subtitle": null,
+              "durationMs": 422240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-19-19-bathing-loula-fe8b38db22",
+              "number": 19,
+              "sortOrder": 19,
+              "title": "19 - Bathing Loula",
+              "media": "Pocoyo/Season 03/19 - Bathing Loula.mp4",
+              "artwork": "Pocoyo/Season 03/19 - Bathing Loula.webp",
+              "subtitle": null,
+              "durationMs": 430800,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-20-20-cooking-with-e-b4b4ce7523",
+              "number": 20,
+              "sortOrder": 20,
+              "title": "20 - Cooking with Elly",
+              "media": "Pocoyo/Season 03/20 - Cooking with Elly.mp4",
+              "artwork": "Pocoyo/Season 03/20 - Cooking with Elly.webp",
+              "subtitle": null,
+              "durationMs": 421360,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-21-21-magic-fingers-c88a294a4d",
+              "number": 21,
+              "sortOrder": 21,
+              "title": "21 - Magic Fingers",
+              "media": "Pocoyo/Season 03/21 - Magic Fingers.mp4",
+              "artwork": "Pocoyo/Season 03/21 - Magic Fingers.webp",
+              "subtitle": null,
+              "durationMs": 428000,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-22-22-pato-s-bedtime-d391b46d77",
+              "number": 22,
+              "sortOrder": 22,
+              "title": "22 - Pato's Bedtime",
+              "media": "Pocoyo/Season 03/22 - Pato's Bedtime.mp4",
+              "artwork": "Pocoyo/Season 03/22 - Pato's Bedtime.webp",
+              "subtitle": null,
+              "durationMs": 427232,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-23-23-hole-in-one-76c4af62d0",
+              "number": 23,
+              "sortOrder": 23,
+              "title": "23 - Hole in One",
+              "media": "Pocoyo/Season 03/23 - Hole in One.mp4",
+              "artwork": "Pocoyo/Season 03/23 - Hole in One.webp",
+              "subtitle": null,
+              "durationMs": 422240,
+              "audioLanguage": "und"
+            },
+            {
+              "id": "pocoyo-67922e0ab6-3-31-31-ahoy-pocoyo-b6951e84e0",
+              "number": 31,
+              "sortOrder": 24,
+              "title": "31 - Ahoy Pocoyo",
+              "media": "Pocoyo/Season 03/31 - Ahoy Pocoyo.mp4",
+              "artwork": "Pocoyo/Season 03/31 - Ahoy Pocoyo.webp",
+              "subtitle": null,
+              "durationMs": 431935,
+              "audioLanguage": "und"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "builderVersion": "2.3.0",
+  "sourceFingerprint": "7f97070f2e8ce6fa7f0514204b6171acd55c9372aa471e0b97f4cb23a4517d98"
+}

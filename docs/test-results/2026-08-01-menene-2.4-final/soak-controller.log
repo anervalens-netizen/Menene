@@ -1,0 +1,31 @@
+device
+2026-08-01T23:53:16+03:00 START run_id=20260801T235312 target_seconds=1860 package=ro.mehene.app clock=monotonic logger=device-continuous-heartbeat
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+2026-08-01T23:58:25+03:00 BACKGROUND_FOREGROUND count=1
+2026-08-02T00:00:13+03:00 PLAY_MILESTONE plays=50 elapsed=409
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+2026-08-02T00:03:25+03:00 BACKGROUND_FOREGROUND count=2
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+2026-08-02T00:03:29+03:00 FORCE_STOP_RESTART count=1 old_pid=17327 new_pid=21514
+2026-08-02T00:07:09+03:00 PLAY_MILESTONE plays=100 elapsed=825
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+2026-08-02T00:08:27+03:00 BACKGROUND_FOREGROUND count=3
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+2026-08-02T00:13:24+03:00 BACKGROUND_FOREGROUND count=4
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+2026-08-02T00:13:29+03:00 FORCE_STOP_RESTART count=2 old_pid=21514 new_pid=25582
+2026-08-02T00:14:10+03:00 PLAY_MILESTONE plays=150 elapsed=1245
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+2026-08-02T00:18:26+03:00 BACKGROUND_FOREGROUND count=5
+2026-08-02T00:21:00+03:00 PLAY_MILESTONE plays=200 elapsed=1656
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+2026-08-02T00:23:23+03:00 FORCE_STOP_RESTART count=3 old_pid=25582 new_pid=29608
+Starting: Intent { cmp=ro.mehene.app/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+/sdcard/menene-soak-2.4-short-logcat/: 2 files pulled, 0 skipped. 13.9 MB/s (1551573 bytes in 0.106s)

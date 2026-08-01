@@ -1,0 +1,688 @@
+SAMPLE 2026-08-01T23:53:18+03:00 elapsed=2
+Applications Memory Usage (in Kilobytes):
+Uptime: 170003347 Realtime: 170003347
+
+** MEMINFO in pid 17327 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    21099    20940       68       43    27776    25593     2182
+  Dalvik Heap     2161     2124       16       30     5615     2808     2807
+ Dalvik Other      870      864        4        3
+        Stack      372      372        0        0
+       Ashmem        2        0        0        0
+    Other dev       20        0       16        0
+     .so mmap     5527      132      508       39
+    .apk mmap     3628        0       48        0
+    .ttf mmap      564        0      436        0
+    .dex mmap     8093        4     4400        0
+    .oat mmap     3865        0      776        0
+    .art mmap     1013      492       24        2
+   Other mmap      268        4      156        0
+   EGL mtrack    27036    27036        0        0
+      Unknown      375      324       24        2
+        TOTAL    74893    52292     6476      119    33391    28401     4989
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     2640
+         Native Heap:    20940
+                Code:     6304
+               Stack:      372
+            Graphics:    27036
+       Private Other:     1476
+              System:    16244
+
+               TOTAL:    74893       TOTAL SWAP PSS:      119
+
+ Objects
+               Views:       87         ViewRootImpl:        1
+         AppContexts:        4           Activities:        1
+              Assets:        3        AssetManagers:        3
+       Local Binders:       14        Proxy Binders:       24
+       Parcel memory:        6         Parcel count:       26
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      191
+  PAGECACHE_OVERFLOW:       52          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             37         5/33/2  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4238
+  temperature: 325
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: 0
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false
+SAMPLE 2026-08-01T23:58:25+03:00 elapsed=305
+Applications Memory Usage (in Kilobytes):
+Uptime: 170310196 Realtime: 170310196
+
+** MEMINFO in pid 17327 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    32642    32476       72       38    44160    37814     6345
+  Dalvik Heap    19083    18700      344       17     7831     3916     3915
+ Dalvik Other     2715     2704        8        2
+        Stack      476      476        0        0
+       Ashmem        2        0        0        0
+    Other dev       28        4       20        0
+     .so mmap     6931      176     1516       36
+    .apk mmap     3696        0       88        0
+    .ttf mmap      628        0      500        0
+    .dex mmap    10229        4     5792        0
+    .oat mmap     4828        0     1144        0
+    .art mmap     1210      544      148        1
+   Other mmap      267        4      156        0
+   EGL mtrack     9012     9012        0        0
+      Unknown      383      348       20        2
+        TOTAL    92130    64448     9808       96    51991    41730    10260
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:    19392
+         Native Heap:    32476
+                Code:     9220
+               Stack:      476
+            Graphics:     9012
+       Private Other:     3680
+              System:    17970
+
+               TOTAL:    92130       TOTAL SWAP PSS:       96
+
+ Objects
+               Views:      159         ViewRootImpl:        2
+         AppContexts:        5           Activities:        2
+              Assets:        4        AssetManagers:        3
+       Local Binders:       60        Proxy Binders:       34
+       Parcel memory:       11         Parcel count:       44
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      195
+  PAGECACHE_OVERFLOW:       56          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             68      520/411/5  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+
+ Asset Allocations
+    zip:/data/app/ro.mehene.app-2OJQGAkTXU5r1lToO9ODJw==/base.apk:/res/RV.ttf: 3K
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4238
+  temperature: 326
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: -19
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false
+SAMPLE 2026-08-02T00:03:29+03:00 elapsed=604
+Applications Memory Usage (in Kilobytes):
+Uptime: 170614580 Realtime: 170614580
+
+** MEMINFO in pid 21514 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    24295    24136       68       39    27776    25546     2229
+  Dalvik Heap     2072     2036       16       28     5600     2816     2784
+ Dalvik Other      778      772        4        2
+        Stack      356      356        0        0
+       Ashmem        2        0        0        0
+    Other dev       19        0       16        0
+     .so mmap     5355      132      492       36
+    .apk mmap     2996        0       48        0
+    .ttf mmap      564        0      436        0
+    .dex mmap     7767        4     4360        0
+    .oat mmap     3314        0      652        0
+    .art mmap      945      492       16        3
+   Other mmap      262       36      124        0
+   EGL mtrack    27036    27036        0        0
+      Unknown      358      316       16        2
+        TOTAL    76119    55316     6248      110    33376    28362     5013
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     2544
+         Native Heap:    24136
+                Code:     6124
+               Stack:      356
+            Graphics:    27036
+       Private Other:     1368
+              System:    14665
+
+               TOTAL:    76119       TOTAL SWAP PSS:      110
+
+ Objects
+               Views:       87         ViewRootImpl:        1
+         AppContexts:        4           Activities:        1
+              Assets:        3        AssetManagers:        3
+       Local Binders:       14        Proxy Binders:       24
+       Parcel memory:        6         Parcel count:       26
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      191
+  PAGECACHE_OVERFLOW:       52          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             37         5/33/2  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4238
+  temperature: 326
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: -3
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false
+SAMPLE 2026-08-02T00:08:27+03:00 elapsed=906
+Applications Memory Usage (in Kilobytes):
+Uptime: 170911899 Realtime: 170911899
+
+** MEMINFO in pid 21514 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    32002    31836       72       37    43136    37831     5304
+  Dalvik Heap    26165    25796      332       16     7829     3915     3914
+ Dalvik Other     2723     2712        8        1
+        Stack      444      444        0        0
+       Ashmem        2        0        0        0
+    Other dev       26        4       20        0
+     .so mmap     6491      176     1492       34
+    .apk mmap     3053        0       88        0
+    .ttf mmap      628        0      500        0
+    .dex mmap     9960        4     5824        0
+    .oat mmap     4563        0     1120        0
+    .art mmap     1145      544      140        1
+   Other mmap      246        4      156        0
+   EGL mtrack     9012     9012        0        0
+      Unknown      377      348        8        2
+        TOTAL    96837    70880     9760       91    50965    41746     9218
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:    26480
+         Native Heap:    31836
+                Code:     9204
+               Stack:      444
+            Graphics:     9012
+       Private Other:     3664
+              System:    16288
+
+               TOTAL:    96837       TOTAL SWAP PSS:       91
+
+ Objects
+               Views:      159         ViewRootImpl:        2
+         AppContexts:        5           Activities:        2
+              Assets:        4        AssetManagers:        3
+       Local Binders:      102        Proxy Binders:       36
+       Parcel memory:        9         Parcel count:       38
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      195
+  PAGECACHE_OVERFLOW:       56          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             68      506/401/5  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+
+ Asset Allocations
+    zip:/data/app/ro.mehene.app-2OJQGAkTXU5r1lToO9ODJw==/base.apk:/res/RV.ttf: 3K
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4238
+  temperature: 326
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: -3
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false
+SAMPLE 2026-08-02T00:13:29+03:00 elapsed=1204
+Applications Memory Usage (in Kilobytes):
+Uptime: 171213815 Realtime: 171213815
+
+** MEMINFO in pid 25582 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    24226    24068       68       37    27776    25555     2220
+  Dalvik Heap     2071     2036       16       28     5600     2800     2800
+ Dalvik Other      778      772        4        2
+        Stack      356      356        0        0
+       Ashmem        2        0        0        0
+    Other dev       18        0       16        0
+     .so mmap     4932      132      500       35
+    .apk mmap     2750        0       48        0
+    .ttf mmap      564        0      436        0
+    .dex mmap     7290        4     4192        0
+    .oat mmap     3149        0      696        0
+    .art mmap      915      492       16        3
+   Other mmap      233       36      124        0
+   EGL mtrack    27036    27036        0        0
+      Unknown      360      320       16        2
+        TOTAL    74680    55252     6132      107    33376    28355     5020
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     2544
+         Native Heap:    24068
+                Code:     6008
+               Stack:      356
+            Graphics:    27036
+       Private Other:     1372
+              System:    13403
+
+               TOTAL:    74680       TOTAL SWAP PSS:      107
+
+ Objects
+               Views:       87         ViewRootImpl:        1
+         AppContexts:        4           Activities:        1
+              Assets:        3        AssetManagers:        3
+       Local Binders:       14        Proxy Binders:       24
+       Parcel memory:        6         Parcel count:       26
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      191
+  PAGECACHE_OVERFLOW:       52          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             37         5/33/2  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4230
+  temperature: 325
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: -3
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false
+SAMPLE 2026-08-02T00:18:26+03:00 elapsed=1506
+Applications Memory Usage (in Kilobytes):
+Uptime: 171511048 Realtime: 171511048
+
+** MEMINFO in pid 25582 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    31846    31680       72       35    43648    37879     5768
+  Dalvik Heap    22315    21948      332       16     7869     3935     3934
+ Dalvik Other     2715     2704        8        1
+        Stack      440      440        0        0
+       Ashmem        2        0        0        0
+    Other dev       26        4       20        0
+     .so mmap     6342      176     1500       33
+    .apk mmap     2818        0       88        0
+    .ttf mmap      628        0      500        0
+    .dex mmap     9596        4     5636        0
+    .oat mmap     4569        0     1180        0
+    .art mmap     1119      544      140        1
+   Other mmap      233        4      156        0
+   EGL mtrack     9012     9012        0        0
+      Unknown      375      344        8        2
+        TOTAL    92036    66860     9640       88    51517    41814     9702
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:    22632
+         Native Heap:    31680
+                Code:     9084
+               Stack:      440
+            Graphics:     9012
+       Private Other:     3652
+              System:    15624
+
+               TOTAL:    92036       TOTAL SWAP PSS:       88
+
+ Objects
+               Views:      159         ViewRootImpl:        2
+         AppContexts:        5           Activities:        2
+              Assets:        4        AssetManagers:        3
+       Local Binders:      149        Proxy Binders:       36
+       Parcel memory:        9         Parcel count:       38
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      195
+  PAGECACHE_OVERFLOW:       56          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             68      506/401/5  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+
+ Asset Allocations
+    zip:/data/app/ro.mehene.app-2OJQGAkTXU5r1lToO9ODJw==/base.apk:/res/RV.ttf: 3K
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4238
+  temperature: 325
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: -3
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false
+SAMPLE 2026-08-02T00:23:23+03:00 elapsed=1803
+Applications Memory Usage (in Kilobytes):
+Uptime: 171808514 Realtime: 171808514
+
+** MEMINFO in pid 29608 [ro.mehene.app] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    24279    24124       68       36    27776    25583     2192
+  Dalvik Heap     2070     2036       16       26     5600     2800     2800
+ Dalvik Other      778      772        4        2
+        Stack      352      352        0        0
+       Ashmem        2        0        0        0
+    Other dev       18        0       16        0
+     .so mmap     5070      132      500       33
+    .apk mmap     2377        0       48        0
+    .ttf mmap      564        0      436        0
+    .dex mmap     6826        4     4032        0
+    .oat mmap     2955        0      608        0
+    .art mmap      872      492        0        3
+   Other mmap      218        4      156        0
+   EGL mtrack    27036    27036        0        0
+      Unknown      345      316        0        1
+        TOTAL    73762    55268     5884      101    33376    28383     4992
+
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:     2528
+         Native Heap:    24124
+                Code:     5760
+               Stack:      352
+            Graphics:    27036
+       Private Other:     1352
+              System:    12711
+
+               TOTAL:    73762       TOTAL SWAP PSS:      101
+
+ Objects
+               Views:       87         ViewRootImpl:        1
+         AppContexts:        4           Activities:        1
+              Assets:        3        AssetManagers:        3
+       Local Binders:       14        Proxy Binders:       24
+       Parcel memory:        6         Parcel count:       24
+    Death Recipients:        0      OpenSSL Sockets:        0
+            WebViews:        0
+
+ SQL
+         MEMORY_USED:      191
+  PAGECACHE_OVERFLOW:       52          MALLOC_SIZE:      117
+
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4      208             37         5/33/2  /data/user/0/ro.mehene.app/databases/mehene.db
+         4        8                         0/0/0    (attached) temp
+Current Battery Service state:
+  mBootCompleted: true
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 0
+  Max charging voltage: 0
+  Charge counter: 0
+  status: 2
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4238
+  temperature: 326
+  technology: Li-ion
+  batterySWSelfDischarging: false
+  batteryMiscEvent: 0
+  batteryCurrentEvent: 0
+  mSecPlugTypeSummary: 2
+  LED Charging: true
+  LED Low Battery: true
+  current now: -3
+  charge counter: 0
+  Adaptive Fast Charging Settings: true
+USE_FAKE_BATTERY: false
+SEC_FEATURE_BATTERY_SIMULATION: false
+FEATURE_WIRELESS_FAST_CHARGER_CONTROL: true
+  mWasUsedWirelessFastChargerPreviously: false
+  mWirelessFastChargingSettingsEnable: true
+LLB CAL: 20180616
+LLB MAN:
+LLB CURRENT: YEAR2026M7D31
+LLB DIFF: 422
+FEATURE_HICCUP_CONTROL: false
+BatteryInfoBackUp
+  mSavedBatteryAsoc: -1
+  mSavedBatteryMaxTemp: 526
+  mSavedBatteryMaxCurrent: 1878
+  mSavedBatteryUsage: 32125
+  FEATURE_SAVE_BATTERY_CYCLE: true
+  SEC_FEATURE_PREVENT_SWELLING: false

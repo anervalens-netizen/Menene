@@ -9,6 +9,7 @@ Builderul mută munca grea de pe tabletă pe PC/server:
 - selecție audio preferată;
 - coperți optimizate și miniaturi;
 - catalog validat;
+- eliminarea deterministă a subtitrărilor `.srt`/`.vtt` din output;
 - raport complet și fingerprint al sursei.
 
 `mehene_library.py` conține procesarea media legacy. Intrarea obligatorie este `mehene_builder.py`, care adaugă lock, validare și restaurarea catalogului anterior la eroare.
@@ -45,6 +46,8 @@ Un fișier este copiat fără recodare dacă este:
 
 Restul este convertit în H.264 Main Level 3.1, AAC stereo 128 kbps, `yuv420p` și `faststart`. Fișierele deja pregătite și mai noi decât sursa sunt validate și reutilizate.
 
+Subtitrările nu sunt publicate. Sidecar-urile `.srt`/`.vtt` din sursă sunt numărate în `subtitlesIgnored`, iar toate copiile SRT/VTT vechi sunt eliminate recursiv din destinație. Câmpul `subtitle` din catalog rămâne `null`; validatorul refuză fail-closed orice valoare nenulă.
+
 ## Stabilitate implementată
 
 - `.mehene-build.lock` împiedică în mod normal două procese să modifice aceeași destinație;
@@ -58,7 +61,7 @@ Restul este convertit în H.264 Main Level 3.1, AAC stereo 128 kbps, `yuv420p` �
 - `--publish-partial` permite explicit publicarea episoadelor reușite, dar nu este recomandat pentru biblioteca zilnică;
 - PowerShell oferă aceeași opțiune prin `-PublishPartial`.
 
-## Constrângeri operaționale 2.1
+## Constrângeri operaționale 2.3
 
 Până la implementarea stagingului din roadmap:
 
@@ -70,6 +73,7 @@ Până la implementarea stagingului din roadmap:
 6. Fingerprint-ul este calculat înainte de procesare. Nu modifica sursa pe durata buildului.
 7. Fișierele șterse din sursă nu sunt eliminate automat din destinație; catalogul nu le mai referă, dar spațiul rămâne ocupat.
 8. Nu șterge manual catalogul anterior până când noua generație nu a fost verificată.
+9. Purgarea SRT/VTT din destinația staging este directă și nu se rollback-uiește dacă o eroare ulterioară restaurează catalogul anterior; de aceea destinația trebuie să fie staging offline, nu biblioteca activă a tabletei.
 
 Aceste limitări sunt constatări P1/P2 în `docs/FINAL_AUDIT.md` și au remediere planificată în `docs/ROADMAP.md`.
 

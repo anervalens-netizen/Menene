@@ -24,7 +24,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 3. Configurează o bibliotecă de test.
-4. Testează seriale, sezoane, subtitrări, volum, progres și Menene TV.
+4. Testează seriale, sezoane, absența subtitrărilor, volum, progres și Menene TV.
 5. Testează process death, microSD și minimum două ore de redare.
 6. Nu activa încă Device Owner.
 

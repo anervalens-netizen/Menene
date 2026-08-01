@@ -1,0 +1,15 @@
+{
+  "series": 8,
+  "episodes": 343,
+  "compatibleCopied": 124,
+  "reused": 219,
+  "converted": 0,
+  "thumbnailsGenerated": 124,
+  "subtitlesIgnored": 28,
+  "warnings": [],
+  "errors": [],
+  "builderVersion": "2.3.0",
+  "sourceFingerprint": "7f97070f2e8ce6fa7f0514204b6171acd55c9372aa471e0b97f4cb23a4517d98",
+  "durationMs": 96620,
+  "catalogPublished": true
+}

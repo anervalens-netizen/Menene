@@ -1,0 +1,2 @@
+5dfe093ce863343b809cb04f7a0335e56f960d6319994bb2ebf2658d9e297848  ./menene-soak-2.4-short-logcat/logcat.txt
+1dd9eea9cca37f15aeb500177091d608759ca369dc88f758749313530c679460  ./menene-soak-2.4-short-logcat/logger.pid

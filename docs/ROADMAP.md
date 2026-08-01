@@ -1,5 +1,7 @@
 # Roadmap Mehene
 
+> Document istoric pentru 2.1. Verdictul curent este în [raportul final Menene 2.4](test-results/2026-08-01-menene-2.4-final.md); stările și porțile de mai jos descriu exclusiv momentul auditului inițial.
+
 ## Scop
 
 Acest roadmap pornește de la auditul commitului `f12b7b4b3af94bdca2a5ba0e98fea0a3d197156a` și descrie ordinea recomandată pentru a transforma Mehene 2.1 din cod premium necalificat într-un produs instalabil, stabil și ușor de întreținut.
@@ -13,7 +15,7 @@ Acest roadmap pornește de la auditul commitului `f12b7b4b3af94bdca2a5ba0e98fea0
 5. Nu se introduce complexitate arhitecturală fără un risc concret pe care îl rezolvă.
 6. `main` trebuie să rămână într-o stare documentată; lucrările mari se integrează prin PR și squash.
 
-# Starea curentă
+# Starea istorică la 2.1
 
 - Versiune: `2.1.0`
 - Cod: avansat și coerent

@@ -1,0 +1,177 @@
+08-01 23:28:57.286 10625 10625 D ViewRootImpl@e17961b[MainActivity]: ViewPostIme pointer 0
+08-01 23:28:57.288 10625 10625 D ViewRootImpl@e17961b[MainActivity]: ViewPostIme pointer 1
+08-01 23:28:57.410 10625 10625 I zygote  : Deoptimizing void n.x0.n(android.content.Context, e3.i) due to JIT inline cache
+08-01 23:28:57.418 10625 10625 I zygote  : Deoptimizing android.view.View o5.f.k(android.view.View, int) due to JIT inline cache
+08-01 23:28:57.452 10625 10625 D InputTransport: Input channel constructed: fd=71
+08-01 23:28:57.452 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: setView = DecorView@749b149[SeriesActivity] TM=true MM=false
+08-01 23:28:57.453 10625 10625 D ViewRootImpl@e17961b[MainActivity]: MSG_WINDOW_FOCUS_CHANGED 0
+08-01 23:28:57.455 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: dispatchAttachedToWindow
+08-01 23:28:57.472 10625 10625 V Surface : sf_framedrop debug : 0x4f4c, game : false, logging : 0
+08-01 23:28:57.472 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: Relayout returned: old=[0,0][0,0] new=[0,0][1920,1200] result=0x7 surface={valid=true 3580121088} changed=true
+08-01 23:28:57.478 10625 10655 D mali_winsys: EGLint new_window_surface(egl_winsys_display *, void *, EGLSurface, EGLConfig, egl_winsys_surface **, egl_color_buffer_format *, EGLBoolean) returns 0x3000,  [1920x1200]-format:1
+08-01 23:28:57.478 10625 10655 D OpenGLRenderer: eglCreateWindowSurface = 0xebe0c520, 0xd5645008
+08-01 23:28:57.527 10625 10630 I zygote  : Do full code cache collection, code=125KB, data=102KB
+08-01 23:28:57.528 10625 10630 I zygote  : After code cache collection, code=91KB, data=61KB
+08-01 23:28:57.854 10625 10630 I zygote  : Do partial code cache collection, code=123KB, data=88KB
+08-01 23:28:57.855 10625 10630 I zygote  : After code cache collection, code=123KB, data=88KB
+08-01 23:28:57.855 10625 10630 I zygote  : Increasing code cache capacity to 512KB
+08-01 23:28:57.891 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: MSG_RESIZED_REPORT: frame=Rect(0, 0 - 1920, 1200) ci=Rect(0, 0 - 0, 0) vi=Rect(0, 0 - 0, 0) or=2
+08-01 23:28:57.892 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: MSG_WINDOW_FOCUS_CHANGED 1
+08-01 23:28:57.905 10625 10625 V InputMethodManager: Starting input: tba=android.view.inputmethod.EditorInfo@b5feb2f nm : ro.mehene.app ic=null
+08-01 23:28:57.905 10625 10625 D InputMethodManager: startInputInner - Id : 0
+08-01 23:28:57.905 10625 10625 I InputMethodManager: startInputInner - mService.startInputOrWindowGainedFocus
+08-01 23:28:57.907 10625 10625 D InputTransport: Input channel constructed: fd=74
+08-01 23:28:57.907 10625 10625 D InputTransport: Input channel destroyed: fd=65
+08-01 23:28:57.919 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x1 surface={valid=true 3580121088} changed=false
+08-01 23:28:57.992 10625 10655 D OpenGLRenderer: eglDestroySurface = 0xebe0c048, 0xd567d800
+08-01 23:28:58.004 10625 10625 D ViewRootImpl@e17961b[MainActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x5 surface={valid=false 0} changed=true
+08-01 23:28:58.009 10625 10696 D ProfileInstaller: Skipping profile installation for ro.mehene.app
+08-01 23:28:58.128 10625 10625 I zygote  : Deoptimizing int h4.d.size() due to JIT inline cache
+08-01 23:28:58.181 10625 10625 D ViewRootImpl@e17961b[MainActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x1 surface={valid=false 0} changed=false
+08-01 23:29:03.131 10625 10625 I zygote  : Deoptimizing j5.k j5.k.f() due to JIT inline cache
+08-01 23:29:05.413 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: ViewPostIme pointer 0
+08-01 23:29:05.414 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: ViewPostIme pointer 1
+08-01 23:29:05.477 10625 10625 I zygote  : Deoptimizing int p.k.c(java.lang.Object) due to JIT inline cache
+08-01 23:29:05.553 10625 10625 I zygote  : Deoptimizing void a4.p.j(android.util.AttributeSet, int) due to JIT inline cache
+08-01 23:29:05.570 10625 10625 I zygote  : Deoptimizing java.lang.CharSequence r0.d.filter(java.lang.CharSequence, int, int, android.text.Spanned, int, int) due to JIT inline cache
+08-01 23:29:05.571 10625 10625 I zygote  : Deoptimizing java.lang.CharSequence r0.j.getTransformation(java.lang.CharSequence, android.view.View) due to JIT inline cache
+08-01 23:29:05.572 10625 10625 I zygote  : Deoptimizing void r0.f.p(boolean) due to JIT inline cache
+08-01 23:29:05.617 10625 10625 I zygote  : Deoptimizing android.view.View o5.f.k(android.view.View, int) due to JIT inline cache
+08-01 23:29:05.637 10625 10625 D InputTransport: Input channel constructed: fd=69
+08-01 23:29:05.638 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: setView = DecorView@f09e1af[PlayerActivity] TM=true MM=false
+08-01 23:29:05.639 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: MSG_WINDOW_FOCUS_CHANGED 0
+08-01 23:29:05.642 10625 10625 D SurfaceView: onWindowVisibilityChanged(0) true 65299bc of ViewRootImpl@700558e[PlayerActivity]
+08-01 23:29:05.644 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: dispatchAttachedToWindow
+08-01 23:29:05.659 10625 10625 V Surface : sf_framedrop debug : 0x4f4c, game : false, logging : 0
+08-01 23:29:05.660 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: Relayout returned: old=[0,0][0,0] new=[0,0][1920,1200] result=0x7 surface={valid=true 3545661440} changed=true
+08-01 23:29:05.661 10625 10655 D mali_winsys: EGLint new_window_surface(egl_winsys_display *, void *, EGLSurface, EGLConfig, egl_winsys_surface **, egl_color_buffer_format *, EGLBoolean) returns 0x3000,  [1920x1200]-format:1
+08-01 23:29:05.661 10625 10655 D OpenGLRenderer: eglCreateWindowSurface = 0xebe5e0d0, 0xd3568008
+08-01 23:29:05.663 10625 10625 D SurfaceView: BG show() Surface(name=Background for - SurfaceView - ro.mehene.app/ro.mehene.app.PlayerActivity@65299bc@0) android.view.SurfaceView{65299bc V.E...... ......ID 0,0-1920,1200}
+08-01 23:29:05.671 10625 10625 V Surface : sf_framedrop debug : 0x4f4c, game : false, logging : 0
+08-01 23:29:05.671 10625 10625 D SurfaceView: surfaceCreated 0 #8 android.view.SurfaceView{65299bc V.E...... ......ID 0,0-1920,1200}
+08-01 23:29:05.671 10625 10625 D SurfaceView: surfaceChanged (1920,1200) 0 #8 android.view.SurfaceView{65299bc V.E...... ......ID 0,0-1920,1200}
+08-01 23:29:05.692 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x3 surface={valid=true 3545661440} changed=false
+08-01 23:29:05.813 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: MSG_RESIZED_REPORT: frame=Rect(0, 0 - 1920, 1200) ci=Rect(0, 0 - 0, 0) vi=Rect(0, 0 - 0, 0) or=2
+08-01 23:29:05.814 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: MSG_WINDOW_FOCUS_CHANGED 1
+08-01 23:29:05.825 10625 10625 V InputMethodManager: Starting input: tba=android.view.inputmethod.EditorInfo@f4de9ec nm : ro.mehene.app ic=null
+08-01 23:29:05.825 10625 10625 D InputMethodManager: startInputInner - Id : 0
+08-01 23:29:05.825 10625 10625 I InputMethodManager: startInputInner - mService.startInputOrWindowGainedFocus
+08-01 23:29:05.832 10625 10625 D InputTransport: Input channel constructed: fd=85
+08-01 23:29:05.832 10625 10625 D InputTransport: Input channel destroyed: fd=74
+08-01 23:29:05.881 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x1 surface={valid=true 3545661440} changed=false
+08-01 23:29:05.909 10625 10625 I ExoPlayerImpl: Init 9fab1b5 [AndroidXMedia3/1.10.1] [gtaxllte, SM-T585, samsung, 27]
+08-01 23:29:05.996 10625 10655 D OpenGLRenderer: eglDestroySurface = 0xebe0c520, 0xd5645000
+08-01 23:29:06.008 10625 10655 D OpenGLRenderer: endAllActiveAnimators on 0xd0bed200 (RatioFrameLayout) with handle 0xd2669900
+08-01 23:29:06.018 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x5 surface={valid=false 0} changed=true
+08-01 23:29:06.130 10625 10625 D ViewRootImpl@e099b50[SeriesActivity]: Relayout returned: old=[0,0][1920,1200] new=[0,0][1920,1200] result=0x1 surface={valid=false 0} changed=false
+08-01 23:29:06.148 10625 10630 I zygote  : Compiler allocated 4MB to compile java.util.ArrayList o2.d.j(d1.c, u1.v, long, z0.l, boolean, boolean, a4.d, boolean)
+08-01 23:29:06.251 10625 10630 I zygote  : Compiler allocated 4MB to compile java.util.ArrayList o2.d.j(d1.c, u1.v, long, z0.l, boolean, boolean, a4.d, boolean)
+08-01 23:29:06.331 10625 10733 I zygote  : Deoptimizing z0.p0 g1.g1.g(java.lang.Object, z0.p0) due to JIT inline cache
+08-01 23:29:06.336 10625 10733 W AudioCapabilities: Unsupported mime audio/x-ima
+08-01 23:29:06.342 10625 10733 W AudioCapabilities: Unsupported mime audio/mpeg-L1
+08-01 23:29:06.343 10625 10733 W AudioCapabilities: Unsupported mime audio/mpeg-L2
+08-01 23:29:06.346 10625 10733 W AudioCapabilities: Unsupported mime audio/x-ms-wma
+08-01 23:29:06.370 10625 10733 W VideoCapabilities: Unsupported mime video/mp43
+08-01 23:29:06.371 10625 10630 I zygote  : Do full code cache collection, code=249KB, data=200KB
+08-01 23:29:06.372 10625 10630 I zygote  : After code cache collection, code=190KB, data=137KB
+08-01 23:29:06.376 10625 10733 W VideoCapabilities: Unrecognized profile/level 1/32 for video/mp4v-es
+08-01 23:29:06.376 10625 10733 W VideoCapabilities: Unrecognized profile/level 32768/2 for video/mp4v-es
+08-01 23:29:06.376 10625 10733 W VideoCapabilities: Unrecognized profile/level 32768/64 for video/mp4v-es
+08-01 23:29:06.378 10625 10733 W VideoCapabilities: Unsupported mime video/wvc1
+08-01 23:29:06.380 10625 10733 W VideoCapabilities: Unsupported mime video/wvc1
+08-01 23:29:06.387 10625 10733 W VideoCapabilities: Unsupported mime video/x-ms-wmv7
+08-01 23:29:06.389 10625 10733 W VideoCapabilities: Unsupported mime video/x-ms-wmv8
+08-01 23:29:06.401 10625 10733 I VideoCapabilities: Unsupported profile 4 for video/mp4v-es
+08-01 23:29:06.444 10625 10733 I ACodec  :  [] Now uninitialized
+08-01 23:29:06.445 10625 10736 I ACodec  : [] onAllocateComponent
+08-01 23:29:06.446 10625 10736 I OMXClient: Treble IOmx obtained
+08-01 23:29:06.458 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Loaded
+08-01 23:29:06.460 10625 10733 V Surface : sf_framedrop debug : 0x4f4c, game : false, logging : 0
+08-01 23:29:06.460 10625 10735 D SurfaceUtils: connecting to surface 0xd2e25008, reason connectToSurface
+08-01 23:29:06.460 10625 10735 I MediaCodec: [OMX.Exynos.avc.dec] setting surface generation to 10880001
+08-01 23:29:06.460 10625 10735 D SurfaceUtils: disconnecting from surface 0xd2e25008, reason connectToSurface(reconnect)
+08-01 23:29:06.460 10625 10735 D SurfaceUtils: connecting to surface 0xd2e25008, reason connectToSurface(reconnect)
+08-01 23:29:06.462 10625 10736 I ACodec  : can't find wfdsink-exynos-enable
+08-01 23:29:06.463 10625 10736 I ACodec  : codec does not support config priority (err -1010)
+08-01 23:29:06.465 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Loaded->Idle
+08-01 23:29:06.475 10625 10736 D SurfaceUtils: set up nativeWindow 0xd2e25008 for 1280x720, color 0x121, rotation 0, usage 0x2900
+08-01 23:29:06.475 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] configureOutputBuffersFromNativeWindow setBufferCount : 8, minUndequeuedBuffers : 4
+08-01 23:29:06.476 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Idle->Executing
+08-01 23:29:06.477 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Executing
+08-01 23:29:06.478 10625 10735 I MediaCodec: setCodecState state : 0
+08-01 23:29:06.484 10625 10733 I ACodec  :  [] Now uninitialized
+08-01 23:29:06.484 10625 10745 I ACodec  : [] onAllocateComponent
+08-01 23:29:06.486 10625 10745 I OMXClient: Treble IOmx obtained
+08-01 23:29:06.486 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now handling output port settings change
+08-01 23:29:06.490 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Loaded
+08-01 23:29:06.492 10625 10736 D SurfaceUtils: set up nativeWindow 0xd2e25008 for 1280x720, color 0x121, rotation 0, usage 0x2900
+08-01 23:29:06.492 10625 10745 I ACodec  : codec does not support config priority (err -2147483648)
+08-01 23:29:06.492 10625 10745 I ACodec  : codec does not support config operating rate (err -2147483648)
+08-01 23:29:06.493 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] configureOutputBuffersFromNativeWindow setBufferCount : 15, minUndequeuedBuffers : 4
+08-01 23:29:06.493 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Loaded->Idle
+08-01 23:29:06.499 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Executing
+08-01 23:29:06.502 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Idle->Executing
+08-01 23:29:06.503 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Executing
+08-01 23:29:06.505 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now handling output port settings change
+08-01 23:29:06.510 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Executing
+08-01 23:29:06.511 10625 10735 I MediaCodec: setCodecState state : 1
+08-01 23:29:06.521 10625 10733 D AudioTrack: Client defaulted notificationFrames to 7696 for frameCount 15392
+08-01 23:29:06.733 10625 10733 I AudioTrack: updateAudioTranstionLength FadeIn[0] FadeOut[0] FadeInRing[0]
+08-01 23:29:06.742 10625 10625 D SurfaceView: BG show() Surface(name=Background for - SurfaceView - ro.mehene.app/ro.mehene.app.PlayerActivity@65299bc@0) android.view.SurfaceView{65299bc V.E...... ......ID 0,0-1920,1080}
+08-01 23:29:06.758 10625 10625 D SurfaceView: surfaceChanged (1920,1080) 1 #5 android.view.SurfaceView{65299bc V.E...... ......ID 0,0-1920,1080}
+08-01 23:29:07.191 10625 10630 I zygote  : Do partial code cache collection, code=245KB, data=181KB
+08-01 23:29:07.192 10625 10630 I zygote  : After code cache collection, code=236KB, data=175KB
+08-01 23:29:07.192 10625 10630 I zygote  : Increasing code cache capacity to 1024KB
+08-01 23:29:25.043 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: ViewPostIme pointer 0
+08-01 23:29:25.752 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: ViewPostIme pointer 1
+08-01 23:29:25.757 10625 10735 I ACodec  : [OMX.Exynos.avc.dec] signalFlush
+08-01 23:29:25.757 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] ExecutingState flushing now (codec owns 5/5 input, 2/15 output).
+08-01 23:29:25.760 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Flushing
+08-01 23:29:25.762 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] FlushingState onOMXEvent(0,1,0)
+08-01 23:29:25.763 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] FlushingState onOMXEvent(0,1,1)
+08-01 23:29:25.763 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Executing
+08-01 23:29:25.763 10625 10745 I ACodec  : [OMX.google.aac.decoder] signalFlush
+08-01 23:29:25.764 10625 10745 I ACodec  : [OMX.google.aac.decoder] ExecutingState flushing now (codec owns 4/4 input, 0/4 output).
+08-01 23:29:25.764 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Flushing
+08-01 23:29:25.765 10625 10745 I ACodec  : [OMX.google.aac.decoder] FlushingState onOMXEvent(0,1,0)
+08-01 23:29:25.766 10625 10745 I ACodec  : [OMX.google.aac.decoder] FlushingState onOMXEvent(0,1,1)
+08-01 23:29:25.766 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Executing
+08-01 23:29:25.772 10625 10733 I zygote  : Deoptimizing void g1.i0.j() due to JIT inline cache
+08-01 23:29:25.788 10625 10778 D AudioTrack: stop() called with 0 frames delivered
+08-01 23:29:25.821 10625 10733 D AudioTrack: Client defaulted notificationFrames to 7696 for frameCount 15392
+08-01 23:29:25.860 10625 10733 I AudioTrack: This process already got info. FadeIn[0] FadeOut[0] FadeInRing[0]
+08-01 23:29:31.269 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: ViewPostIme pointer 0
+08-01 23:29:31.271 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: ViewPostIme pointer 1
+08-01 23:29:31.273 10625 10735 I ACodec  : [OMX.Exynos.avc.dec] signalFlush
+08-01 23:29:31.273 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] ExecutingState flushing now (codec owns 5/5 input, 2/15 output).
+08-01 23:29:31.274 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Flushing
+08-01 23:29:31.274 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] FlushingState onOMXEvent(0,1,0)
+08-01 23:29:31.275 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] FlushingState onOMXEvent(0,1,1)
+08-01 23:29:31.275 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Executing
+08-01 23:29:31.275 10625 10745 I ACodec  : [OMX.google.aac.decoder] signalFlush
+08-01 23:29:31.276 10625 10745 I ACodec  : [OMX.google.aac.decoder] ExecutingState flushing now (codec owns 3/4 input, 0/4 output).
+08-01 23:29:31.276 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Flushing
+08-01 23:29:31.277 10625 10745 I ACodec  : [OMX.google.aac.decoder] FlushingState onOMXEvent(0,1,0)
+08-01 23:29:31.277 10625 10745 I ACodec  : [OMX.google.aac.decoder] FlushingState onOMXEvent(0,1,1)
+08-01 23:29:31.277 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Executing
+08-01 23:29:31.298 10625 10799 D AudioTrack: stop() called with 0 frames delivered
+08-01 23:29:31.311 10625 10733 D AudioTrack: Client defaulted notificationFrames to 7696 for frameCount 15392
+08-01 23:29:31.703 10625 10733 I AudioTrack: This process already got info. FadeIn[0] FadeOut[0] FadeInRing[0]
+08-01 23:29:36.570 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: ViewPostIme pointer 0
+08-01 23:29:36.571 10625 10625 D ViewRootImpl@700558e[PlayerActivity]: ViewPostIme pointer 1
+08-01 23:29:36.573 10625 10735 I ACodec  : [OMX.Exynos.avc.dec] signalFlush
+08-01 23:29:36.573 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] ExecutingState flushing now (codec owns 5/5 input, 2/15 output).
+08-01 23:29:36.574 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Flushing
+08-01 23:29:36.574 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] FlushingState onOMXEvent(0,1,0)
+08-01 23:29:36.576 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] FlushingState onOMXEvent(0,1,1)
+08-01 23:29:36.576 10625 10736 I ACodec  : [OMX.Exynos.avc.dec] Now Executing
+08-01 23:29:36.577 10625 10745 I ACodec  : [OMX.google.aac.decoder] signalFlush
+08-01 23:29:36.577 10625 10745 I ACodec  : [OMX.google.aac.decoder] ExecutingState flushing now (codec owns 4/4 input, 0/4 output).
+08-01 23:29:36.577 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Flushing
+08-01 23:29:36.578 10625 10745 I ACodec  : [OMX.google.aac.decoder] FlushingState onOMXEvent(0,1,0)
+08-01 23:29:36.578 10625 10745 I ACodec  : [OMX.google.aac.decoder] FlushingState onOMXEvent(0,1,1)
+08-01 23:29:36.578 10625 10745 I ACodec  : [OMX.google.aac.decoder] Now Executing
+08-01 23:29:36.595 10625 10733 D AudioTrack: Client defaulted notificationFrames to 7696 for frameCount 15392
+08-01 23:29:36.599 10625 10816 D AudioTrack: stop() called with 0 frames delivered
+08-01 23:29:36.599 10625 10816 I AudioTrack: Skip ramp
+08-01 23:29:37.038 10625 10733 I AudioTrack: This process already got info. FadeIn[0] FadeOut[0] FadeInRing[0]

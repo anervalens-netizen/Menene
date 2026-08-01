@@ -1,0 +1,9 @@
+HOME=PASS series=8 episodes=343 missing_covers=0 missing_artwork=0
+HOME_SCREENSHOT_SHA256=ca518b6d88dcb46e13635750fc0c2307f1bcf6723bd92e20cb6dbc51403d6212
+HOME_VISUAL=PASS landscape_1920x1200 hero_16x9 grid_5_columns rows=5+3 clipping=0
+ADMIN_RECOVERY_5_TAPS=PASS
+ADMIN_BEFORE=8/343 source=INTERNAL_CACHE ignored=0 missing_covers=0 missing_artwork=0 scan_ms=944
+ADMIN_AFTER_RESCAN=8/343 source=GENERATED_CATALOG ignored=0 missing_covers=0 missing_artwork=0 scan_ms=1115
+ADMIN_DIRECT_EXTERNAL_LAUNCH=DENIED exported=false adb_status=255
+ADMIN_50X500_REUSED_BY_SOURCE_EQUIVALENCE=PASS source=GENERATED_CATALOG ignored=0 missing_covers=50 missing_artwork=500 scan_ms=1587
+ADMIN_50X500_SCREENSHOT_SHA256=c0616c7d83f049e03f54b1f812dcd5c89850116338d8769873dee6374bcbac2c

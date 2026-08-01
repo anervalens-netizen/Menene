@@ -115,7 +115,7 @@ UI-ul rămâne utilizabil, iar datele mai noi nu sunt înlocuite de date vechi.
 - două rulări consecutive: a doua reutilizează rezultatele;
 - audio preferat și fallback;
 - copertă și miniaturi;
-- SRT/VTT;
+- sidecar-uri SRT/VTT în sursă: numărate în `subtitlesIgnored`, absente din output, `subtitle: null`;
 - catalog și raport valide;
 - ID-uri stabile după rebuild.
 
@@ -150,8 +150,12 @@ Tableta vede numai un catalog complet valid, iar rollbackul la generația anteri
 - pauză manuală;
 - retry;
 - volum;
+- bara afișează timpul curent și durata;
+- glisarea la 25% și 75% mută redarea în poziția cerută;
+- butoanele −10/+10 secunde respectă limitele început/final;
+- poziția aleasă supraviețuiește background/foreground;
 - schimbarea limbii audio;
-- subtitrări SRT/VTT;
+- catalog cu `subtitle: null` și zero SRT/VTT în output;
 - ecran stins/aprins;
 - background/foreground repetat;
 - process death/recreare;
@@ -170,8 +174,7 @@ Zero crash, ANR sau blocare fără cale de revenire.
 - 720p la 24, 25 și 30 fps;
 - AAC stereo 44,1/48 kHz;
 - video fără audio;
-- SRT cu diacritice;
-- VTT;
+- SRT cu diacritice și VTT în sursă: ignorate, fără fișiere/captions în redare;
 - fișier trunchiat.
 
 ## Soak
@@ -216,7 +219,7 @@ Copilul nu iese accidental, iar adultul poate recupera și administra dispozitiv
 - minimum 500 episoade;
 - mai multe sezoane;
 - artwork complet și incomplet;
-- subtitrări mixte.
+- sidecar-uri SRT/VTT în sursă, dar zero subtitrări în output.
 
 ## Teste
 

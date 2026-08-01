@@ -1,0 +1,19 @@
+Starting: Intent { cmp=ro.mehene.app/.AdminActivity }
+Security exception: Permission Denial: starting Intent { flg=0x10000000 cmp=ro.mehene.app/.AdminActivity } from null (pid=10190, uid=2000) not exported from uid 10157
+
+java.lang.SecurityException: Permission Denial: starting Intent { flg=0x10000000 cmp=ro.mehene.app/.AdminActivity } from null (pid=10190, uid=2000) not exported from uid 10157
+	at com.android.server.am.ActivityStackSupervisor.checkStartAnyActivityPermission(ActivityStackSupervisor.java:2102)
+	at com.android.server.am.ActivityStarter.startActivity(ActivityStarter.java:683)
+	at com.android.server.am.ActivityStarter.startActivityLocked(ActivityStarter.java:457)
+	at com.android.server.am.ActivityStarter.startActivityMayWait(ActivityStarter.java:1416)
+	at com.android.server.am.ActivityStarter.startActivityMayWait(ActivityStarter.java:1199)
+	at com.android.server.am.ActivityManagerService.startActivityAsUser(ActivityManagerService.java:6374)
+	at com.android.server.am.ActivityManagerShellCommand.runStartActivity(ActivityManagerShellCommand.java:431)
+	at com.android.server.am.ActivityManagerShellCommand.onCommand(ActivityManagerShellCommand.java:142)
+	at android.os.ShellCommand.exec(ShellCommand.java:96)
+	at com.android.server.am.ActivityManagerService.onShellCommand(ActivityManagerService.java:19605)
+	at android.os.Binder.shellCommand(Binder.java:602)
+	at android.os.Binder.onTransact(Binder.java:500)
+	at android.app.IActivityManager$Stub.onTransact(IActivityManager.java:4733)
+	at com.android.server.am.ActivityManagerService.onTransact(ActivityManagerService.java:4042)
+	at android.os.Binder.execTransact(Binder.java:705)

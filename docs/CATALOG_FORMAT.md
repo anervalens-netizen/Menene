@@ -24,7 +24,7 @@ Schema curentă: `1`.
               "title": "Episodul 01 - Pilot",
               "media": "Bluey/Season 01/Episodul 01.mp4",
               "artwork": "Bluey/Season 01/Episodul 01.webp",
-              "subtitle": "Bluey/Season 01/Episodul 01.srt",
+              "subtitle": null,
               "durationMs": 420000,
               "audioLanguage": "ron"
             }
@@ -37,5 +37,7 @@ Schema curentă: `1`.
 ```
 
 Toate căile sunt relative la folderul selectat în Mehene. ID-urile trebuie să fie stabile între reconstrucțiile bibliotecii, astfel încât progresul să fie păstrat.
+
+Pentru bibliotecile Menene, `subtitle` rămâne obligatoriu `null`. Builderul nu publică subtitrări și refuză orice valoare nenulă; aceasta este o regulă de produs pentru copilul pre-lector.
 
 Dacă `catalog.json` lipsește sau este invalid, aplicația scanează folderele. Scanarea fallback nu poate oferi toate metadatele Builderului.
