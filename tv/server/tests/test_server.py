@@ -21,6 +21,7 @@ class RangeTests(unittest.TestCase):
         self.assertEqual(parse_byte_range("bytes=10-19", 100), ByteRange(10, 19))
         self.assertEqual(parse_byte_range("bytes=90-", 100), ByteRange(90, 99))
         self.assertEqual(parse_byte_range("bytes=-10", 100), ByteRange(90, 99))
+        self.assertEqual(parse_byte_range("bytes=-200", 100), ByteRange(0, 99))
 
     def test_range_is_clamped_and_invalid_values_fail(self) -> None:
         self.assertEqual(parse_byte_range("bytes=90-200", 100), ByteRange(90, 99))
@@ -37,7 +38,13 @@ class CatalogTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp.cleanup()
 
-    def write_catalog(self, subtitle=None) -> Path:
+    def write_catalog(self, subtitle=None, include_subtitle=True) -> Path:
+        episode = {
+            "id": "episode-1",
+            "media": "Series/Season 01/E01.mp4",
+        }
+        if include_subtitle:
+            episode["subtitle"] = subtitle
         catalog = {
             "schemaVersion": 1,
             "series": [
@@ -46,13 +53,7 @@ class CatalogTests(unittest.TestCase):
                     "seasons": [
                         {
                             "number": 1,
-                            "episodes": [
-                                {
-                                    "id": "episode-1",
-                                    "media": "Series/Season 01/E01.mp4",
-                                    "subtitle": subtitle,
-                                }
-                            ],
+                            "episodes": [episode],
                         }
                     ],
                 }
@@ -63,10 +64,13 @@ class CatalogTests(unittest.TestCase):
         return path
 
     def test_catalog_counts_and_enforces_no_subtitles(self) -> None:
-        _, stats = load_catalog(self.write_catalog())
+        _, stats, allowed = load_catalog(self.write_catalog())
         self.assertEqual(stats, {"series": 1, "episodes": 1, "subtitles": 0})
+        self.assertEqual(allowed, {"Series/Season 01/E01.mp4"})
         with self.assertRaisesRegex(ValueError, "no-subtitle"):
             load_catalog(self.write_catalog("Episode.srt"))
+        with self.assertRaisesRegex(ValueError, "no-subtitle"):
+            load_catalog(self.write_catalog(include_subtitle=False))
 
     def test_library_path_cannot_escape_root(self) -> None:
         expected = self.root / "Series" / "Episode 01.mp4"
@@ -84,6 +88,7 @@ class HttpTests(unittest.TestCase):
         (self.root / "Series").mkdir()
         (self.root / "Series" / "Episode.mp4").write_bytes(b"0123456789")
         (self.root / "Series" / "Empty.mp4").write_bytes(b"")
+        (self.root / "Series" / "Unreferenced.txt").write_text("private")
         (self.root / "catalog.json").write_text(
             json.dumps(
                 {
@@ -97,6 +102,7 @@ class HttpTests(unittest.TestCase):
                                         {
                                             "id": "episode-1",
                                             "media": "Series/Episode.mp4",
+                                            "artwork": "Series/Empty.mp4",
                                             "subtitle": None,
                                         }
                                     ]
@@ -147,6 +153,13 @@ class HttpTests(unittest.TestCase):
             self.assertEqual(response.headers["Accept-Ranges"], "bytes")
             self.assertEqual(response.read(), b"")
 
+        with self.request(
+            "/media/Series/Episode.mp4", {"Range": "bytes=2-5"}, method="HEAD"
+        ) as response:
+            self.assertEqual(response.status, 206)
+            self.assertEqual(response.headers["Content-Range"], "bytes 2-5/10")
+            self.assertEqual(response.headers["Content-Length"], "4")
+
         with self.request("/media/Series/Empty.mp4") as response:
             self.assertEqual(response.status, 200)
             self.assertEqual(response.headers["Content-Length"], "0")
@@ -155,6 +168,15 @@ class HttpTests(unittest.TestCase):
         with self.assertRaises(urllib.error.HTTPError) as traversal:
             self.request("/media/%2e%2e/secret")
         self.assertEqual(traversal.exception.code, 400)
+
+        with self.assertRaises(urllib.error.HTTPError) as unreferenced:
+            self.request("/media/Series/Unreferenced.txt")
+        self.assertEqual(unreferenced.exception.code, 404)
+
+        with self.assertRaises(urllib.error.HTTPError) as unsatisfiable:
+            self.request("/media/Series/Episode.mp4", {"Range": "bytes=20-30"})
+        self.assertEqual(unsatisfiable.exception.code, 416)
+        self.assertEqual(unsatisfiable.exception.headers["Content-Range"], "bytes */10")
 
         with self.assertRaises(urllib.error.HTTPError) as post:
             self.request("/api/v1/catalog", method="POST")

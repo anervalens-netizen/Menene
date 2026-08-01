@@ -15,6 +15,10 @@
     progress: loadProgress(),
     lastProgressWrite: 0,
     player: null,
+    playerReady: false,
+    playerSession: 0,
+    endTimer: null,
+    resumeAfterVisibility: false,
     toastTimer: null,
     lastFocus: null
   };
@@ -68,7 +72,7 @@
   function bindEvents() {
     elements.retryButton.addEventListener("click", loadLibrary);
     elements.seriesBack.addEventListener("click", showHome);
-    elements.playerBack.addEventListener("click", closePlayer);
+    elements.playerBack.addEventListener("click", function () { closePlayer(false); });
     elements.heroPlay.addEventListener("click", function () {
       var episode = continueEpisode(state.currentSeries) || core.firstEpisode(state.currentSeries);
       if (episode) startEpisode(state.currentSeries, episode);
@@ -77,6 +81,7 @@
     elements.jumpForward.addEventListener("click", function () { jump(10000); });
     elements.playPause.addEventListener("click", togglePlayback);
     elements.seekBar.addEventListener("change", function () {
+      if (!requirePlayerReady()) return;
       var target = state.player.duration() * Number(elements.seekBar.value) / 1000;
       state.player.seek(target);
       showToast("Poziție " + core.formatTime(target));
@@ -84,6 +89,7 @@
     elements.exitCancel.addEventListener("click", closeExitDialog);
     elements.exitConfirm.addEventListener("click", exitApplication);
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     document.addEventListener("focusin", function (event) {
       if (event.target.matches("[data-focusable]")) state.lastFocus = event.target;
       if (event.target.classList.contains("series-card")) {
@@ -220,6 +226,11 @@
     if (!episode) return;
     state.currentSeries = series;
     state.currentEpisode = episode;
+    state.playerSession += 1;
+    var session = state.playerSession;
+    if (state.endTimer) clearTimeout(state.endTimer);
+    state.endTimer = null;
+    setPlayerReady(false);
     state.currentView = "player";
     elements.header.hidden = true;
     elements.homeView.hidden = true;
@@ -233,16 +244,30 @@
     elements.playPause.textContent = "Ⅱ";
     var url = core.mediaUrl(serverBase, episode.media);
     state.player.open(url).then(function () {
+      if (session !== state.playerSession || state.currentEpisode !== episode) return;
+      setPlayerReady(true);
       var progress = progressFor(episode);
       if (progress.position > 15000 && progress.position < progress.duration - 15000) {
-        setTimeout(function () { state.player.seek(progress.position); }, 700);
+        state.player.seek(progress.position);
       }
-    }).catch(function () { showToast("Redarea nu a putut porni."); });
-    setTimeout(function () { elements.playPause.focus(); }, 200);
+      if (document.hidden) {
+        state.resumeAfterVisibility = true;
+        state.player.pause();
+        elements.playPause.textContent = "▶";
+        return;
+      }
+      elements.playPause.focus();
+    }).catch(function () {
+      if (session !== state.playerSession) return;
+      setPlayerReady(false);
+      showToast("Redarea nu a putut porni.");
+      elements.playerBack.focus();
+    });
+    elements.playerBack.focus();
   }
 
   function onPlayerTime(position, duration) {
-    if (!state.currentEpisode) return;
+    if (!state.currentEpisode || !state.playerReady) return;
     var total = duration || state.currentEpisode.durationMs || 0;
     elements.currentTime.textContent = core.formatTime(position);
     elements.durationTime.textContent = core.formatTime(total);
@@ -255,23 +280,62 @@
     }
   }
 
-  function onPlayerEnded() {
-    if (state.currentEpisode) {
-      var duration = state.player.duration() || state.currentEpisode.durationMs || 0;
-      state.progress[state.currentEpisode.id] = { position: duration, duration: duration, updatedAt: Date.now() };
-      saveProgress();
-    }
-    showToast("Episod terminat");
-    setTimeout(closePlayer, 700);
+  function saveCurrentProgress() {
+    if (!state.currentEpisode || !state.playerReady) return;
+    var current = state.player.currentTime();
+    var duration = state.player.duration() || state.currentEpisode.durationMs || 0;
+    state.progress[state.currentEpisode.id] = {
+      position: current,
+      duration: duration,
+      updatedAt: Date.now()
+    };
+    saveProgress();
   }
 
-  function closePlayer() {
-    if (state.currentEpisode) {
+  function handleVisibilityChange() {
+    if (state.currentView !== "player" || !state.currentEpisode) return;
+    if (document.hidden) {
+      state.resumeAfterVisibility = state.playerReady && !state.player.isPaused();
+      if (state.playerReady) {
+        saveCurrentProgress();
+        state.player.pause();
+        elements.playPause.textContent = "▶";
+      }
+      return;
+    }
+    if (state.resumeAfterVisibility && state.playerReady) {
+      state.player.play();
+      elements.playPause.textContent = "Ⅱ";
+    }
+    state.resumeAfterVisibility = false;
+  }
+
+  function onPlayerEnded() {
+    if (state.currentView !== "player" || !state.currentEpisode) return;
+    var duration = state.player.duration() || state.currentEpisode.durationMs || 0;
+    state.progress[state.currentEpisode.id] = { position: duration, duration: duration, updatedAt: Date.now() };
+    saveProgress();
+    showToast("Episod terminat");
+    setPlayerReady(false);
+    if (state.endTimer) clearTimeout(state.endTimer);
+    state.endTimer = setTimeout(function () { closePlayer(true); }, 700);
+  }
+
+  function closePlayer(keepStoredProgress) {
+    if (state.currentView !== "player" || !state.currentEpisode) return;
+    if (state.endTimer) clearTimeout(state.endTimer);
+    state.endTimer = null;
+    var episode = state.currentEpisode;
+    if (!keepStoredProgress && state.playerReady) {
       var current = state.player.currentTime();
-      var duration = state.player.duration() || state.currentEpisode.durationMs || 0;
-      state.progress[state.currentEpisode.id] = { position: current, duration: duration, updatedAt: Date.now() };
+      var duration = state.player.duration() || episode.durationMs || 0;
+      state.progress[episode.id] = { position: current, duration: duration, updatedAt: Date.now() };
       saveProgress();
     }
+    state.currentEpisode = null;
+    state.playerSession += 1;
+    state.resumeAfterVisibility = false;
+    setPlayerReady(false);
     state.player.close();
     elements.playerView.hidden = true;
     elements.header.hidden = false;
@@ -279,16 +343,30 @@
     elements.seriesView.hidden = false;
     renderSeasons();
     setTimeout(function () {
-      var card = elements.episodeGrid.querySelector('[data-episode-id="' + state.currentEpisode.id + '"]');
+      var card = elements.episodeGrid.querySelector('[data-episode-id="' + episode.id + '"]');
       (card || elements.seriesBack).focus();
     }, 0);
   }
 
+  function setPlayerReady(ready) {
+    state.playerReady = ready;
+    [elements.seekBar, elements.jumpBack, elements.playPause, elements.jumpForward]
+      .forEach(function (control) { control.disabled = !ready; });
+  }
+
+  function requirePlayerReady() {
+    if (state.playerReady) return true;
+    showToast("Playerul se pregătește…");
+    return false;
+  }
+
   function togglePlayback() {
+    if (!requirePlayerReady()) return;
     state.player.toggle();
-    elements.playPause.textContent = state.player.backend.isPaused() ? "▶" : "Ⅱ";
+    elements.playPause.textContent = state.player.isPaused() ? "▶" : "Ⅱ";
   }
   function jump(delta) {
+    if (!requirePlayerReady()) return;
     state.player.jump(delta);
     showToast(delta < 0 ? "Înapoi 10 secunde" : "Înainte 10 secunde");
   }
@@ -302,8 +380,8 @@
     }
     if (state.currentView === "player") {
       if (code === 10252) { event.preventDefault(); togglePlayback(); return; }
-      if (code === 415) { event.preventDefault(); state.player.play(); elements.playPause.textContent = "Ⅱ"; return; }
-      if (code === 19) { event.preventDefault(); state.player.pause(); elements.playPause.textContent = "▶"; return; }
+      if (code === 415) { event.preventDefault(); if (requirePlayerReady()) { state.player.play(); elements.playPause.textContent = "Ⅱ"; } return; }
+      if (code === 19) { event.preventDefault(); if (requirePlayerReady()) { state.player.pause(); elements.playPause.textContent = "▶"; } return; }
       if (code === 412) { event.preventDefault(); jump(-10000); return; }
       if (code === 417) { event.preventDefault(); jump(10000); return; }
       if (document.activeElement === elements.seekBar && (code === 37 || code === 39)) {
@@ -325,7 +403,7 @@
 
   function handleBack() {
     if (!elements.exitDialog.hidden) { closeExitDialog(); return; }
-    if (state.currentView === "player") { closePlayer(); return; }
+    if (state.currentView === "player") { closePlayer(false); return; }
     if (state.currentView === "series") { showHome(); return; }
     if (state.currentView === "home") {
       elements.exitDialog.hidden = false;

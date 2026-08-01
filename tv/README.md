@@ -6,7 +6,7 @@ Client Samsung TV Web/Tizen pentru modelul 77S90C și server media local read-on
 
 - biblioteca canonică rămâne pe Dell în `/srv/menene/library/current`;
 - `catalog.json` generat de Builder este baza de conținut, fără o bază duplicată;
-- serverul expune health, catalog, artwork și media prin HTTP LAN cu byte ranges;
+- serverul expune health, catalog și numai fișierele media/artwork referite de catalog, prin HTTP LAN cu byte ranges;
 - televizorul păstrează în `localStorage` numai progresul de redare, indexat după ID-ul stabil al episodului;
 - tableta rămâne independentă și continuă să folosească biblioteca de pe microSD.
 

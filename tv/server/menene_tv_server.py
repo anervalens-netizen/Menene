@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import BinaryIO
 from urllib.parse import unquote, urlsplit
 
@@ -74,7 +74,19 @@ def resolve_library_path(library_root: Path, encoded_relative_path: str) -> Path
     return candidate
 
 
-def load_catalog(catalog_path: Path) -> tuple[bytes, dict[str, int]]:
+def normalize_catalog_path(value: object, field: str) -> str:
+    if not isinstance(value, str) or not value or "\\" in value:
+        raise ValueError(f"catalog {field} path is invalid")
+    path = PurePosixPath(value)
+    normalized = path.as_posix()
+    if path.is_absolute() or ".." in path.parts or normalized != value:
+        raise ValueError(f"catalog {field} path is invalid")
+    return normalized
+
+
+def load_catalog(
+    catalog_path: Path,
+) -> tuple[bytes, dict[str, int], frozenset[str]]:
     raw = catalog_path.read_bytes()
     document = json.loads(raw)
     series = document.get("series")
@@ -83,21 +95,33 @@ def load_catalog(catalog_path: Path) -> tuple[bytes, dict[str, int]]:
 
     episode_count = 0
     subtitle_count = 0
+    allowed_paths: set[str] = set()
     for serial in series:
+        if serial.get("cover") is not None:
+            allowed_paths.add(normalize_catalog_path(serial["cover"], "cover"))
         for season in serial.get("seasons", []):
             for episode in season.get("episodes", []):
                 episode_count += 1
-                if episode.get("subtitle") is not None:
+                if "subtitle" not in episode or episode["subtitle"] is not None:
                     subtitle_count += 1
+                allowed_paths.add(normalize_catalog_path(episode.get("media"), "media"))
+                if episode.get("artwork") is not None:
+                    allowed_paths.add(
+                        normalize_catalog_path(episode["artwork"], "artwork")
+                    )
 
     if subtitle_count:
         raise ValueError("catalog.json violates the permanent no-subtitle rule")
 
-    return raw, {
-        "series": len(series),
-        "episodes": episode_count,
-        "subtitles": subtitle_count,
-    }
+    return (
+        raw,
+        {
+            "series": len(series),
+            "episodes": episode_count,
+            "subtitles": subtitle_count,
+        },
+        frozenset(allowed_paths),
+    )
 
 
 def content_type(path: Path) -> str:
@@ -118,7 +142,7 @@ class MeneneTvServer(ThreadingHTTPServer):
         allowed_networks: tuple[ipaddress._BaseNetwork, ...],
     ) -> None:
         self.library_root = library_root.resolve()
-        self.catalog_bytes, self.catalog_stats = load_catalog(
+        self.catalog_bytes, self.catalog_stats, self.allowed_paths = load_catalog(
             self.library_root / CATALOG_NAME
         )
         self.allowed_networks = allowed_networks
@@ -214,7 +238,8 @@ class MeneneRequestHandler(BaseHTTPRequestHandler):
         except ValueError:
             self._json_error(HTTPStatus.BAD_REQUEST, "invalid media path")
             return
-        if not path.is_file() or path.name == CATALOG_NAME:
+        relative_path = path.relative_to(self.server.library_root).as_posix()
+        if relative_path not in self.server.allowed_paths or not path.is_file():
             self._json_error(HTTPStatus.NOT_FOUND, "media not found")
             return
 
