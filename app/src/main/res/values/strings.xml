@@ -2,11 +2,11 @@
 <resources>
     <string name="app_name">Menene</string>
     <string name="home_title">MENENE</string>
-    <string name="start_mehene_tv">▶ MENENE TV</string>
-    <string name="tv_starts_with">Începe cu: %1$s</string>
-    <string name="continue_watching">Continuă</string>
+    <string name="start_mehene_tv">MENENE TV</string>
+    <string name="tv_starts_with">%1$s</string>
+    <string name="continue_watching">CONTINUĂ</string>
     <string name="continue_short">CONTINUĂ</string>
-    <string name="my_series">SERIALELE MELE</string>
+    <string name="my_series">BIBLIOTECA MEA</string>
     <string name="episode_completed">terminat</string>
 
     <string name="empty_title">Biblioteca este goală</string>

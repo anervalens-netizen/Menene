@@ -11,4 +11,7 @@
     <color name="mehene_green">#5DD39E</color>
     <color name="mehene_purple">#9B7EDE</color>
     <color name="mehene_teal">#37BEC9</color>
+    <color name="mehene_navy">#07162F</color>
+    <color name="mehene_magenta">#A41372</color>
+    <color name="mehene_play_red">#FF3159</color>
 </resources>

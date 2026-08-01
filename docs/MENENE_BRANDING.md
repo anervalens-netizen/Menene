@@ -52,3 +52,34 @@ Derivatele Android sunt 512×512 WebP quality 82:
 - `menene_series_story.webp`: `963f8ed181ef165d1046cbe1dc2dbe59d7367f60ad89641bb4bb6baf501378c9`
 - `menene_series_cars.webp`: `94d2b72c1cae99a7b49c3e5f6c9680dff42402bb6041439861cf292654e25573`
 - `menene_series_space.webp`: `357a73fdfd45f2ace363f03fb6c426c0123d6ede01efdad1f4c523f44d43c209`
+
+## Sistem vizual cinematic 2.3
+
+Home-ul 2.3 emulează ierarhia referinței Disney fără a copia brandul sau
+personajele: fundal navy-magenta discret, un hero dominant, acțiune play
+circulară și o bibliotecă compactă sub hero. Miniatura reală a episodului are
+prioritate în hero, iar imaginea generată este fallback.
+
+Asset-urile au fost generate prin skillul built-in imagegen, fără text,
+logo-uri, mărci sau personaje recognoscibile:
+
+- Hero: vale de poveste la apus, castel în depărtare și vehicul galben original
+  pe treimea dreaptă; realism de film 3D, materiale și lumină cinematografică,
+  spațiu întunecat în stânga pentru UI, format 16:9.
+- Story: carte veche deschisă într-o pădure cu castel luminat de lună; realism
+  de film 3D, hârtie, piele, piatră și vegetație credibile, format pătrat.
+- Cars: trei vehicule originale pe un drum de coastă; metal, sticlă, cauciuc și
+  peisaj realist stilizat, fără fețe sau designuri de marcă, format pătrat.
+- Space: navă sferică originală deasupra unei planete albastre; metal, sticlă,
+  lumină orbitală și profunzime cinematică, format pătrat.
+
+Derivatele finale WebP quality 82:
+
+- `menene_hero_adventure.webp`, 1280×720:
+  `0fe8673ad477ebc6db9c19205edd86e1abc7a47291ef1d0c3e4842548108e789`
+- `menene_series_story.webp`, 512×512:
+  `13ece130dfad791decf886642c178ff82bc04c4278e8bb2539f25b6135a45ca9`
+- `menene_series_cars.webp`, 512×512:
+  `20850a4fde4a9d2aff8c3e07e3a410d20f39a5e1e6345f0e2ca913202c9d9925`
+- `menene_series_space.webp`, 512×512:
+  `f26d7d74a477baf8ad85cf4dac4cfbe43d383ba34219c8c0f5ad1a7d4badcc7d`

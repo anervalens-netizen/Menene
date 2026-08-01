@@ -22,6 +22,7 @@ import ro.mehene.app.databinding.ActivityMainBinding
 import ro.mehene.app.kiosk.KioskController
 import ro.mehene.app.model.EpisodeItem
 import ro.mehene.app.model.SeriesItem
+import ro.mehene.app.ui.ArtworkLoader
 import ro.mehene.app.ui.SeriesAdapter
 import ro.mehene.app.ui.state.LibraryUnavailableReason
 import ro.mehene.app.ui.state.MainUiState
@@ -125,6 +126,11 @@ class MainActivity : AppCompatActivity() {
         if (hasFocus && !folderPickerActive) KioskController.applyImmersive(this)
     }
 
+    override fun onDestroy() {
+        ArtworkLoader.cancel(binding.heroArtwork)
+        super.onDestroy()
+    }
+
     private fun render(state: MainUiState) = with(binding) {
         loading.visibility = if (state is MainUiState.Loading) View.VISIBLE else View.GONE
         seriesList.visibility = View.GONE
@@ -167,6 +173,22 @@ class MainActivity : AppCompatActivity() {
         tvCard.tag = tvEpisode
         tvCard.visibility = if (tvEpisode == null) View.GONE else View.VISIBLE
         tvSubtitle.text = tvEpisode?.let { getString(R.string.tv_starts_with, it.title) }.orEmpty()
+        ArtworkLoader.cancel(heroArtwork)
+
+        fun showHeroFallback() {
+            heroArtwork.setImageResource(R.drawable.menene_hero_adventure)
+            heroArtwork.visibility = View.VISIBLE
+        }
+
+        val heroArtworkUri = tvEpisode?.artworkUri
+        if (heroArtworkUri == null) {
+            showHeroFallback()
+        } else {
+            showHeroFallback()
+            ArtworkLoader.load(this@MainActivity, heroArtworkUri, tvEpisode.artworkVersion, heroArtwork) {
+                showHeroFallback()
+            }
+        }
 
         continueCard.tag = continueEpisode
         continueCard.visibility = if (continueEpisode == null) View.GONE else View.VISIBLE

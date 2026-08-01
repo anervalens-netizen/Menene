@@ -1,4 +1,4 @@
-# Arhitectură Menene 2.2
+# Arhitectură Menene 2.3
 
 ## Principii
 
@@ -42,6 +42,13 @@ PlayerActivity   ← Media3 + repositories + PlaybackQueuePlanner
 Activity-urile desenează starea și trimit acțiuni. Scanarea, progresul și alegerea următorului episod nu sunt implementate în adaptoare sau layouturi.
 
 ViewModel-urile anulează operația anterioară și folosesc o generație de request pentru a nu publica rezultate asincrone vechi.
+
+Home-ul folosește o ierarhie cinematică optimizată pentru landscape: logo compact,
+hero 16:9 dominant cu miniatura episodului curent și fallback local, acțiune play
+clară, apoi biblioteca în maximum cinci coloane. Coperta reală din bibliotecă are
+prioritate; fallback-urile originale sunt decodate asincron prin `ArtworkLoader`.
+Toate suprafețele rămân offline și păstrează limita de memorie necesară pe
+SM-T585.
 
 ## Catalog
 
