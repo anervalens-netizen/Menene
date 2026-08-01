@@ -29,6 +29,12 @@
     <string name="volume_up">Volum mai tare</string>
     <string name="volume_down">Volum mai încet</string>
     <string name="volume">Volum</string>
+    <string name="seek_backward_10">Înapoi 10 secunde</string>
+    <string name="seek_forward_10">Înainte 10 secunde</string>
+    <string name="seek_backward_short">−10 s</string>
+    <string name="seek_forward_short">+10 s</string>
+    <string name="seek_position">Poziția în episod</string>
+    <string name="time_unknown">--:--</string>
     <string name="episode_number">Episodul %1$d</string>
     <string name="completed_mark">✓</string>
     <string name="video_error_child">Episodul nu pornește. Încearcă din nou sau cheamă un adult.</string>

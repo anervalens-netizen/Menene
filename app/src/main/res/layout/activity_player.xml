@@ -156,12 +156,94 @@
             android:src="@drawable/ic_volume_down" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/playbackControls"
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_scrim_bottom"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:focusable="false"
+        android:importantForAccessibility="no"
+        android:orientation="horizontal"
+        android:paddingStart="26dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="26dp"
+        android:paddingBottom="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/seekBackwardButton"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@drawable/bg_translucent_round"
+            android:clickable="true"
+            android:contentDescription="@string/seek_backward_10"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/seek_backward_short"
+            android:textColor="@color/mehene_white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:gravity="center"
+            android:text="00:00"
+            android:textColor="@color/mehene_white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/seek_position"
+            android:max="1000"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:progressBackgroundTint="@color/mehene_white_88"
+            android:progressTint="@color/mehene_yellow"
+            android:splitTrack="false"
+            android:thumbTint="@color/mehene_yellow" />
+
+        <TextView
+            android:id="@+id/totalTime"
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/time_unknown"
+            android:textColor="@color/mehene_white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/seekForwardButton"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/bg_translucent_round"
+            android:clickable="true"
+            android:contentDescription="@string/seek_forward_10"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/seek_forward_short"
+            android:textColor="@color/mehene_white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/volumeIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="112dp"
         android:background="@drawable/bg_pill"
         android:textColor="@color/mehene_white"
         android:textSize="18sp"

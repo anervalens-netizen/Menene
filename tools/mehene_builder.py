@@ -14,7 +14,7 @@ from typing import Any, Iterable
 
 import mehene_library as legacy
 
-BUILDER_VERSION = "2.1.0"
+BUILDER_VERSION = "2.3.0"
 LOCK_STALE_SECONDS = 6 * 60 * 60
 
 
@@ -161,10 +161,11 @@ def validate_catalog(catalog: dict[str, Any], destination: Path) -> None:
                 media = safe_catalog_path(destination, str(episode.get("media", "")))
                 if not media.is_file() or media.stat().st_size <= 0:
                     raise ValueError(f"video inexistent sau gol: {media}")
-                for key in ("artwork", "subtitle"):
-                    value = episode.get(key)
-                    if value and not safe_catalog_path(destination, str(value)).is_file():
-                        raise ValueError(f"{key} inexistent: {value}")
+                if "subtitle" not in episode or episode.get("subtitle") is not None:
+                    raise ValueError("subtitrările sunt interzise; câmpul subtitle trebuie să fie null")
+                artwork = episode.get("artwork")
+                if artwork and not safe_catalog_path(destination, str(artwork)).is_file():
+                    raise ValueError(f"artwork inexistent: {artwork}")
                 episode_count += 1
     if series_ids and episode_count == 0:
         raise ValueError("catalogul nu conține episoade")

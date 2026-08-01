@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.SeekBar
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -34,6 +35,7 @@ import ro.mehene.app.kiosk.KioskController
 import ro.mehene.app.media.PlaybackQueuePlanner
 import ro.mehene.app.model.EpisodeItem
 import ro.mehene.app.model.LibraryCatalog
+import java.util.Locale
 
 @UnstableApi
 class PlayerActivity : AppCompatActivity() {
@@ -55,6 +57,7 @@ class PlayerActivity : AppCompatActivity() {
     private var countdownSeconds = 0
     private var restoredNextEpisodeId: String? = null
     private var restoredCountdownSeconds = 0
+    private var isUserSeeking = false
 
     private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -67,8 +70,12 @@ class PlayerActivity : AppCompatActivity() {
                 Player.STATE_READY -> {
                     playbackFailed = false
                     handler.removeCallbacks(bufferTimeout)
+                    handler.removeCallbacks(seekControlsUpdater)
+                    handler.post(seekControlsUpdater)
                     binding.loading.visibility = View.GONE
                     binding.errorPanel.visibility = View.GONE
+                    binding.playbackControls.visibility = View.VISIBLE
+                    updateSeekControls()
                 }
                 Player.STATE_ENDED -> {
                     handler.removeCallbacks(bufferTimeout)
@@ -83,7 +90,9 @@ class PlayerActivity : AppCompatActivity() {
             saveProgress(critical = true)
             playbackFailed = true
             handler.removeCallbacks(bufferTimeout)
+            handler.removeCallbacks(seekControlsUpdater)
             binding.loading.visibility = View.GONE
+            binding.playbackControls.visibility = View.GONE
             binding.errorPanel.visibility = View.VISIBLE
         }
     }
@@ -93,7 +102,9 @@ class PlayerActivity : AppCompatActivity() {
             saveProgress(critical = true)
             playbackFailed = true
             player?.pause()
+            handler.removeCallbacks(seekControlsUpdater)
             binding.loading.visibility = View.GONE
+            binding.playbackControls.visibility = View.GONE
             binding.errorPanel.visibility = View.VISIBLE
         }
     }
@@ -102,6 +113,13 @@ class PlayerActivity : AppCompatActivity() {
         override fun run() {
             saveProgress(critical = false)
             if (player != null) handler.postDelayed(this, PROGRESS_SAVE_INTERVAL_MS)
+        }
+    }
+
+    private val seekControlsUpdater = object : Runnable {
+        override fun run() {
+            if (!isUserSeeking) updateSeekControls()
+            if (player != null) handler.postDelayed(this, SEEK_UPDATE_INTERVAL_MS)
         }
     }
 
@@ -131,6 +149,26 @@ class PlayerActivity : AppCompatActivity() {
         binding.closeButton.setOnClickListener { closePlayer() }
         binding.volumeUpButton.setOnClickListener { changeVolume(AudioManager.ADJUST_RAISE) }
         binding.volumeDownButton.setOnClickListener { changeVolume(AudioManager.ADJUST_LOWER) }
+        binding.seekBackwardButton.setOnClickListener { seekBy(-SEEK_STEP_MS) }
+        binding.seekForwardButton.setOnClickListener { seekBy(SEEK_STEP_MS) }
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                isUserSeeking = true
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
+                binding.currentTime.text = formatTime(positionForProgress(progress))
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                val target = positionForProgress(seekBar.progress)
+                player?.seekTo(target)
+                savedPositionMs = target
+                isUserSeeking = false
+                updateSeekControls(positionOverrideMs = target)
+            }
+        })
         binding.playerView.setOnClickListener { togglePlayback() }
         binding.retryButton.setOnClickListener { retryPlayback() }
         binding.nextCancelButton.setOnClickListener { closePlayer() }
@@ -243,6 +281,8 @@ class PlayerActivity : AppCompatActivity() {
         if (player != null || countdownNext != null || !playbackLifecycleActive()) return
         playbackFailed = false
         binding.errorPanel.visibility = View.GONE
+        binding.playbackControls.visibility = View.VISIBLE
+        binding.seekBar.isEnabled = false
         binding.loading.visibility = View.VISIBLE
 
         val trackSelector = DefaultTrackSelector(this).apply {
@@ -269,6 +309,8 @@ class PlayerActivity : AppCompatActivity() {
             }
         handler.removeCallbacks(periodicProgressSave)
         handler.postDelayed(periodicProgressSave, PROGRESS_SAVE_INTERVAL_MS)
+        handler.removeCallbacks(seekControlsUpdater)
+        handler.post(seekControlsUpdater)
     }
 
     private fun mediaItem(episode: EpisodeItem): MediaItem {
@@ -293,7 +335,10 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun releasePlayer() {
+        isUserSeeking = false
+        binding.playbackControls.visibility = View.GONE
         handler.removeCallbacks(periodicProgressSave)
+        handler.removeCallbacks(seekControlsUpdater)
         handler.removeCallbacks(bufferTimeout)
         player?.removeListener(playerListener)
         binding.playerView.player = null
@@ -351,6 +396,56 @@ class PlayerActivity : AppCompatActivity() {
 
     private val hideVolumeIndicator = Runnable {
         binding.volumeIndicator.visibility = View.GONE
+    }
+
+    private fun seekBy(deltaMs: Long) {
+        val activePlayer = player ?: return
+        val duration = validDuration(activePlayer.duration)
+        if (duration <= 0L) return
+        val target = (activePlayer.currentPosition + deltaMs).coerceIn(0L, duration)
+        activePlayer.seekTo(target)
+        savedPositionMs = target
+        updateSeekControls(positionOverrideMs = target)
+    }
+
+    private fun updateSeekControls(positionOverrideMs: Long? = null) {
+        val activePlayer = player
+        val duration = validDuration(activePlayer?.duration ?: 0L)
+        val position = (positionOverrideMs ?: activePlayer?.currentPosition ?: savedPositionMs)
+            .coerceAtLeast(0L)
+            .coerceAtMost(duration.takeIf { it > 0L } ?: Long.MAX_VALUE)
+        binding.currentTime.text = formatTime(position)
+        binding.totalTime.text = if (duration > 0L) {
+            formatTime(duration)
+        } else {
+            getString(R.string.time_unknown)
+        }
+        binding.seekBar.isEnabled = duration > 0L
+        if (!isUserSeeking) {
+            binding.seekBar.progress = if (duration > 0L) {
+                ((position.toDouble() / duration) * SEEK_BAR_MAX).toInt().coerceIn(0, SEEK_BAR_MAX)
+            } else {
+                0
+            }
+        }
+    }
+
+    private fun positionForProgress(progress: Int): Long {
+        val duration = validDuration(player?.duration ?: 0L)
+        if (duration <= 0L) return 0L
+        return ((progress.coerceIn(0, SEEK_BAR_MAX).toDouble() / SEEK_BAR_MAX) * duration).toLong()
+    }
+
+    private fun formatTime(positionMs: Long): String {
+        val totalSeconds = positionMs.coerceAtLeast(0L) / 1_000L
+        val hours = totalSeconds / 3_600L
+        val minutes = (totalSeconds % 3_600L) / 60L
+        val seconds = totalSeconds % 60L
+        return if (hours > 0L) {
+            String.format(Locale.ROOT, "%d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format(Locale.ROOT, "%02d:%02d", minutes, seconds)
+        }
     }
 
     private data class ProgressCheckpoint(
@@ -479,6 +574,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun showPermanentError() {
         binding.loading.visibility = View.GONE
+        binding.playbackControls.visibility = View.GONE
         binding.errorPanel.visibility = View.VISIBLE
         binding.retryButton.visibility = View.GONE
     }
@@ -495,6 +591,9 @@ class PlayerActivity : AppCompatActivity() {
         private const val BUFFER_TIMEOUT_MS = 20_000L
         private const val NEXT_COUNTDOWN_SECONDS = 5
         private const val VOLUME_SEGMENTS = 7
+        private const val SEEK_STEP_MS = 10_000L
+        private const val SEEK_UPDATE_INTERVAL_MS = 250L
+        private const val SEEK_BAR_MAX = 1_000
         private const val STATE_EPISODE_ID = "state_episode_id"
         private const val STATE_PLAYBACK_MODE = "state_playback_mode"
         private const val STATE_PAUSED_BY_USER = "state_paused_by_user"

@@ -132,6 +132,17 @@ def sidecar(path: Path, extensions: set[str]) -> Path | None:
             return candidate
     return None
 
+def discard_subtitles(source: Path, destination: Path) -> int:
+    source_count = sum(
+        1
+        for candidate in source.rglob("*")
+        if candidate.is_file() and candidate.suffix.lower() in SUBTITLE_EXTENSIONS
+    )
+    for candidate in destination.rglob("*"):
+        if candidate.is_file() and candidate.suffix.lower() in SUBTITLE_EXTENSIONS:
+            candidate.unlink()
+    return source_count
+
 def copy_asset(source: Path, destination: Path) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
     if source.resolve() == destination.resolve():
@@ -218,7 +229,8 @@ def build_library(source: Path, destination: Path, preferred_language: str) -> d
     if source == destination or source in destination.parents:
         raise SystemExit('Destinația trebuie să fie în afara folderului sursă')
     destination.mkdir(parents=True, exist_ok=True)
-    report: dict[str, Any] = {'series': 0, 'episodes': 0, 'compatibleCopied': 0, 'reused': 0, 'converted': 0, 'thumbnailsGenerated': 0, 'warnings': [], 'errors': []}
+    subtitles_ignored = discard_subtitles(source, destination)
+    report: dict[str, Any] = {'series': 0, 'episodes': 0, 'compatibleCopied': 0, 'reused': 0, 'converted': 0, 'thumbnailsGenerated': 0, 'subtitlesIgnored': subtitles_ignored, 'warnings': [], 'errors': []}
     catalog_series: list[dict[str, Any]] = []
     for series_source in sorted((path for path in source.iterdir() if path.is_dir()), key=lambda path: path.name.lower()):
         season_directories = [(season_number(path.name), path) for path in series_source.iterdir() if path.is_dir() and season_number(path.name) is not None]
@@ -271,13 +283,9 @@ def build_library(source: Path, destination: Path, preferred_language: str) -> d
                     elif not (artwork_destination.is_file() and artwork_destination.stat().st_size > 0 and (artwork_destination.stat().st_mtime_ns >= destination_video.stat().st_mtime_ns)):
                         generate_thumbnail(ffmpeg, destination_video, artwork_destination, info.duration_ms)
                         report['thumbnailsGenerated'] += 1
-                    subtitle_source = sidecar(source_video, SUBTITLE_EXTENSIONS)
-                    subtitle_destination = None
-                    if subtitle_source:
-                        subtitle_destination = copy_asset(subtitle_source, season_destination / subtitle_source.name)
                     number = episode_number(source_video.name, order)
                     episode_id = safe_id(f'{series_id}|{season_index}|{number}|{source_video.stem}')
-                    episodes_payload.append({'id': episode_id, 'number': number, 'sortOrder': order, 'title': display_name(source_video.name), 'media': relative_posix(destination_video, destination), 'artwork': relative_posix(artwork_destination, destination), 'subtitle': relative_posix(subtitle_destination, destination) if subtitle_destination else None, 'durationMs': info.duration_ms, 'audioLanguage': info.audio_language})
+                    episodes_payload.append({'id': episode_id, 'number': number, 'sortOrder': order, 'title': display_name(source_video.name), 'media': relative_posix(destination_video, destination), 'artwork': relative_posix(artwork_destination, destination), 'subtitle': None, 'durationMs': info.duration_ms, 'audioLanguage': info.audio_language})
                     report['episodes'] += 1
                 except Exception as error:
                     report['errors'].append({'file': str(source_video), 'error': str(error)})
@@ -309,6 +317,7 @@ def main(argv: Iterable[str] | None=None) -> int:
     print(f"✓ {report['reused']} reutilizate fără procesare")
     print(f"✓ {report['converted']} convertite")
     print(f"✓ {report['thumbnailsGenerated']} miniaturi generate")
+    print(f"✓ {report['subtitlesIgnored']} subtitrări ignorate")
     if report['warnings']:
         print(f"⚠ {len(report['warnings'])} avertismente")
     if report['errors']:

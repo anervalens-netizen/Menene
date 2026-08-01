@@ -92,6 +92,8 @@ def validate_builder(root: Path) -> None:
         builder = load_module("mehene_builder_validation", safe_path)
     finally:
         sys.path.pop(0)
+    if builder.BUILDER_VERSION != "2.3.0":
+        fail(f"Versiune Builder neașteptată: {builder.BUILDER_VERSION}")
 
     with tempfile.TemporaryDirectory(prefix="mehene-validation-") as directory:
         root_path = Path(directory)
@@ -100,9 +102,29 @@ def validate_builder(root: Path) -> None:
         source.mkdir()
         series = destination / "Serial"
         series.mkdir(parents=True)
+        source_subtitle = source / "Episod.SRT"
+        source_subtitle.write_text("1\n00:00:00,000 --> 00:00:01,000\nText\n", encoding="utf-8")
+        (source / "Episod.en.vtt").write_text("language-tagged", encoding="utf-8")
+        stale_subtitle = series / "Episod.VTT"
+        orphan_subtitle = series / "Orphan.SRT"
+        orphan_subtitle.write_text("orphan", encoding="utf-8")
+        stale_subtitle.write_text("stale", encoding="utf-8")
+        ignored = builder.legacy.discard_subtitles(source, destination)
+        if ignored != 2 or stale_subtitle.exists() or orphan_subtitle.exists():
+            fail("Builderul nu aplică regula permanentă fără subtitrări, inclusiv extensii uppercase, sufix de limbă și fișiere orfane")
+
         media = series / "Episod.mp4"
         media.write_bytes(b"validation")
         catalog = minimal_catalog()
+        episode = catalog["series"][0]["seasons"][0]["episodes"][0]
+        episode["subtitle"] = "Serial/Episod.srt"
+        try:
+            builder.validate_catalog(catalog, destination)
+            fail("Validatorul catalogului acceptă subtitrări")
+        except ValueError as error:
+            if "subtitrările sunt interzise" not in str(error):
+                raise
+        episode["subtitle"] = None
         builder.validate_catalog(catalog, destination)
 
         target = destination / "catalog.json"
@@ -146,8 +168,8 @@ def validate_builder(root: Path) -> None:
 
 def validate_version(root: Path) -> None:
     gradle = (root / "app/build.gradle.kts").read_text(encoding="utf-8")
-    if 'versionName = "2.3.0"' not in gradle or "versionCode = 7" not in gradle:
-        fail("Versiunea Android nu este 2.3.0 / 7")
+    if 'versionName = "2.4.0"' not in gradle or "versionCode = 8" not in gradle:
+        fail("Versiunea Android nu este 2.4.0 / 8")
 
 
 def run_android(root: Path) -> None:
@@ -185,7 +207,7 @@ def main() -> int:
     print("✓ manifest offline și Application corecte")
     print("✓ politica fără securitate prezentă")
     print("✓ Builder: sintaxă, catalog, scriere atomică, lock și fail-closed")
-    print("✓ versiune Android 2.3.0")
+    print("✓ versiune Android 2.4.0")
     if args.android:
         print("✓ teste, lint și APK debug/release")
     else:
