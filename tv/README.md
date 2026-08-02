@@ -4,7 +4,7 @@ Client Samsung TV Web/Tizen pentru modelul 77S90C și server media local read-on
 
 ## Arhitectură
 
-- biblioteca canonică rămâne pe Dell în `/srv/menene/library/current`;
+- biblioteca canonică TV este pe NAS în `/storage/media/menene/current`;
 - `catalog.json` generat de Builder este baza de conținut, fără o bază duplicată;
 - serverul expune health, catalog și numai fișierele media/artwork referite de catalog, prin HTTP LAN cu byte ranges;
 - televizorul păstrează în `localStorage` numai progresul de redare, indexat după ID-ul stabil al episodului;
@@ -14,8 +14,8 @@ Client Samsung TV Web/Tizen pentru modelul 77S90C și server media local read-on
 
 ```bash
 python3 tv/server/menene_tv_server.py \
-  --library /srv/menene/library/current \
-  --bind 192.168.0.43 \
+  --library /storage/media/menene/current \
+  --bind 192.168.0.19 \
   --port 8765 \
   --allow-subnet 192.168.0.0/24
 ```
@@ -32,7 +32,7 @@ curl -H 'Range: bytes=0-1023' \
 
 Țintă minimă: Tizen 7.0, aplicație 1920×1080. Clientul folosește AVPlay pe TV și HTML5 video în browser pentru QA. Toate funcțiile sunt accesibile din direcții, Select, Back și tastele media; volumul rămâne controlat de platformă.
 
-`tv/app/config.js` conține adresa LAN a serverului. Pachetul WGT trebuie semnat cu un certificat Samsung/Tizen și instalat după activarea Developer Mode pe TV.
+`tv/app/config.js` conține adresa LAN a serverului NAS. Pachetul WGT trebuie semnat cu un certificat Samsung/Tizen și instalat după activarea Developer Mode pe TV.
 
 ## Teste locale
 
