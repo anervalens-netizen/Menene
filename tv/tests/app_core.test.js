@@ -38,3 +38,28 @@ test("auto-hide is armed only while ready playback is visible", () => {
   assert.equal(core.shouldAutoHideControls(true, true, false), false);
   assert.equal(core.shouldAutoHideControls(true, false, true), false);
 });
+test("pages large seasons into eight-card windows", () => {
+  const items = Array.from({ length: 18 }, (_value, index) => index + 1);
+  assert.deepEqual(core.pageSlice(items, 0, 8), {
+    items: [1, 2, 3, 4, 5, 6, 7, 8],
+    page: 0,
+    pageCount: 3,
+    start: 0,
+    total: 18
+  });
+  assert.deepEqual(core.pageSlice(items, 99, 8), {
+    items: [17, 18],
+    page: 2,
+    pageCount: 3,
+    start: 16,
+    total: 18
+  });
+});
+
+test("moves predictably inside a four-column episode page", () => {
+  assert.equal(core.nextGridIndex(0, 8, 4, "right"), 1);
+  assert.equal(core.nextGridIndex(3, 8, 4, "right"), -1);
+  assert.equal(core.nextGridIndex(1, 8, 4, "down"), 5);
+  assert.equal(core.nextGridIndex(5, 8, 4, "up"), 1);
+  assert.equal(core.nextGridIndex(7, 8, 4, "down"), -1);
+});

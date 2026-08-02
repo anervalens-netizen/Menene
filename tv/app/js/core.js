@@ -80,12 +80,42 @@
     return Boolean(playerReady && !isPaused && !documentHidden);
   }
 
+  function pageSlice(items, page, pageSize) {
+    var source = Array.isArray(items) ? items : [];
+    var size = Math.max(1, Number(pageSize) || 1);
+    var pageCount = Math.max(1, Math.ceil(source.length / size));
+    var safePage = Math.max(0, Math.min(Number(page) || 0, pageCount - 1));
+    var start = safePage * size;
+    return {
+      items: source.slice(start, start + size),
+      page: safePage,
+      pageCount: pageCount,
+      start: start,
+      total: source.length
+    };
+  }
+
+  function nextGridIndex(index, count, columns, direction) {
+    var current = Number(index);
+    var total = Number(count);
+    var width = Math.max(1, Number(columns) || 1);
+    if (!(current >= 0 && current < total)) return -1;
+    var column = current % width;
+    if (direction === "left" && column > 0) return current - 1;
+    if (direction === "right" && column < width - 1 && current + 1 < total) return current + 1;
+    if (direction === "up" && current - width >= 0) return current - width;
+    if (direction === "down" && current + width < total) return current + width;
+    return -1;
+  }
+
   return {
     closestInDirection: closestInDirection,
     encodeMediaPath: encodeMediaPath,
     episodeCount: episodeCount,
     firstEpisode: firstEpisode,
     formatTime: formatTime,
+    nextGridIndex: nextGridIndex,
+    pageSlice: pageSlice,
     shouldAutoHideControls: shouldAutoHideControls,
     mediaUrl: mediaUrl
   };

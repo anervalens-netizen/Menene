@@ -6,12 +6,15 @@
   var serverBase = String(config.serverBaseUrl || "").replace(/\/+$/, "");
   var PROGRESS_KEY = "menene-tv-progress-v1";
   var BACK_KEY = 10009;
+  var EPISODE_PAGE_SIZE = 8;
+  var EPISODE_COLUMNS = 4;
   var state = {
     catalog: null,
     currentView: "loading",
     currentSeries: null,
     currentSeason: 0,
     currentEpisode: null,
+    currentEpisodePage: 0,
     progress: loadProgress(),
     lastProgressWrite: 0,
     player: null,
@@ -21,7 +24,8 @@
     controlsTimer: null,
     resumeAfterVisibility: false,
     toastTimer: null,
-    lastFocus: null
+    lastFocus: null,
+    heroSeriesId: null
   };
 
   var elements = {};
@@ -59,9 +63,9 @@
 
   function cacheElements() {
     ["header", "library-count", "connection-pill", "loading-view", "loading-message",
-      "error-view", "error-message", "retry-button", "home-view", "hero-image",
+      "error-view", "error-message", "retry-button", "home-view", "hero-artwork", "hero-image",
       "hero-title", "hero-meta", "hero-play", "hero-play-label", "series-list",
-      "series-view", "series-back", "series-title", "season-tabs", "episode-grid",
+      "series-view", "series-back", "series-title", "season-tabs", "episode-grid", "episode-page-status",
       "player-view", "av-player", "html-player", "player-overlay", "player-back",
       "player-series", "player-title", "seek-bar", "current-time", "duration-time",
       "jump-back", "play-pause", "jump-forward", "toast", "exit-dialog",
@@ -80,7 +84,20 @@
     });
     elements.jumpBack.addEventListener("click", function () { jump(-10000); });
     elements.jumpForward.addEventListener("click", function () { jump(10000); });
+    elements.seriesList.addEventListener("click", function (event) {
+      var card = cardFromEvent(event, elements.seriesList, "series-card");
+      if (card) showSeries(seriesById(card.dataset.seriesId));
+    });
     elements.playPause.addEventListener("click", togglePlayback);
+    elements.episodeGrid.addEventListener("click", function (event) {
+      var card = event.target;
+      while (card && card !== elements.episodeGrid && !card.classList.contains("episode-card")) {
+        card = card.parentNode;
+      }
+      if (card && card !== elements.episodeGrid) {
+        startEpisode(state.currentSeries, episodeById(card.dataset.episodeId));
+      }
+    });
     elements.seekBar.addEventListener("change", function () {
       if (!requirePlayerReady()) return;
       var target = state.player.duration() * Number(elements.seekBar.value) / 1000;
@@ -111,6 +128,29 @@
         setTimeout(function () { reject(new Error("timeout")); }, 8000);
       })
     ]);
+  }
+
+  function cardFromEvent(event, container, className) {
+    var card = event.target;
+    while (card && card !== container && !card.classList.contains(className)) card = card.parentNode;
+    return card && card !== container ? card : null;
+  }
+
+  function artworkUrl(path, fallback) {
+    if (!path) return fallback;
+    return core.mediaUrl(serverBase, path) + "?v=" + encodeURIComponent(config.appVersion || "1.1.1");
+  }
+
+  function prepareArtworkFrames(container, fallback) {
+    Array.prototype.forEach.call(container.querySelectorAll(".artwork-frame img"), function (image) {
+      var frame = image.parentNode;
+      frame.style.backgroundImage = 'linear-gradient(rgba(7,8,28,.52), rgba(7,8,28,.52)), url("' + image.src.replace(/"/g, "%22") + '")';
+      image.onerror = function () {
+        image.onerror = null;
+        image.src = fallback;
+        frame.style.backgroundImage = 'url("' + fallback + '")';
+      };
+    });
   }
 
   function loadLibrary() {
@@ -152,38 +192,43 @@
 
   function renderHome() {
     elements.seriesList.innerHTML = state.catalog.series.map(function (series) {
-      var cover = series.cover ? core.mediaUrl(serverBase, series.cover) : "assets/menene_series_story.webp";
+      var cover = artworkUrl(series.cardArtwork || series.cover, "assets/menene_series_story.webp");
       return '<button class="series-card focusable" data-focusable data-series-id="' + escapeHtml(series.id) + '">' +
-        '<img src="' + escapeHtml(cover) + '" alt="" decoding="async" onerror="this.src=\'assets/menene_series_story.webp\'">' +
-        '<span class="series-card-copy"><strong>' + escapeHtml(series.title) + '</strong>' +
+        '<span class="artwork-frame series-artwork">' +
+        '<img src="' + escapeHtml(cover) + '" alt="" decoding="async"></span>' +
+        '<span class="series-card-copy"><strong>' + escapeHtml(series.displayTitle || series.title) + '</strong>' +
         '<small>' + core.episodeCount(series) + ' episoade</small></span></button>';
     }).join("");
-
-    elements.seriesList.querySelectorAll(".series-card").forEach(function (card) {
-      card.addEventListener("click", function () {
-        showSeries(seriesById(card.dataset.seriesId));
-      });
-    });
-    selectHero((state.currentSeries || state.catalog.series[0]).id);
+    prepareArtworkFrames(elements.seriesList, "assets/menene_series_story.webp");
+    selectHero((state.currentSeries || state.catalog.series[0]).id, true);
     showOnly("home");
     focusFirst(elements.seriesList);
   }
 
-  function selectHero(seriesId) {
+  function selectHero(seriesId, force) {
     var series = seriesById(seriesId);
     if (!series) return;
+    if (!force && state.heroSeriesId === seriesId) return;
+    state.heroSeriesId = seriesId;
     state.currentSeries = series;
-    elements.heroTitle.textContent = series.title;
+    elements.heroTitle.textContent = series.displayTitle || series.title;
     elements.heroMeta.textContent = (series.seasons || []).length + " sezoane • " + core.episodeCount(series) + " episoade";
-    var hero = series.cover ? core.mediaUrl(serverBase, series.cover) : "assets/menene_hero_adventure.webp";
+    var fallback = "assets/menene_hero_adventure.webp";
+    var hero = artworkUrl(series.heroArtwork || series.cover, fallback);
     elements.heroImage.src = hero;
-    elements.heroImage.onerror = function () { elements.heroImage.src = "assets/menene_hero_adventure.webp"; };
+    elements.heroArtwork.style.backgroundImage = 'linear-gradient(rgba(8,9,30,.5), rgba(8,9,30,.5)), url("' + hero.replace(/"/g, "%22") + '")';
+    elements.heroImage.onerror = function () {
+      elements.heroImage.onerror = null;
+      elements.heroImage.src = fallback;
+      elements.heroArtwork.style.backgroundImage = 'url("' + fallback + '")';
+    };
     elements.heroPlayLabel.textContent = continueEpisode(series) ? "Continuă" : "Pornește";
   }
 
   function showSeries(series) {
     state.currentSeries = series;
     state.currentSeason = 0;
+    state.currentEpisodePage = 0;
     elements.seriesTitle.textContent = series.title;
     renderSeasons();
     showOnly("series");
@@ -200,6 +245,7 @@
     elements.seasonTabs.querySelectorAll(".season-tab").forEach(function (tab) {
       tab.addEventListener("click", function () {
         state.currentSeason = Number(tab.dataset.season);
+        state.currentEpisodePage = 0;
         renderSeasons();
         focusFirst(elements.episodeGrid);
       });
@@ -209,20 +255,27 @@
 
   function renderEpisodes(season) {
     var episodes = season ? season.episodes || [] : [];
-    elements.episodeGrid.innerHTML = episodes.map(function (episode) {
-      var artwork = episode.artwork ? core.mediaUrl(serverBase, episode.artwork) : "assets/menene_series_story.webp";
+    var page = core.pageSlice(episodes, state.currentEpisodePage, EPISODE_PAGE_SIZE);
+    state.currentEpisodePage = page.page;
+    elements.episodeGrid.innerHTML = page.items.map(function (episode, index) {
+      var artwork = artworkUrl(episode.cardArtwork || episode.artwork, "assets/menene_series_story.webp");
       var percent = progressPercent(episode);
-      return '<button class="episode-card focusable" data-focusable data-episode-id="' + escapeHtml(episode.id) + '">' +
-        '<img src="' + escapeHtml(artwork) + '" alt="" loading="lazy" decoding="async" onerror="this.src=\'assets/menene_series_story.webp\'">' +
-        '<span class="episode-card-copy"><strong>' + escapeHtml(episode.title) + '</strong>' +
+      var globalIndex = page.start + index;
+      return '<button class="episode-card focusable" data-focusable data-page-index="' + index +
+        '" data-episode-index="' + globalIndex + '" data-episode-id="' + escapeHtml(episode.id) + '">' +
+        '<span class="artwork-frame episode-artwork">' +
+        '<img src="' + escapeHtml(artwork) + '" alt="" decoding="async"></span>' +
+        '<span class="episode-card-copy"><strong>' + escapeHtml(episode.displayTitle || episode.title) + '</strong>' +
         '<small>' + core.formatTime(episode.durationMs) + '</small></span>' +
         '<span class="progress-track"><span class="progress-value" style="width:' + percent + '%"></span></span></button>';
     }).join("");
-    elements.episodeGrid.querySelectorAll(".episode-card").forEach(function (card) {
-      card.addEventListener("click", function () {
-        startEpisode(state.currentSeries, episodeById(card.dataset.episodeId));
-      });
-    });
+    prepareArtworkFrames(elements.episodeGrid, "assets/menene_series_story.webp");
+    if (!page.total) {
+      elements.episodePageStatus.textContent = "Niciun episod";
+    } else {
+      elements.episodePageStatus.textContent = "Episoade " + (page.start + 1) + "–" +
+        Math.min(page.start + EPISODE_PAGE_SIZE, page.total) + " din " + page.total + " • Pagina " + (page.page + 1) + "/" + page.pageCount;
+    }
   }
 
   function startEpisode(series, episode) {
@@ -351,12 +404,19 @@
     elements.header.hidden = false;
     state.currentView = "series";
     elements.seriesView.hidden = false;
-    renderSeasons();
+    updateEpisodeCardProgress(episode);
     setTimeout(function () {
       var card = elements.episodeGrid.querySelector('[data-episode-id="' + episode.id + '"]');
       (card || elements.seriesBack).focus();
     }, 0);
   }
+
+  function updateEpisodeCardProgress(episode) {
+    var card = elements.episodeGrid.querySelector('[data-episode-id="' + episode.id + '"]');
+    var value = card && card.querySelector(".progress-value");
+    if (value) value.style.width = progressPercent(episode) + "%";
+  }
+
 
   function setPlayerReady(ready) {
     state.playerReady = ready;
@@ -408,6 +468,98 @@
     elements.playerView.classList.add("is-controls-hidden");
   }
 
+  function focusElement(element) {
+    if (!element) return false;
+    element.focus();
+    if (element.scrollIntoView) element.scrollIntoView({ block: "nearest", inline: "nearest" });
+    return true;
+  }
+
+  function currentSeasonData() {
+    return (state.currentSeries.seasons || [])[state.currentSeason] || { episodes: [] };
+  }
+
+  function selectedSeasonTab() {
+    return elements.seasonTabs.querySelector(".season-tab.selected");
+  }
+
+  function renderEpisodePage(page, preferredIndex) {
+    state.currentEpisodePage = page;
+    renderEpisodes(currentSeasonData());
+    var cards = Array.prototype.slice.call(elements.episodeGrid.querySelectorAll(".episode-card"));
+    return focusElement(cards[Math.max(0, Math.min(preferredIndex, cards.length - 1))]);
+  }
+
+  function handleStructuredNavigation(event, current, direction) {
+    var items;
+    var index;
+    var target;
+
+    if (state.currentView === "home") {
+      if (current === elements.heroPlay && direction === "down") {
+        event.preventDefault();
+        return focusElement(elements.seriesList.querySelector(".series-card"));
+      }
+      if (current.classList.contains("series-card")) {
+        items = Array.prototype.slice.call(elements.seriesList.querySelectorAll(".series-card"));
+        index = items.indexOf(current);
+        if (direction === "up" && index === 0) target = elements.heroPlay;
+        if (direction === "up" && index > 0) target = items[index - 1];
+        if (direction === "down" && index + 1 < items.length) target = items[index + 1];
+        if (target) {
+          event.preventDefault();
+          return focusElement(target);
+        }
+      }
+      return false;
+    }
+
+    if (state.currentView !== "series") return false;
+    if (current === elements.seriesBack && direction === "down") {
+      event.preventDefault();
+      return focusElement(selectedSeasonTab());
+    }
+    if (current.classList.contains("season-tab")) {
+      items = Array.prototype.slice.call(elements.seasonTabs.querySelectorAll(".season-tab"));
+      index = items.indexOf(current);
+      if (direction === "left" && index > 0) target = items[index - 1];
+      if (direction === "right" && index + 1 < items.length) target = items[index + 1];
+      if (direction === "up") target = elements.seriesBack;
+      if (direction === "down") target = elements.episodeGrid.querySelector(".episode-card");
+      if (target) {
+        event.preventDefault();
+        return focusElement(target);
+      }
+      return false;
+    }
+    if (!current.classList.contains("episode-card")) return false;
+
+    items = Array.prototype.slice.call(elements.episodeGrid.querySelectorAll(".episode-card"));
+    index = Number(current.dataset.pageIndex);
+    var nextIndex = core.nextGridIndex(index, items.length, EPISODE_COLUMNS, direction);
+    if (nextIndex >= 0) {
+      event.preventDefault();
+      return focusElement(items[nextIndex]);
+    }
+
+    var total = (currentSeasonData().episodes || []).length;
+    var pageCount = Math.max(1, Math.ceil(total / EPISODE_PAGE_SIZE));
+    var column = index % EPISODE_COLUMNS;
+    if (direction === "down" && state.currentEpisodePage + 1 < pageCount) {
+      event.preventDefault();
+      return renderEpisodePage(state.currentEpisodePage + 1, column);
+    }
+    if (direction === "up" && state.currentEpisodePage > 0) {
+      event.preventDefault();
+      return renderEpisodePage(state.currentEpisodePage - 1, EPISODE_COLUMNS + column);
+    }
+    if (direction === "up" && state.currentEpisodePage === 0) {
+      event.preventDefault();
+      return focusElement(selectedSeasonTab());
+    }
+    return false;
+  }
+
   function handleKeyDown(event) {
     var code = event.keyCode;
     if (state.currentView === "player") showPlayerControls();
@@ -430,12 +582,15 @@
     if (!direction) return;
     var current = document.activeElement;
     if (!current || !current.matches("[data-focusable]")) return;
-    var candidates = Array.prototype.slice.call(document.querySelectorAll("[data-focusable]"));
+    if (handleStructuredNavigation(event, current, direction)) return;
+    if (state.currentView === "home" || state.currentView === "series") return;
+
+    var focusRoot = elements.exitDialog.hidden ? elements.playerView : elements.exitDialog;
+    var candidates = Array.prototype.slice.call(focusRoot.querySelectorAll("[data-focusable]"));
     var target = core.closestInDirection(current, candidates, direction);
     if (target) {
       event.preventDefault();
-      target.focus();
-      target.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+      focusElement(target);
     }
   }
 
@@ -466,7 +621,12 @@
     elements.playerView.hidden = view !== "player";
   }
   function showHome() {
-    renderHome();
+    showOnly("home");
+    selectHero(state.currentSeries.id, true);
+    setTimeout(function () {
+      var card = elements.seriesList.querySelector('[data-series-id="' + state.currentSeries.id + '"]');
+      focusElement(card || elements.heroPlay);
+    }, 0);
   }
   function showError(message) {
     elements.errorMessage.textContent = message;
@@ -492,7 +652,7 @@
   function focusFirst(container) {
     setTimeout(function () {
       var first = container.querySelector("[data-focusable]");
-      if (first) first.focus();
+      if (first) focusElement(first);
     }, 0);
   }
   function seriesById(id) {

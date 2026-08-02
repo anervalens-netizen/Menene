@@ -14,7 +14,7 @@
 
     <header id="header" class="header">
       <div class="brand-lockup" aria-label="Menene TV">
-        <span class="brand-mark"><img class="brand-logo" src="assets/menene_logo.png" alt=""></span>
+        <span class="brand-mark"><img class="brand-logo" src="assets/menene_logo_tv.png" alt=""></span>
         <span class="brand-wordmark"><strong>Menene</strong><small>TV</small></span>
       </div>
       <span id="library-count" class="library-count">Biblioteca se pregătește…</span>
@@ -37,7 +37,9 @@
 
       <section id="home-view" class="view home-view" hidden>
         <article id="hero" class="hero">
-          <img id="hero-image" class="hero-image" alt="">
+          <div id="hero-artwork" class="hero-artwork">
+            <img id="hero-image" class="hero-image" alt="">
+          </div>
           <div class="hero-scrim"></div>
           <div class="hero-content">
             <div class="hero-welcome">
@@ -73,6 +75,7 @@
         </div>
         <div id="season-tabs" class="season-tabs"></div>
         <div id="episode-grid" class="episode-grid"></div>
+        <div id="episode-page-status" class="episode-page-status" aria-live="polite"></div>
       </section>
 
       <section id="player-view" class="player-view" hidden>
