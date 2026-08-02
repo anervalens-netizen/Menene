@@ -18,6 +18,7 @@
     playerReady: false,
     playerSession: 0,
     endTimer: null,
+    controlsTimer: null,
     resumeAfterVisibility: false,
     toastTimer: null,
     lastFocus: null
@@ -59,7 +60,7 @@
   function cacheElements() {
     ["header", "library-count", "connection-pill", "loading-view", "loading-message",
       "error-view", "error-message", "retry-button", "home-view", "hero-image",
-      "hero-title", "hero-meta", "hero-play", "hero-play-label", "series-rail",
+      "hero-title", "hero-meta", "hero-play", "hero-play-label", "series-list",
       "series-view", "series-back", "series-title", "season-tabs", "episode-grid",
       "player-view", "av-player", "html-player", "player-overlay", "player-back",
       "player-series", "player-title", "seek-bar", "current-time", "duration-time",
@@ -90,6 +91,8 @@
     elements.exitConfirm.addEventListener("click", exitApplication);
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    elements.playerView.addEventListener("pointerdown", showPlayerControls);
+    elements.playerView.addEventListener("touchstart", showPlayerControls);
     document.addEventListener("focusin", function (event) {
       if (event.target.matches("[data-focusable]")) state.lastFocus = event.target;
       if (event.target.classList.contains("series-card")) {
@@ -148,7 +151,7 @@
   }
 
   function renderHome() {
-    elements.seriesRail.innerHTML = state.catalog.series.map(function (series) {
+    elements.seriesList.innerHTML = state.catalog.series.map(function (series) {
       var cover = series.cover ? core.mediaUrl(serverBase, series.cover) : "assets/menene_series_story.webp";
       return '<button class="series-card focusable" data-focusable data-series-id="' + escapeHtml(series.id) + '">' +
         '<img src="' + escapeHtml(cover) + '" alt="" decoding="async" onerror="this.src=\'assets/menene_series_story.webp\'">' +
@@ -156,14 +159,14 @@
         '<small>' + core.episodeCount(series) + ' episoade</small></span></button>';
     }).join("");
 
-    elements.seriesRail.querySelectorAll(".series-card").forEach(function (card) {
+    elements.seriesList.querySelectorAll(".series-card").forEach(function (card) {
       card.addEventListener("click", function () {
         showSeries(seriesById(card.dataset.seriesId));
       });
     });
     selectHero((state.currentSeries || state.catalog.series[0]).id);
     showOnly("home");
-    focusFirst(elements.seriesRail);
+    focusFirst(elements.seriesList);
   }
 
   function selectHero(seriesId) {
@@ -236,6 +239,7 @@
     elements.homeView.hidden = true;
     elements.seriesView.hidden = true;
     elements.playerView.hidden = false;
+    showPlayerControls();
     elements.playerSeries.textContent = series.title;
     elements.playerTitle.textContent = episode.title;
     elements.currentTime.textContent = "00:00";
@@ -257,6 +261,7 @@
         return;
       }
       elements.playPause.focus();
+      showPlayerControls();
     }).catch(function () {
       if (session !== state.playerSession) return;
       setPlayerReady(false);
@@ -296,6 +301,7 @@
     if (state.currentView !== "player" || !state.currentEpisode) return;
     if (document.hidden) {
       state.resumeAfterVisibility = state.playerReady && !state.player.isPaused();
+      clearPlayerControlsTimer();
       if (state.playerReady) {
         saveCurrentProgress();
         state.player.pause();
@@ -306,6 +312,7 @@
     if (state.resumeAfterVisibility && state.playerReady) {
       state.player.play();
       elements.playPause.textContent = "Ⅱ";
+      showPlayerControls();
     }
     state.resumeAfterVisibility = false;
   }
@@ -316,6 +323,7 @@
     state.progress[state.currentEpisode.id] = { position: duration, duration: duration, updatedAt: Date.now() };
     saveProgress();
     showToast("Episod terminat");
+    showPlayerControls();
     setPlayerReady(false);
     if (state.endTimer) clearTimeout(state.endTimer);
     state.endTimer = setTimeout(function () { closePlayer(true); }, 700);
@@ -325,6 +333,7 @@
     if (state.currentView !== "player" || !state.currentEpisode) return;
     if (state.endTimer) clearTimeout(state.endTimer);
     state.endTimer = null;
+    clearPlayerControlsTimer();
     var episode = state.currentEpisode;
     if (!keepStoredProgress && state.playerReady) {
       var current = state.player.currentTime();
@@ -338,6 +347,7 @@
     setPlayerReady(false);
     state.player.close();
     elements.playerView.hidden = true;
+    elements.playerView.classList.remove("is-controls-hidden");
     elements.header.hidden = false;
     state.currentView = "series";
     elements.seriesView.hidden = false;
@@ -364,15 +374,38 @@
     if (!requirePlayerReady()) return;
     state.player.toggle();
     elements.playPause.textContent = state.player.isPaused() ? "▶" : "Ⅱ";
+    showPlayerControls();
   }
   function jump(delta) {
     if (!requirePlayerReady()) return;
     state.player.jump(delta);
     showToast(delta < 0 ? "Înapoi 10 secunde" : "Înainte 10 secunde");
+    showPlayerControls();
+  }
+
+  function clearPlayerControlsTimer() {
+    if (state.controlsTimer) clearTimeout(state.controlsTimer);
+    state.controlsTimer = null;
+  }
+
+  function showPlayerControls() {
+    if (state.currentView !== "player") return;
+    clearPlayerControlsTimer();
+    elements.playerView.classList.remove("is-controls-hidden");
+    if (state.playerReady && !state.player.isPaused() && !document.hidden) {
+      state.controlsTimer = setTimeout(hidePlayerControls, 4000);
+    }
+  }
+
+  function hidePlayerControls() {
+    state.controlsTimer = null;
+    if (state.currentView !== "player" || !state.playerReady || state.player.isPaused() || document.hidden) return;
+    elements.playerView.classList.add("is-controls-hidden");
   }
 
   function handleKeyDown(event) {
     var code = event.keyCode;
+    if (state.currentView === "player") showPlayerControls();
     if (code === BACK_KEY || code === 27) {
       event.preventDefault();
       handleBack();

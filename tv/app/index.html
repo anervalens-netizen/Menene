@@ -13,14 +13,11 @@
     <div class="ambient ambient-two"></div>
 
     <header id="header" class="header">
-      <div class="brand-lockup">
-        <img class="brand-logo" src="assets/menene_logo.png" alt="">
-        <span>Menene</span>
+      <div class="brand-lockup" aria-label="Menene TV">
+        <span class="brand-mark"><img class="brand-logo" src="assets/menene_logo.png" alt=""></span>
+        <span class="brand-wordmark"><strong>Menene</strong><small>TV</small></span>
       </div>
-      <div class="header-copy">
-        <span>Desenele tale</span>
-        <strong id="library-count">Se conectează…</strong>
-      </div>
+      <span id="library-count" class="library-count">Biblioteca se pregătește…</span>
       <div id="connection-pill" class="connection-pill">NAS local</div>
     </header>
 
@@ -43,6 +40,10 @@
           <img id="hero-image" class="hero-image" alt="">
           <div class="hero-scrim"></div>
           <div class="hero-content">
+            <div class="hero-welcome">
+              <strong>Salut, Alexandru</strong>
+              <span id="home-message">Azi e o zi bună pentru o poveste nouă.</span>
+            </div>
             <div class="eyebrow">Alege o aventură</div>
             <h1 id="hero-title">Menene</h1>
             <p id="hero-meta"></p>
@@ -55,10 +56,10 @@
 
         <section class="rail-section">
           <div class="section-heading">
-            <h2>Serialele mele</h2>
-            <span id="rail-hint">Folosește săgețile telecomenzii</span>
+            <h2>Seriale</h2>
+            <span id="rail-hint">Sus și jos pe telecomandă</span>
           </div>
-          <div id="series-rail" class="series-rail"></div>
+          <div id="series-list" class="series-list"></div>
         </section>
       </section>
 
