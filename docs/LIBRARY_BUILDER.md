@@ -18,6 +18,8 @@ Builderul mută munca grea de pe tabletă pe PC/server:
 
 ```bash
 python3 tools/mehene_builder.py SOURCE DESTINATION --audio-language ron
+# profil TV, separat de profilul tabletă implicit
+python3 tools/mehene_builder.py SOURCE DESTINATION --audio-language ron --media-profile tv
 ```
 
 Linux/macOS:
@@ -46,7 +48,9 @@ Un fișier este copiat fără recodare dacă este:
 
 Restul este convertit în H.264 Main Level 3.1, AAC stereo 128 kbps, `yuv420p` și `faststart`. Fișierele deja pregătite și mai noi decât sursa sunt validate și reutilizate.
 
-Subtitrările nu sunt publicate. Sidecar-urile `.srt`/`.vtt` din sursă sunt numărate în `subtitlesIgnored`, iar toate copiile SRT/VTT vechi sunt eliminate recursiv din destinație. Câmpul `subtitle` din catalog rămâne `null`; validatorul refuză fail-closed orice valoare nenulă.
+Profilul `tablet` rămâne implicit și păstrează limita existentă de 1280×720/30. Profilul explicit `tv` acceptă H.264 până la 1920×1080/60. Pentru o sursă MKV H.264 care respectă această limită, Builderul mută fluxul video fără recodare (`-c:v copy`) într-un MP4 `faststart` și convertește numai pista audio selectată în AAC stereo 192 kbps. Sursele care depășesc limita video sunt transcodate în profilul TV; nicio pistă subtitle nu este mapată.
+
+Subtitrările nu sunt publicate. Sidecar-urile `.srt`/`.vtt` din sursă sunt numărate în `subtitlesIgnored`, toate copiile SRT/VTT vechi sunt eliminate recursiv din destinație, iar pistele subtitle interne sunt omise prin maparea explicită video/audio. Numărul lor apare în `subtitleStreamsDropped`. Câmpul `subtitle` din catalog rămâne `null`; validatorul refuză fail-closed orice valoare nenulă.
 
 ## Stabilitate implementată
 
@@ -100,7 +104,7 @@ Sunt recunoscute foldere precum `Season 01`, `Sezonul 01` și `S01`. Dacă nu ex
 ## Rezultate
 
 - `catalog.json` — folosit de aplicație;
-- `mehene-report.json` — erori, avertismente, versiunea Builderului, fingerprint și statistici;
+- `mehene-report.json` — erori, avertismente, versiunea Builderului, fingerprint, profilul media, `videoStreamCopied`, `subtitleStreamsDropped` și statistici;
 - coperți și miniaturi WebP optimizate.
 
 ## Roadmap Builder

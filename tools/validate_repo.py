@@ -6,6 +6,7 @@ import argparse
 import importlib.util
 import json
 import py_compile
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -92,7 +93,7 @@ def validate_builder(root: Path) -> None:
         builder = load_module("mehene_builder_validation", safe_path)
     finally:
         sys.path.pop(0)
-    if builder.BUILDER_VERSION != "2.3.0":
+    if builder.BUILDER_VERSION != "2.4.0":
         fail(f"Versiune Builder neașteptată: {builder.BUILDER_VERSION}")
 
     with tempfile.TemporaryDirectory(prefix="mehene-validation-") as directory:
@@ -142,7 +143,7 @@ def validate_builder(root: Path) -> None:
         previous = target.read_bytes()
         original_build = builder.legacy.build_library
 
-        def failing_build(_source: Path, output: Path, _language: str) -> dict:
+        def failing_build(_source: Path, output: Path, _language: str, _media_profile: str) -> dict:
             broken = minimal_catalog()
             broken["series"][0]["seasons"][0]["episodes"][0]["media"] = "missing.mp4"
             builder.atomic_write_json(output / "catalog.json", broken)
@@ -164,6 +165,79 @@ def validate_builder(root: Path) -> None:
             builder.legacy.build_library = original_build
         if report["catalogPublished"] or target.read_bytes() != previous:
             fail("Builderul nu a păstrat catalogul anterior după eroare")
+
+
+def validate_media_profiles(root: Path) -> None:
+    tools = root / "tools"
+    builder = load_module("mehene_builder_media_profile_validation", tools / "mehene_builder.py")
+    ffmpeg = shutil.which("ffmpeg")
+    ffprobe = shutil.which("ffprobe")
+    if not ffmpeg or not ffprobe:
+        fail("ffmpeg/ffprobe sunt necesare pentru gate-ul profilurilor media")
+
+    with tempfile.TemporaryDirectory(prefix="mehene-media-profile-") as directory:
+        root_path = Path(directory)
+        source = root_path / "source" / "Serial" / "Season 01"
+        source.mkdir(parents=True)
+        subtitle = root_path / "captions.srt"
+        subtitle.write_text("1\n00:00:00,000 --> 00:00:00,500\nignored\n", encoding="utf-8")
+        source_video = source / "Episode.mkv"
+        subprocess.run(
+            [
+                ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+                "-f", "lavfi", "-i", "testsrc2=size=1920x1080:rate=24",
+                "-f", "lavfi", "-i", "sine=frequency=1000:sample_rate=48000",
+                "-i", str(subtitle), "-t", "1",
+                "-map", "0:v:0", "-map", "1:a:0", "-map", "2:0",
+                "-metadata:s:a:0", "language=ron", "-metadata:s:s:0", "language=eng",
+                "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+                "-c:a", "aac", "-b:a", "192k", "-ac", "2", "-c:s", "srt",
+                str(source_video),
+            ],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        def streams(path: Path) -> list[dict]:
+            result = subprocess.run(
+                [ffprobe, "-v", "error", "-show_streams", "-of", "json", str(path)],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            return json.loads(result.stdout)["streams"]
+
+        tv_destination = root_path / "tv-destination"
+        tv_report = builder.build_library(source.parent.parent, tv_destination, "ron", "tv")
+        tv_media = next(tv_destination.rglob("*.mp4"))
+        tv_streams = streams(tv_media)
+        tv_video = next(stream for stream in tv_streams if stream.get("codec_type") == "video")
+        tv_audio = next(stream for stream in tv_streams if stream.get("codec_type") == "audio")
+        if tv_report.get("mediaProfile") != "tv" or tv_report.get("videoStreamCopied") != 1:
+            fail(f"profilul TV nu raportează copierea fluxului video: {tv_report}")
+        if tv_report.get("subtitleStreamsDropped") != 1 or any(stream.get("codec_type") == "subtitle" for stream in tv_streams):
+            fail("profilul TV nu elimină pista subtitle internă")
+        if (tv_video.get("codec_name"), tv_video.get("width"), tv_video.get("height")) != ("h264", 1920, 1080):
+            fail("profilul TV nu păstrează video H.264 1080p")
+        if tv_audio.get("codec_name") != "aac" or tv_audio.get("channels") != 2:
+            fail("profilul TV nu produce AAC stereo")
+        tv_audio_rate = int(tv_audio.get("bit_rate") or 0)
+        if not 160000 <= tv_audio_rate <= 210000:
+            fail(f"profilul TV nu produce audio AAC 192k: {tv_audio_rate}")
+
+        tablet_destination = root_path / "tablet-destination"
+        tablet_report = builder.build_library(source.parent.parent, tablet_destination, "ron")
+        tablet_media = next(tablet_destination.rglob("*.mp4"))
+        tablet_streams = streams(tablet_media)
+        tablet_video = next(stream for stream in tablet_streams if stream.get("codec_type") == "video")
+        if tablet_report.get("mediaProfile") != "tablet" or tablet_report.get("videoStreamCopied") != 0:
+            fail("profilul tablet nu a rămas implicit")
+        if tablet_video.get("width", 0) > 1280 or tablet_video.get("height", 0) > 720:
+            fail("profilul tablet nu păstrează limita 720p")
+        if any(stream.get("codec_type") == "subtitle" for stream in tablet_streams):
+            fail("profilul tablet publică o pistă subtitle")
 
 
 def validate_version(root: Path) -> None:
@@ -199,6 +273,7 @@ def main() -> int:
     validate_manifest(root)
     validate_policy(root)
     validate_builder(root)
+    validate_media_profiles(root)
     validate_version(root)
     if args.android:
         run_android(root)

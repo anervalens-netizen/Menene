@@ -14,7 +14,7 @@ from typing import Any, Iterable
 
 import mehene_library as legacy
 
-BUILDER_VERSION = "2.3.0"
+BUILDER_VERSION = "2.4.0"
 LOCK_STALE_SECONDS = 6 * 60 * 60
 
 
@@ -183,11 +183,14 @@ def build_library(
     source: Path,
     destination: Path,
     preferred_language: str,
+    media_profile: str = "tablet",
     *,
     publish_partial: bool = False,
 ) -> dict[str, Any]:
     source = source.resolve()
     destination = destination.resolve()
+    if media_profile not in {"tablet", "tv"}:
+        raise SystemExit(f"Profil media necunoscut: {media_profile}")
     if not source.is_dir():
         raise SystemExit(f"Sursa nu este director: {source}")
     if source == destination or source in destination.parents:
@@ -201,10 +204,11 @@ def build_library(
     with BuildLock(destination):
         legacy.copy_asset = atomic_copy_asset
         fingerprint = source_fingerprint(source)
-        report = legacy.build_library(source, destination, preferred_language)
+        report = legacy.build_library(source, destination, preferred_language, media_profile)
         report.update({
             "builderVersion": BUILDER_VERSION,
             "sourceFingerprint": fingerprint,
+            "mediaProfile": media_profile,
             "durationMs": int((time.monotonic() - started) * 1000),
             "catalogPublished": False,
         })
@@ -215,6 +219,7 @@ def build_library(
                 candidate = json.loads(catalog_path.read_text(encoding="utf-8"))
                 candidate["builderVersion"] = BUILDER_VERSION
                 candidate["sourceFingerprint"] = fingerprint
+                candidate["mediaProfile"] = media_profile
                 validate_catalog(candidate, destination)
         except Exception as error:
             report.setdefault("errors", []).append({"file": str(catalog_path), "error": str(error)})
@@ -238,6 +243,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("source", type=Path, help="Folderul cu fișierele originale")
     parser.add_argument("destination", type=Path, help="Folderul final Mehene")
     parser.add_argument("--audio-language", default="ron", help="Limba audio preferată, implicit ron")
+    parser.add_argument("--media-profile", choices=("tablet", "tv"), default="tablet", help="Profilul de ieșire: tablet (implicit) sau tv")
     parser.add_argument(
         "--publish-partial",
         action="store_true",
@@ -248,6 +254,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         args.source,
         args.destination,
         args.audio_language,
+        args.media_profile,
         publish_partial=args.publish_partial,
     )
     print(f"✓ {report['series']} seriale")
