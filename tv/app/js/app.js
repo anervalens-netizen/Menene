@@ -149,14 +149,23 @@
     return core.mediaUrl(serverBase, path) + "?v=" + encodeURIComponent(revision);
   }
 
+  function setArtworkFrameBackground(frame, url) {
+    var safeUrl = String(url || "").replace(/"/g, "%22");
+    frame.style.backgroundImage = 'linear-gradient(135deg, rgba(135,86,255,.14), rgba(9,11,34,.22)), url("' + safeUrl + '")';
+    frame.style.backgroundSize = "cover";
+    frame.style.backgroundPosition = "center";
+    frame.style.backgroundRepeat = "no-repeat";
+    frame.style.backgroundBlendMode = "screen, normal";
+  }
+
   function prepareArtworkFrames(container, fallback) {
     Array.prototype.forEach.call(container.querySelectorAll(".artwork-frame img"), function (image) {
       var frame = image.parentNode;
-      frame.style.backgroundImage = "";
+      setArtworkFrameBackground(frame, image.getAttribute("src") || fallback);
       image.onerror = function () {
         image.onerror = null;
         image.src = fallback;
-        frame.style.backgroundImage = "";
+        setArtworkFrameBackground(frame, fallback);
       };
     });
   }
