@@ -34,14 +34,27 @@ curl -H 'Range: bytes=0-1023' \
 
 `tv/app/config.js` conține adresa LAN a serverului NAS. Pachetul WGT trebuie semnat cu un certificat Samsung/Tizen și instalat după activarea Developer Mode pe TV.
 
+## Profil media TV
+
+Builder 2.4 acceptă `--media-profile tv`: păstrează prin stream-copy sursele H.264 compatibile până la 1920×1080/60, normalizează audio la AAC stereo 192 kbps/48 kHz și elimină toate pistele subtitle. Profilul implicit `tablet` rămâne separat, la maximum 1280×720/30.
+
+```bash
+python3 tools/mehene_builder.py <surse> <biblioteca-tv> \
+  --audio-language ron \
+  --media-profile tv
+```
+
 ## Teste locale
 
 ```bash
 /usr/bin/python3 -m unittest discover -s tv/server/tests -v
 node --test tv/tests/*.test.js
+node --check tv/app/config.js
 node --check tv/app/js/core.js
 node --check tv/app/js/player.js
 node --check tv/app/js/app.js
+xmllint --noout tv/app/config.xml
+/usr/bin/python3 tools/validate_repo.py
 ```
 
 ## Referințe Samsung
