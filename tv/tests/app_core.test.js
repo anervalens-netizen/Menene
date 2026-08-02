@@ -31,3 +31,10 @@ test("counts and selects episodes", () => {
   assert.equal(core.episodeCount(series), 2);
   assert.equal(core.firstEpisode(series).id, "one");
 });
+
+test("auto-hide is armed only while ready playback is visible", () => {
+  assert.equal(core.shouldAutoHideControls(true, false, false), true);
+  assert.equal(core.shouldAutoHideControls(false, false, false), false);
+  assert.equal(core.shouldAutoHideControls(true, true, false), false);
+  assert.equal(core.shouldAutoHideControls(true, false, true), false);
+});

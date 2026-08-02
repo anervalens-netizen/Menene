@@ -76,12 +76,17 @@
     return best;
   }
 
+  function shouldAutoHideControls(playerReady, isPaused, documentHidden) {
+    return Boolean(playerReady && !isPaused && !documentHidden);
+  }
+
   return {
     closestInDirection: closestInDirection,
     encodeMediaPath: encodeMediaPath,
     episodeCount: episodeCount,
     firstEpisode: firstEpisode,
     formatTime: formatTime,
+    shouldAutoHideControls: shouldAutoHideControls,
     mediaUrl: mediaUrl
   };
 });

@@ -370,11 +370,16 @@
     return false;
   }
 
-  function togglePlayback() {
-    if (!requirePlayerReady()) return;
-    state.player.toggle();
+  function setPlaybackPaused(paused) {
+    if (!requirePlayerReady()) return false;
+    if (paused) state.player.pause(); else state.player.play();
     elements.playPause.textContent = state.player.isPaused() ? "▶" : "Ⅱ";
     showPlayerControls();
+    return true;
+  }
+
+  function togglePlayback() {
+    setPlaybackPaused(!state.player.isPaused());
   }
   function jump(delta) {
     if (!requirePlayerReady()) return;
@@ -392,7 +397,7 @@
     if (state.currentView !== "player") return;
     clearPlayerControlsTimer();
     elements.playerView.classList.remove("is-controls-hidden");
-    if (state.playerReady && !state.player.isPaused() && !document.hidden) {
+    if (core.shouldAutoHideControls(state.playerReady, state.player.isPaused(), document.hidden)) {
       state.controlsTimer = setTimeout(hidePlayerControls, 4000);
     }
   }
@@ -413,8 +418,8 @@
     }
     if (state.currentView === "player") {
       if (code === 10252) { event.preventDefault(); togglePlayback(); return; }
-      if (code === 415) { event.preventDefault(); if (requirePlayerReady()) { state.player.play(); elements.playPause.textContent = "Ⅱ"; } return; }
-      if (code === 19) { event.preventDefault(); if (requirePlayerReady()) { state.player.pause(); elements.playPause.textContent = "▶"; } return; }
+      if (code === 415) { event.preventDefault(); setPlaybackPaused(false); return; }
+      if (code === 19) { event.preventDefault(); setPlaybackPaused(true); return; }
       if (code === 412) { event.preventDefault(); jump(-10000); return; }
       if (code === 417) { event.preventDefault(); jump(10000); return; }
       if (document.activeElement === elements.seekBar && (code === 37 || code === 39)) {
