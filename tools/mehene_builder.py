@@ -15,6 +15,9 @@ from typing import Any, Iterable
 import mehene_library as legacy
 
 BUILDER_VERSION = "2.4.0"
+ARTWORK_CONTRACT_VERSION = 1
+ARTWORK_ROLES = {"series-card", "series-hero", "episode-card"}
+ARTWORK_SHAPES = {"landscape", "poster", "square"}
 LOCK_STALE_SECONDS = 6 * 60 * 60
 
 
@@ -116,6 +119,24 @@ def source_fingerprint(root: Path) -> str:
     return digest.hexdigest()
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def catalog_revision(catalog: dict[str, Any]) -> str:
+    stable = {
+        key: value
+        for key, value in catalog.items()
+        if key not in {"catalogRevision", "generatedAtEpochMs"}
+    }
+    encoded = json.dumps(stable, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
 def safe_catalog_path(destination: Path, relative: str) -> Path:
     if not relative or relative == ".":
         raise ValueError("cale catalog goală")
@@ -128,11 +149,91 @@ def safe_catalog_path(destination: Path, relative: str) -> Path:
     except ValueError as error:
         raise ValueError(f"cale în afara bibliotecii: {relative}") from error
     return resolved
+def validate_artwork_metadata(metadata: Any, asset: Path, label: str) -> None:
+    if not isinstance(metadata, dict):
+        raise ValueError(f"metadata artwork invalidă: {label}")
+    role = metadata.get("role")
+    if role not in ARTWORK_ROLES:
+        raise ValueError(f"rol artwork invalid: {label}")
+    shape = metadata.get("shape")
+    if shape not in ARTWORK_SHAPES:
+        raise ValueError(f"formă artwork invalidă: {label}")
+    width = metadata.get("width")
+    height = metadata.get("height")
+    if (
+        isinstance(width, bool)
+        or isinstance(height, bool)
+        or not isinstance(width, int)
+        or not isinstance(height, int)
+        or width <= 0
+        or height <= 0
+    ):
+        raise ValueError(f"dimensiuni artwork invalide: {label}")
+    expected_shape = legacy.artwork_shape(width, height)
+    if shape != expected_shape:
+        raise ValueError(f"forma artwork nu corespunde dimensiunilor: {label}")
+    digest = metadata.get("sha256")
+    if (
+        not isinstance(digest, str)
+        or len(digest) != 64
+        or any(character not in "0123456789abcdef" for character in digest)
+    ):
+        raise ValueError(f"hash artwork invalid: {label}")
+    if not asset.is_file() or asset.stat().st_size <= 0 or file_sha256(asset) != digest:
+        raise ValueError(f"hash artwork nu corespunde fișierului: {label}")
+
+
+def validate_artwork_fields(
+    entry: dict[str, Any],
+    destination: Path,
+    label: str,
+    fields: tuple[tuple[str, str, bool], ...],
+) -> None:
+    raw_metadata = entry.get("artworkMeta", {})
+    if raw_metadata is None:
+        raw_metadata = {}
+    if not isinstance(raw_metadata, dict):
+        raise ValueError(f"artworkMeta invalid pentru {label}")
+    present_metadata_keys = {
+        metadata_key
+        for field, metadata_key, _metadata_required in fields
+        if entry.get(field) is not None
+    }
+    for field, metadata_key, metadata_required in fields:
+        value = entry.get(field)
+        metadata = raw_metadata.get(metadata_key)
+        if value is None:
+            if metadata is not None and metadata_key not in present_metadata_keys:
+                raise ValueError(f"metadata artwork fără fișier pentru {label}.{field}")
+            continue
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"cale artwork invalidă pentru {label}.{field}")
+        asset = safe_catalog_path(destination, value)
+        if not asset.is_file() or asset.stat().st_size <= 0:
+            raise ValueError(f"artwork inexistent sau gol: {value}")
+        if metadata_required and metadata is None:
+            raise ValueError(f"metadata artwork lipsește pentru {label}.{field}")
+        if metadata is not None:
+            validate_artwork_metadata(metadata, asset, f"{label}.{field}")
+
+
 
 
 def validate_catalog(catalog: dict[str, Any], destination: Path) -> None:
     if catalog.get("schemaVersion") != 1:
         raise ValueError("schemaVersion catalog nesuportat")
+    if "artworkContractVersion" in catalog and catalog["artworkContractVersion"] != ARTWORK_CONTRACT_VERSION:
+        raise ValueError("versiune contract artwork nesuportată")
+    if "catalogRevision" in catalog:
+        revision = catalog["catalogRevision"]
+        if (
+            not isinstance(revision, str)
+            or len(revision) != 64
+            or any(character not in "0123456789abcdef" for character in revision)
+        ):
+            raise ValueError("catalogRevision invalid")
+        if revision != catalog_revision(catalog):
+            raise ValueError("catalogRevision nu corespunde catalogului")
     series_ids: set[str] = set()
     episode_ids: set[str] = set()
     episode_count = 0
@@ -144,9 +245,15 @@ def validate_catalog(catalog: dict[str, Any], destination: Path) -> None:
         series_path = safe_catalog_path(destination, str(series.get("path", "")))
         if not series_path.is_dir():
             raise ValueError(f"director serial inexistent: {series_path}")
-        cover = series.get("cover")
-        if cover and not safe_catalog_path(destination, str(cover)).is_file():
-            raise ValueError(f"copertă inexistentă: {cover}")
+        validate_artwork_fields(
+            series,
+            destination,
+            f"serial {series_id}",
+            (("cover", "card", False), ("cardArtwork", "card", True), ("heroArtwork", "hero", True)),
+        )
+        display_title = series.get("displayTitle")
+        if display_title is not None and (not isinstance(display_title, str) or not display_title.strip()):
+            raise ValueError(f"displayTitle invalid pentru serial {series_id}")
         season_numbers: set[int] = set()
         for season in series.get("seasons", []):
             season_number = int(season.get("number", 0))
@@ -163,14 +270,18 @@ def validate_catalog(catalog: dict[str, Any], destination: Path) -> None:
                     raise ValueError(f"video inexistent sau gol: {media}")
                 if "subtitle" not in episode or episode.get("subtitle") is not None:
                     raise ValueError("subtitrările sunt interzise; câmpul subtitle trebuie să fie null")
-                artwork = episode.get("artwork")
-                if artwork and not safe_catalog_path(destination, str(artwork)).is_file():
-                    raise ValueError(f"artwork inexistent: {artwork}")
+                validate_artwork_fields(
+                    episode,
+                    destination,
+                    f"episod {episode_id}",
+                    (("artwork", "card", False), ("cardArtwork", "card", True)),
+                )
+                display_title = episode.get("displayTitle")
+                if display_title is not None and (not isinstance(display_title, str) or not display_title.strip()):
+                    raise ValueError(f"displayTitle invalid pentru episod {episode_id}")
                 episode_count += 1
     if series_ids and episode_count == 0:
         raise ValueError("catalogul nu conține episoade")
-
-
 def restore_catalog(catalog_path: Path, previous: bytes | None) -> None:
     if previous is None:
         catalog_path.unlink(missing_ok=True)
@@ -220,6 +331,8 @@ def build_library(
                 candidate["builderVersion"] = BUILDER_VERSION
                 candidate["sourceFingerprint"] = fingerprint
                 candidate["mediaProfile"] = media_profile
+                candidate["artworkContractVersion"] = ARTWORK_CONTRACT_VERSION
+                candidate["catalogRevision"] = catalog_revision(candidate)
                 validate_catalog(candidate, destination)
         except Exception as error:
             report.setdefault("errors", []).append({"file": str(catalog_path), "error": str(error)})

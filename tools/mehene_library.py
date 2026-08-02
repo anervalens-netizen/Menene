@@ -23,8 +23,13 @@ VIDEO_EXTENSIONS = {
     '.vob', '.webm', '.wmv',
 }
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp'}
+IMAGE_EXTENSION_ORDER = ('.webp', '.png', '.jpg', '.jpeg')
 SUBTITLE_EXTENSIONS = {'.srt', '.vtt'}
 COVER_NAMES = ('cover', 'poster', 'folder', 'serial')
+CARD_ARTWORK_NAMES = ('card', 'card-artwork')
+HERO_ARTWORK_NAMES = ('hero', 'hero-artwork')
+SERIES_TITLE_SIDECARS = ('display-title.txt', 'displayTitle.txt', 'title.txt')
+EPISODE_TITLE_SIDECARS = ('display.txt', 'display-title.txt', 'displayTitle.txt', 'title.txt')
 ROMANIAN_LANGUAGE_CODES = {'ron', 'rum', 'ro'}
 ENGLISH_LANGUAGE_CODES = {'eng', 'en'}
 
@@ -155,19 +160,144 @@ def episode_number(name: str, fallback: int) -> int:
     return fallback
 
 def choose_cover(directory: Path) -> Path | None:
-    images = [path for path in directory.iterdir() if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS]
-    for priority in COVER_NAMES:
-        match = next((path for path in images if path.stem.lower() == priority), None)
-        if match:
-            return match
+    return choose_named_artwork(directory, COVER_NAMES)
+
+def ordered_image_extensions(extensions: set[str] | None = None) -> tuple[str, ...]:
+    allowed = extensions or IMAGE_EXTENSIONS
+    return tuple(extension for extension in IMAGE_EXTENSION_ORDER if extension in allowed) + tuple(
+        sorted(extension for extension in allowed if extension not in IMAGE_EXTENSION_ORDER)
+    )
+
+def choose_named_artwork(directory: Path, names: Iterable[str]) -> Path | None:
+    images = [
+        path
+        for path in directory.iterdir()
+        if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS
+    ]
+    for name in names:
+        for extension in ordered_image_extensions():
+            match = next(
+                (
+                    path
+                    for path in images
+                    if path.stem.casefold() == name.casefold()
+                    and path.suffix.lower() == extension
+                ),
+                None,
+            )
+            if match:
+                return match
+    return None
+
+def named_sidecar(path: Path, names: Iterable[str]) -> Path | None:
+    images = [
+        candidate
+        for candidate in path.parent.iterdir()
+        if candidate.is_file() and candidate.suffix.lower() in IMAGE_EXTENSIONS
+    ]
+    for name in names:
+        expected_stem = f'{path.stem}.{name}'.casefold()
+        for extension in ordered_image_extensions():
+            match = next(
+                (
+                    candidate
+                    for candidate in images
+                    if candidate.stem.casefold() == expected_stem
+                    and candidate.suffix.lower() == extension
+                ),
+                None,
+            )
+            if match:
+                return match
     return None
 
 def sidecar(path: Path, extensions: set[str]) -> Path | None:
-    for extension in extensions:
-        candidate = path.with_suffix(extension)
-        if candidate.is_file():
+    candidates = [
+        candidate
+        for candidate in path.parent.iterdir()
+        if candidate.is_file()
+        and candidate.stem.casefold() == path.stem.casefold()
+        and candidate.suffix.lower() in extensions
+    ]
+    for extension in ordered_image_extensions(extensions):
+        candidate = next(
+            (item for item in candidates if item.suffix.lower() == extension),
+            None,
+        )
+        if candidate:
             return candidate
     return None
+
+def read_text_sidecar(directory: Path, names: Iterable[str]) -> str | None:
+    for name in names:
+        candidate = directory / name
+        if not candidate.is_file():
+            continue
+        value = ' '.join(candidate.read_text(encoding='utf-8').split())
+        if value:
+            return value
+    return None
+
+def read_episode_display_title(path: Path) -> str | None:
+    for name in EPISODE_TITLE_SIDECARS:
+        candidate = path.with_name(f'{path.stem}.{name}')
+        if not candidate.is_file():
+            continue
+        value = ' '.join(candidate.read_text(encoding='utf-8').split())
+        if value:
+            return value
+    return None
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+def image_dimensions(ffprobe: str, path: Path) -> tuple[int, int]:
+    result = run(
+        [ffprobe, '-v', 'error', '-show_streams', '-of', 'json', str(path)],
+        capture=True,
+    )
+    payload = json.loads(result.stdout)
+    stream = next(
+        (
+            item
+            for item in payload.get('streams', [])
+            if item.get('codec_type') == 'video'
+        ),
+        None,
+    )
+    width = int(stream.get('width', 0)) if stream else 0
+    height = int(stream.get('height', 0)) if stream else 0
+    if width <= 0 or height <= 0:
+        raise ValueError(f'Artwork fără dimensiuni valide: {path}')
+    return width, height
+
+def artwork_shape(width: int, height: int) -> str:
+    ratio = width / height
+    if ratio >= 1.2:
+        return 'landscape'
+    if ratio <= 0.85:
+        return 'poster'
+    return 'square'
+
+def artwork_metadata(
+    ffprobe: str,
+    path: Path | None,
+    role: str,
+) -> dict[str, Any] | None:
+    if path is None:
+        return None
+    width, height = image_dimensions(ffprobe, path)
+    return {
+        'role': role,
+        'shape': artwork_shape(width, height),
+        'width': width,
+        'height': height,
+        'sha256': file_sha256(path),
+    }
 
 def discard_subtitles(source: Path, destination: Path) -> int:
     source_count = sum(
@@ -192,9 +322,20 @@ def copy_asset(source: Path, destination: Path) -> Path:
     shutil.copy2(source, destination)
     return destination
 
-def optimize_image(ffmpeg: str, source: Path, destination: Path, max_width: int, max_height: int, quality: int=82) -> Path:
+def optimize_image(
+    ffmpeg: str,
+    source: Path,
+    destination: Path,
+    max_width: int,
+    max_height: int,
+    quality: int = 82,
+    *,
+    force: bool = False,
+) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    if destination.is_file() and destination.stat().st_size > 0 and (destination.stat().st_mtime_ns >= source.stat().st_mtime_ns):
+    if not force and destination.is_file() and destination.stat().st_size > 0 and (
+        destination.stat().st_mtime_ns >= source.stat().st_mtime_ns
+    ):
         return destination
     temporary = destination.with_suffix('.tmp.webp')
     try:
@@ -283,17 +424,69 @@ def build_library(source: Path, destination: Path, preferred_language: str, medi
         raise SystemExit('Destinația trebuie să fie în afara folderului sursă')
     destination.mkdir(parents=True, exist_ok=True)
     subtitles_ignored = discard_subtitles(source, destination)
-    report: dict[str, Any] = {'series': 0, 'episodes': 0, 'compatibleCopied': 0, 'reused': 0, 'converted': 0, 'videoStreamCopied': 0, 'thumbnailsGenerated': 0, 'subtitlesIgnored': subtitles_ignored, 'subtitleStreamsDropped': 0, 'mediaProfile': media_profile, 'warnings': [], 'errors': []}
+    report: dict[str, Any] = {
+        'series': 0,
+        'episodes': 0,
+        'compatibleCopied': 0,
+        'reused': 0,
+        'converted': 0,
+        'videoStreamCopied': 0,
+        'thumbnailsGenerated': 0,
+        'artworkSidecarsUsed': 0,
+        'heroArtworkSidecarsUsed': 0,
+        'displayTitlesUsed': 0,
+        'subtitlesIgnored': subtitles_ignored,
+        'subtitleStreamsDropped': 0,
+        'mediaProfile': media_profile,
+        'warnings': [],
+        'errors': [],
+    }
     catalog_series: list[dict[str, Any]] = []
     for series_source in sorted((path for path in source.iterdir() if path.is_dir()), key=lambda path: path.name.lower()):
         season_directories = [(season_number(path.name), path) for path in series_source.iterdir() if path.is_dir() and season_number(path.name) is not None]
         season_sources = sorted(season_directories, key=lambda item: item[0]) if season_directories else [(1, series_source)]
         series_destination = destination / series_source.name
         series_destination.mkdir(parents=True, exist_ok=True)
+        explicit_card_source = choose_named_artwork(series_source, CARD_ARTWORK_NAMES)
         cover_source = choose_cover(series_source)
-        cover_destination: Path | None = None
-        if cover_source:
-            cover_destination = optimize_image(ffmpeg, cover_source, series_destination / 'cover.webp', max_width=960, max_height=640, quality=84)
+        card_source = explicit_card_source or cover_source
+        card_destination: Path | None = None
+        if explicit_card_source:
+            card_destination = optimize_image(
+                ffmpeg,
+                explicit_card_source,
+                series_destination / 'card.webp',
+                max_width=640,
+                max_height=360,
+                quality=84,
+                force=True,
+            )
+            report['artworkSidecarsUsed'] += 1
+        elif card_source:
+            card_destination = optimize_image(
+                ffmpeg,
+                card_source,
+                series_destination / 'cover.webp',
+                max_width=960,
+                max_height=640,
+                quality=84,
+            )
+        explicit_hero_source = choose_named_artwork(series_source, HERO_ARTWORK_NAMES)
+        hero_destination: Path | None = card_destination
+        if explicit_hero_source:
+            hero_destination = optimize_image(
+                ffmpeg,
+                explicit_hero_source,
+                series_destination / 'hero.webp',
+                max_width=1600,
+                max_height=600,
+                quality=84,
+                force=True,
+            )
+            report['heroArtworkSidecarsUsed'] += 1
+        series_display_title = read_text_sidecar(series_source, SERIES_TITLE_SIDECARS)
+        if series_display_title:
+            report['displayTitlesUsed'] += 1
         series_id = safe_id(series_source.name)
         seasons_payload: list[dict[str, Any]] = []
         for season_index, season_source in season_sources:
@@ -331,27 +524,80 @@ def build_library(source: Path, destination: Path, preferred_language: str, medi
                     preferred_codes = language_aliases(preferred_language)
                     if preferred_codes and info.audio_stream_index is not None and ((info.audio_language or '').lower() not in preferred_codes):
                         report['warnings'].append(f"{source_video}: nu există pistă audio {preferred_language}; a fost folosită {info.audio_language or 'necunoscută'}")
-                    artwork_source = sidecar(source_video, IMAGE_EXTENSIONS)
+                    explicit_artwork_source = named_sidecar(source_video, CARD_ARTWORK_NAMES)
+                    artwork_source = explicit_artwork_source or sidecar(source_video, IMAGE_EXTENSIONS)
                     artwork_destination = season_destination / f'{source_video.stem}.webp'
                     if artwork_source:
-                        artwork_destination = optimize_image(ffmpeg, artwork_source, artwork_destination, 1280, 720, quality=82)
+                        artwork_destination = optimize_image(
+                            ffmpeg,
+                            artwork_source,
+                            artwork_destination,
+                            1280,
+                            720,
+                            quality=82,
+                            force=explicit_artwork_source is not None,
+                        )
                     elif not (artwork_destination.is_file() and artwork_destination.stat().st_size > 0 and (artwork_destination.stat().st_mtime_ns >= destination_video.stat().st_mtime_ns)):
                         generate_thumbnail(ffmpeg, destination_video, artwork_destination, info.duration_ms)
                         report['thumbnailsGenerated'] += 1
+                    if explicit_artwork_source:
+                        report['artworkSidecarsUsed'] += 1
                     number = episode_number(source_video.name, order)
                     episode_id = safe_id(f'{series_id}|{season_index}|{number}|{source_video.stem}')
-                    episodes_payload.append({'id': episode_id, 'number': number, 'sortOrder': order, 'title': display_name(source_video.name), 'media': relative_posix(destination_video, destination), 'artwork': relative_posix(artwork_destination, destination), 'subtitle': None, 'durationMs': info.duration_ms, 'audioLanguage': info.audio_language})
+                    display_title = read_episode_display_title(source_video)
+                    if display_title:
+                        report['displayTitlesUsed'] += 1
+                    episode_entry: dict[str, Any] = {
+                        'id': episode_id,
+                        'number': number,
+                        'sortOrder': order,
+                        'title': display_name(source_video.name),
+                        'media': relative_posix(destination_video, destination),
+                        'artwork': relative_posix(artwork_destination, destination),
+                        'cardArtwork': relative_posix(artwork_destination, destination),
+                        'artworkMeta': {
+                            'card': artwork_metadata(ffprobe, artwork_destination, 'episode-card'),
+                        },
+                        'subtitle': None,
+                        'durationMs': info.duration_ms,
+                        'audioLanguage': info.audio_language,
+                    }
+                    if display_title:
+                        episode_entry['displayTitle'] = display_title
+                    episodes_payload.append(episode_entry)
                     report['episodes'] += 1
                 except Exception as error:
                     report['errors'].append({'file': str(source_video), 'error': str(error)})
             if episodes_payload:
                 seasons_payload.append({'number': season_index, 'title': f'Sezonul {season_index}', 'episodes': episodes_payload})
         if seasons_payload:
-            catalog_series.append({'id': series_id, 'title': display_name(series_source.name), 'path': relative_posix(series_destination, destination), 'cover': relative_posix(cover_destination, destination) if cover_destination else None, 'seasons': seasons_payload})
+            series_entry: dict[str, Any] = {
+                'id': series_id,
+                'title': display_name(series_source.name),
+                'path': relative_posix(series_destination, destination),
+                'cover': relative_posix(card_destination, destination) if card_destination else None,
+                'cardArtwork': relative_posix(card_destination, destination) if card_destination else None,
+                'heroArtwork': relative_posix(hero_destination, destination) if hero_destination else None,
+                'artworkMeta': {},
+                'seasons': seasons_payload,
+            }
+            card_metadata = artwork_metadata(ffprobe, card_destination, 'series-card')
+            hero_metadata = artwork_metadata(ffprobe, hero_destination, 'series-hero')
+            if card_metadata:
+                series_entry['artworkMeta']['card'] = card_metadata
+            if hero_metadata:
+                series_entry['artworkMeta']['hero'] = hero_metadata
+            if series_display_title:
+                series_entry['displayTitle'] = series_display_title
+            catalog_series.append(series_entry)
             report['series'] += 1
-            if cover_destination is None:
+            if card_destination is None:
                 report['warnings'].append(f'{series_source.name}: lipsește cover/poster')
-    catalog = {'schemaVersion': 1, 'generatedAtEpochMs': int(time.time() * 1000), 'series': catalog_series}
+    catalog = {
+        'schemaVersion': 1,
+        'generatedAtEpochMs': int(time.time() * 1000),
+        'series': catalog_series,
+    }
     for file_name, payload in (('catalog.json', catalog), ('mehene-report.json', report)):
         final_path = destination / file_name
         temporary_path = destination / f'.{file_name}.tmp'

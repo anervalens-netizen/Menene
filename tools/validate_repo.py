@@ -127,6 +127,54 @@ def validate_builder(root: Path) -> None:
                 raise
         episode["subtitle"] = None
         builder.validate_catalog(catalog, destination)
+        card = series / "card.webp"
+        hero = series / "hero.webp"
+        episode_artwork = series / "Episod.webp"
+        for artwork in (card, hero, episode_artwork):
+            artwork.write_bytes(artwork.name.encode("utf-8"))
+        def artwork_metadata(path: Path, role: str, width: int, height: int) -> dict:
+            return {
+                "role": role,
+                "shape": builder.legacy.artwork_shape(width, height),
+                "width": width,
+                "height": height,
+                "sha256": builder.file_sha256(path),
+            }
+
+        series_entry = catalog["series"][0]
+        series_entry.update({
+            "cardArtwork": "Serial/card.webp",
+            "heroArtwork": "Serial/hero.webp",
+            "displayTitle": "Serial afișat",
+            "artworkMeta": {
+                "card": artwork_metadata(card, "series-card", 640, 360),
+                "hero": artwork_metadata(hero, "series-hero", 1600, 600),
+            },
+        })
+        episode.update({
+            "artwork": "Serial/Episod.webp",
+            "cardArtwork": "Serial/Episod.webp",
+            "displayTitle": "Episod afișat",
+            "artworkMeta": {
+                "card": artwork_metadata(episode_artwork, "episode-card", 960, 540),
+            },
+        })
+        catalog["artworkContractVersion"] = builder.ARTWORK_CONTRACT_VERSION
+        catalog["catalogRevision"] = builder.catalog_revision(catalog)
+        builder.validate_catalog(catalog, destination)
+        original_hash = series_entry["artworkMeta"]["hero"]["sha256"]
+        series_entry["artworkMeta"]["hero"]["sha256"] = "0" * 64
+        catalog["catalogRevision"] = builder.catalog_revision(catalog)
+        try:
+            builder.validate_catalog(catalog, destination)
+            fail("Validatorul acceptă hash artwork incorect")
+        except ValueError as error:
+            if "hash artwork" not in str(error):
+                raise
+        finally:
+            series_entry["artworkMeta"]["hero"]["sha256"] = original_hash
+            catalog["catalogRevision"] = builder.catalog_revision(catalog)
+        builder.validate_catalog(catalog, destination)
 
         target = destination / "catalog.json"
         builder.atomic_write_json(target, catalog)
