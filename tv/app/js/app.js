@@ -144,7 +144,8 @@
 
   function artworkUrl(path, fallback) {
     if (!path) return fallback;
-    return core.mediaUrl(serverBase, path) + "?v=" + encodeURIComponent(config.appVersion || "1.1.1");
+    var revision = (state.catalog && state.catalog.catalogRevision) || config.appVersion || "1.1.1";
+    return core.mediaUrl(serverBase, path) + "?v=" + encodeURIComponent(revision);
   }
 
   function prepareArtworkFrames(container, fallback) {
