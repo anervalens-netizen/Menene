@@ -16,8 +16,8 @@ test("encodes every media path segment without losing hierarchy", () => {
     "Bluey/Season%2001/Episodul%20%231.mp4"
   );
   assert.equal(
-    core.mediaUrl("http://192.168.0.43:8765/", "Bluey/E 01.mp4"),
-    "http://192.168.0.43:8765/media/Bluey/E%2001.mp4"
+    core.mediaUrl("http://192.168.0.19:8765/", "Bluey/E 01.mp4"),
+    "http://192.168.0.19:8765/media/Bluey/E%2001.mp4"
   );
 });
 

@@ -23,9 +23,9 @@ python3 tv/server/menene_tv_server.py \
 Verificare:
 
 ```bash
-curl http://192.168.0.43:8765/api/v1/health
+curl http://192.168.0.19:8765/api/v1/health
 curl -H 'Range: bytes=0-1023' \
-  http://192.168.0.43:8765/media/<cale-episod>
+  http://192.168.0.19:8765/media/<cale-episod>
 ```
 
 ## Client Tizen

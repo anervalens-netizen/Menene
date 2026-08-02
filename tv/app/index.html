@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=1920, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: http://192.168.0.43:8765; connect-src http://192.168.0.43:8765; media-src blob: http://192.168.0.43:8765; img-src 'self' data: http://192.168.0.43:8765; style-src 'self' 'unsafe-inline'; script-src 'self' $WEBAPIS/webapis/webapis.js">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: http://192.168.0.19:8765; connect-src http://192.168.0.19:8765; media-src blob: http://192.168.0.19:8765; img-src 'self' data: http://192.168.0.19:8765; style-src 'self' 'unsafe-inline'; script-src 'self' $WEBAPIS/webapis/webapis.js">
   <title>Menene TV</title>
   <link rel="stylesheet" href="css/app.css">
 </head>
@@ -21,7 +21,7 @@
         <span>Desenele tale</span>
         <strong id="library-count">Se conectează…</strong>
       </div>
-      <div id="connection-pill" class="connection-pill">Dell local</div>
+      <div id="connection-pill" class="connection-pill">NAS local</div>
     </header>
 
     <main>
@@ -34,7 +34,7 @@
       <section id="error-view" class="center-view" hidden>
         <div class="error-icon">!</div>
         <h1>Biblioteca nu este disponibilă</h1>
-        <p id="error-message">Verifică dacă Dell este pornit.</p>
+        <p id="error-message">Verifică dacă NAS-ul este pornit.</p>
         <button id="retry-button" class="button button-primary focusable" data-focusable>Încearcă din nou</button>
       </section>
 
