@@ -25,7 +25,8 @@
     resumeAfterVisibility: false,
     toastTimer: null,
     lastFocus: null,
-    heroSeriesId: null
+    heroSeriesId: null,
+    heroTimer: null
   };
 
   var elements = {};
@@ -113,7 +114,12 @@
     document.addEventListener("focusin", function (event) {
       if (event.target.matches("[data-focusable]")) state.lastFocus = event.target;
       if (event.target.classList.contains("series-card")) {
-        selectHero(event.target.dataset.seriesId);
+        var seriesId = event.target.dataset.seriesId;
+        clearTimeout(state.heroTimer);
+        state.heroTimer = setTimeout(function () {
+          state.heroTimer = null;
+          if (state.currentView === "home") selectHero(seriesId);
+        }, 220);
       }
     });
   }
@@ -144,11 +150,11 @@
   function prepareArtworkFrames(container, fallback) {
     Array.prototype.forEach.call(container.querySelectorAll(".artwork-frame img"), function (image) {
       var frame = image.parentNode;
-      frame.style.backgroundImage = 'linear-gradient(rgba(7,8,28,.52), rgba(7,8,28,.52)), url("' + image.src.replace(/"/g, "%22") + '")';
+      frame.style.backgroundImage = "";
       image.onerror = function () {
         image.onerror = null;
         image.src = fallback;
-        frame.style.backgroundImage = 'url("' + fallback + '")';
+        frame.style.backgroundImage = "";
       };
     });
   }
@@ -216,17 +222,19 @@
     var fallback = "assets/menene_hero_adventure.webp";
     var hero = artworkUrl(series.heroArtwork || series.cover, fallback);
     elements.heroImage.src = hero;
-    elements.heroArtwork.style.backgroundImage = 'linear-gradient(rgba(8,9,30,.5), rgba(8,9,30,.5)), url("' + hero.replace(/"/g, "%22") + '")';
+    elements.heroArtwork.style.backgroundImage = "";
     elements.heroImage.onerror = function () {
       elements.heroImage.onerror = null;
       elements.heroImage.src = fallback;
-      elements.heroArtwork.style.backgroundImage = 'url("' + fallback + '")';
+      elements.heroArtwork.style.backgroundImage = "";
     };
     elements.heroPlayLabel.textContent = continueEpisode(series) ? "Continuă" : "Pornește";
   }
 
   function showSeries(series) {
     state.currentSeries = series;
+    clearTimeout(state.heroTimer);
+    state.heroTimer = null;
     state.currentSeason = 0;
     state.currentEpisodePage = 0;
     elements.seriesTitle.textContent = series.title;
@@ -471,7 +479,6 @@
   function focusElement(element) {
     if (!element) return false;
     element.focus();
-    if (element.scrollIntoView) element.scrollIntoView({ block: "nearest", inline: "nearest" });
     return true;
   }
 
