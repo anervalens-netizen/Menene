@@ -65,7 +65,7 @@ Subtitrările nu sunt publicate. Sidecar-urile `.srt`/`.vtt` din sursă sunt num
 - `--publish-partial` permite explicit publicarea episoadelor reușite, dar nu este recomandat pentru biblioteca zilnică;
 - PowerShell oferă aceeași opțiune prin `-PublishPartial`.
 
-## Constrângeri operaționale 2.3
+## Constrângeri operaționale 2.4
 
 Până la implementarea stagingului din roadmap:
 
@@ -106,6 +106,8 @@ Sunt recunoscute foldere precum `Season 01`, `Sezonul 01` și `S01`. Dacă nu ex
 - `catalog.json` — folosit de aplicație;
 - `mehene-report.json` — erori, avertismente, versiunea Builderului, fingerprint, profilul media, `videoStreamCopied`, `subtitleStreamsDropped` și statistici;
 - coperți și miniaturi WebP optimizate.
+- contract artwork v1 cu asset-uri separate card/hero/episode, metadate de rol/formă/dimensiuni/hash și `displayTitle`;
+- `catalogRevision` SHA-256 stabil pentru invalidarea cache-ului.
 
 ## Roadmap Builder
 

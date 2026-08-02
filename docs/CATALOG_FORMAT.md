@@ -36,6 +36,19 @@ Schema curentă: `1`.
 }
 ```
 
+## Contract artwork v1
+
+Un catalog nou poate declara `artworkContractVersion: 1`. Câmpurile rămân compatibile cu schema 1:
+
+- serial: `displayTitle`, `cardArtwork`, `heroArtwork`;
+- episod: `displayTitle`, `cardArtwork`;
+- `artworkMeta`: rol, formă, lățime, înălțime și SHA-256 pentru fiecare asset;
+- sidecar-urile explicite `card.*`/`card-artwork.*` și `hero.*`/`hero-artwork.*` au prioritate față de fallback.
+
+`catalogRevision` este SHA-256 determinist peste conținutul catalogului, fără timestamp și fără propria valoare, și permite cache-bust stabil.
+
+Cataloagele legacy fără aceste câmpuri rămân valide; clientul folosește `cover` și `artwork` ca fallback.
+
 Toate căile sunt relative la folderul selectat în Mehene. ID-urile trebuie să fie stabile între reconstrucțiile bibliotecii, astfel încât progresul să fie păstrat.
 
 Pentru bibliotecile Menene, `subtitle` rămâne obligatoriu `null`. Builderul nu publică subtitrări și refuză orice valoare nenulă; aceasta este o regulă de produs pentru copilul pre-lector.
