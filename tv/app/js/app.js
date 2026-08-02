@@ -129,7 +129,7 @@
         renderHome();
       })
       .catch(function (error) {
-        showError("Dell nu răspunde sau catalogul este invalid (" + error.message + ").");
+        showError("Biblioteca NAS nu răspunde sau catalogul este invalid (" + error.message + ").");
       });
   }
 
