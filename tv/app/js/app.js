@@ -8,6 +8,7 @@
   var BACK_KEY = 10009;
   var EPISODE_PAGE_SIZE = 8;
   var EPISODE_COLUMNS = 4;
+  var HOME_COLUMNS = 4;
   var state = {
     catalog: null,
     currentView: "loading",
@@ -198,9 +199,9 @@
   }
 
   function renderHome() {
-    elements.seriesList.innerHTML = state.catalog.series.map(function (series) {
+    elements.seriesList.innerHTML = state.catalog.series.map(function (series, index) {
       var cover = artworkUrl(series.cardArtwork || series.cover, "assets/menene_series_story.webp");
-      return '<button class="series-card focusable" data-focusable data-series-id="' + escapeHtml(series.id) + '">' +
+      return '<button class="series-card focusable" data-focusable data-series-id="' + escapeHtml(series.id) + '" data-grid-index="' + index + '">' +
         '<span class="artwork-frame series-artwork">' +
         '<img src="' + escapeHtml(cover) + '" alt="" decoding="async"></span>' +
         '<span class="series-card-copy"><strong>' + escapeHtml(series.displayTitle || series.title) + '</strong>' +
@@ -210,6 +211,11 @@
     selectHero((state.currentSeries || state.catalog.series[0]).id, true);
     showOnly("home");
     focusFirst(elements.seriesList);
+  }
+
+  function setHeroArtworkBackground(url) {
+    var safeUrl = String(url || "").replace(/"/g, "%22");
+    elements.heroArtwork.style.backgroundImage = 'url("' + safeUrl + '")';
   }
 
   function selectHero(seriesId, force) {
@@ -222,12 +228,12 @@
     elements.heroMeta.textContent = (series.seasons || []).length + " sezoane • " + core.episodeCount(series) + " episoade";
     var fallback = "assets/menene_hero_adventure.webp";
     var hero = artworkUrl(series.heroArtwork || series.cover, fallback);
+    setHeroArtworkBackground(hero);
     elements.heroImage.src = hero;
-    elements.heroArtwork.style.backgroundImage = "";
     elements.heroImage.onerror = function () {
       elements.heroImage.onerror = null;
+      setHeroArtworkBackground(fallback);
       elements.heroImage.src = fallback;
-      elements.heroArtwork.style.backgroundImage = "";
     };
     elements.heroPlayLabel.textContent = continueEpisode(series) ? "Continuă" : "Pornește";
   }
@@ -497,7 +503,6 @@
     var cards = Array.prototype.slice.call(elements.episodeGrid.querySelectorAll(".episode-card"));
     return focusElement(cards[Math.max(0, Math.min(preferredIndex, cards.length - 1))]);
   }
-
   function handleStructuredNavigation(event, current, direction) {
     var items;
     var index;
@@ -511,9 +516,12 @@
       if (current.classList.contains("series-card")) {
         items = Array.prototype.slice.call(elements.seriesList.querySelectorAll(".series-card"));
         index = items.indexOf(current);
-        if (direction === "up" && index === 0) target = elements.heroPlay;
-        if (direction === "up" && index > 0) target = items[index - 1];
-        if (direction === "down" && index + 1 < items.length) target = items[index + 1];
+        if (direction === "up" && index < HOME_COLUMNS) {
+          target = elements.heroPlay;
+        } else {
+          var homeIndex = core.nextGridIndex(index, items.length, HOME_COLUMNS, direction);
+          if (homeIndex >= 0) target = items[homeIndex];
+        }
         if (target) {
           event.preventDefault();
           return focusElement(target);
