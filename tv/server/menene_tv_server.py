@@ -97,18 +97,18 @@ def load_catalog(
     subtitle_count = 0
     allowed_paths: set[str] = set()
     for serial in series:
-        if serial.get("cover") is not None:
-            allowed_paths.add(normalize_catalog_path(serial["cover"], "cover"))
+        for field in ("cover", "cardArtwork", "heroArtwork"):
+            if serial.get(field) is not None:
+                allowed_paths.add(normalize_catalog_path(serial[field], field))
         for season in serial.get("seasons", []):
             for episode in season.get("episodes", []):
                 episode_count += 1
                 if "subtitle" not in episode or episode["subtitle"] is not None:
                     subtitle_count += 1
                 allowed_paths.add(normalize_catalog_path(episode.get("media"), "media"))
-                if episode.get("artwork") is not None:
-                    allowed_paths.add(
-                        normalize_catalog_path(episode["artwork"], "artwork")
-                    )
+                for field in ("artwork", "cardArtwork"):
+                    if episode.get(field) is not None:
+                        allowed_paths.add(normalize_catalog_path(episode[field], field))
 
     if subtitle_count:
         raise ValueError("catalog.json violates the permanent no-subtitle rule")

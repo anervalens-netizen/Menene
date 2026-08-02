@@ -50,6 +50,9 @@ class CatalogTests(unittest.TestCase):
             "series": [
                 {
                     "id": "series-1",
+                    "cover": "Series/cover.webp",
+                    "cardArtwork": "Series/card.webp",
+                    "heroArtwork": "Series/hero.webp",
                     "seasons": [
                         {
                             "number": 1,
@@ -66,7 +69,15 @@ class CatalogTests(unittest.TestCase):
     def test_catalog_counts_and_enforces_no_subtitles(self) -> None:
         _, stats, allowed = load_catalog(self.write_catalog())
         self.assertEqual(stats, {"series": 1, "episodes": 1, "subtitles": 0})
-        self.assertEqual(allowed, {"Series/Season 01/E01.mp4"})
+        self.assertEqual(
+            allowed,
+            {
+                "Series/Season 01/E01.mp4",
+                "Series/cover.webp",
+                "Series/card.webp",
+                "Series/hero.webp",
+            },
+        )
         with self.assertRaisesRegex(ValueError, "no-subtitle"):
             load_catalog(self.write_catalog("Episode.srt"))
         with self.assertRaisesRegex(ValueError, "no-subtitle"):
@@ -88,6 +99,9 @@ class HttpTests(unittest.TestCase):
         (self.root / "Series").mkdir()
         (self.root / "Series" / "Episode.mp4").write_bytes(b"0123456789")
         (self.root / "Series" / "Empty.mp4").write_bytes(b"")
+        (self.root / "Series" / "card.webp").write_bytes(b"card")
+        (self.root / "Series" / "hero.webp").write_bytes(b"hero")
+        (self.root / "Series" / "episode.webp").write_bytes(b"episode")
         (self.root / "Series" / "Unreferenced.txt").write_text("private")
         (self.root / "catalog.json").write_text(
             json.dumps(
@@ -96,6 +110,8 @@ class HttpTests(unittest.TestCase):
                     "series": [
                         {
                             "id": "series-1",
+                            "cardArtwork": "Series/card.webp",
+                            "heroArtwork": "Series/hero.webp",
                             "seasons": [
                                 {
                                     "episodes": [
@@ -104,6 +120,7 @@ class HttpTests(unittest.TestCase):
                                             "media": "Series/Episode.mp4",
                                             "artwork": "Series/Empty.mp4",
                                             "subtitle": None,
+                                            "cardArtwork": "Series/episode.webp",
                                         }
                                     ]
                                 }
@@ -146,6 +163,12 @@ class HttpTests(unittest.TestCase):
             self.assertEqual(response.status, 206)
             self.assertEqual(response.headers["Content-Range"], "bytes 2-5/10")
             self.assertEqual(response.read(), b"2345")
+
+        for artwork in ("card.webp", "hero.webp", "episode.webp"):
+            with self.subTest(artwork=artwork), self.request(
+                f"/media/Series/{artwork}"
+            ) as response:
+                self.assertEqual(response.status, 200)
 
     def test_head_traversal_and_read_only_contract(self) -> None:
         with self.request("/media/Series/Episode.mp4", method="HEAD") as response:
