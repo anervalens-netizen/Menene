@@ -226,7 +226,11 @@ def transcode(ffmpeg: str, source: Path, destination: Path, info: MediaInfo, med
             video_filter = "scale='min(1280,iw)':'min(720,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2"
             if info.fps > 30.1:
                 video_filter += ',fps=30'
-        command += ['-vf', video_filter, '-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-profile:v', 'main', '-level', '3.1', '-pix_fmt', 'yuv420p']
+        if media_profile == 'tv':
+            encoder_args = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-profile:v', 'high', '-level', '4.2']
+        else:
+            encoder_args = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '22', '-profile:v', 'main', '-level', '3.1']
+        command += ['-vf', video_filter, *encoder_args, '-pix_fmt', 'yuv420p']
     if info.audio_stream_index is not None:
         command += ['-c:a', 'aac', '-b:a', '192k' if media_profile == 'tv' else '128k', '-ac', '2', '-ar', '48000']
     else:
