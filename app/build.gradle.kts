@@ -105,10 +105,10 @@ android {
 
 dependencies {
     val lifecycleVersion = "2.11.0"
-    val media3Version = "1.10.1"
+    val media3Version = "1.11.0"
     val roomVersion = "2.8.4"
 
-    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.core:core-ktx:1.19.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("androidx.activity:activity-ktx:1.13.0")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
@@ -119,7 +119,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion")
 
-    implementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.8.1"))
+    implementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.11.0"))
     implementation("androidx.datastore:datastore-preferences:1.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
 
