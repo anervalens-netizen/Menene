@@ -39,7 +39,10 @@ class ProgressBackupStore(context: Context) {
         ensureLoaded()
         if (libraryId == LibraryId.LEGACY) return@synchronized null
         val targetLibraryId = legacyMigratedTo ?: libraryId
-        entities.values.filter { it.libraryId == LibraryId.LEGACY }.forEach { legacy ->
+        val migrationCutoff = maxOf(clearedAtEpochMs(LibraryId.LEGACY), clearedAtEpochMs(targetLibraryId))
+        entities.values.filter {
+            it.libraryId == LibraryId.LEGACY && it.lastPlayedAtEpochMs > migrationCutoff
+        }.forEach { legacy ->
             val target = legacy.copy(libraryId = targetLibraryId)
             val key = Key(targetLibraryId, target.episodeId)
             val existing = entities[key]
@@ -54,7 +57,7 @@ class ProgressBackupStore(context: Context) {
 
     fun upsertIfNewer(entity: PlaybackProgressEntity) = synchronized(lock) {
         ensureLoaded()
-        if (entity.lastPlayedAtEpochMs < clearedAtEpochMs(entity.libraryId)) return@synchronized
+        if (entity.lastPlayedAtEpochMs <= clearedAtEpochMs(entity.libraryId)) return@synchronized
         val key = Key(entity.libraryId, entity.episodeId)
         val existing = entities[key]
         if (existing == null || entity.lastPlayedAtEpochMs >= existing.lastPlayedAtEpochMs) {

@@ -86,6 +86,36 @@ class ProgressRepositoryTest {
     }
 
     @Test
+    fun checkpointAtResetTimestampStaysCleared() = runBlocking {
+        repository.checkpoint("e1", 6_000, 10_000, nowEpochMs = 100)
+        repository.clear()
+        val resetAt = backupStore.clearedAtEpochMs("legacy")
+        repository.checkpoint("e1", 8_000, 10_000, nowEpochMs = resetAt)
+        assertNull(repository.get("e1"))
+        assertNull(backupStore.get("legacy", "e1"))
+        backupStore.upsertIfNewer(PlaybackProgressEntity("legacy", "e1", 8_000, 10_000, false, resetAt))
+        assertNull(backupStore.get("legacy", "e1"))
+    }
+
+    @Test
+    fun criticalCheckpointAtResetTimestampStaysCleared() = runBlocking {
+        repository.checkpoint("e1", 6_000, 10_000, nowEpochMs = 100)
+        repository.clear()
+        val resetAt = backupStore.clearedAtEpochMs("legacy")
+        repository.checkpointCritical("e1", 8_000, 10_000, nowEpochMs = resetAt).join()
+        assertNull(repository.get("e1"))
+        assertNull(database.playbackProgressDao().get("legacy", "e1"))
+    }
+
+    @Test
+    fun legacyBackupEntryAtResetTimestampDoesNotReappearOnGet() = runBlocking {
+        backupFile.writeText("""{"schemaVersion":2,"clearedAtEpochMsByLibrary":{"legacy":200},"progress":[{"libraryId":"legacy","episodeId":"e1","positionMs":8000,"durationMs":10000,"completed":false,"lastPlayedAtEpochMs":200}]}""")
+        val restarted = ProgressRepository(database.playbackProgressDao(), ProgressBackupStore(context), CoroutineScope(SupervisorJob() + Dispatchers.IO))
+        assertNull(restarted.get("e1"))
+        assertTrue(restarted.progress.value.isEmpty())
+    }
+
+    @Test
     fun switchingLibrariesRetainsProgressAndEmptyLibraryDoesNotPrune() = runBlocking {
         repository.activateLibrary("library-a")
         repository.checkpoint("episode-a", 6_000, 10_000, nowEpochMs = 100)
@@ -144,6 +174,31 @@ class ProgressRepositoryTest {
         val restarted = ProgressRepository(database.playbackProgressDao(), ProgressBackupStore(context), CoroutineScope(SupervisorJob() + Dispatchers.IO))
         restarted.activateLibrary("library-first")
         assertEquals(33L, restarted.get("episode-legacy")?.positionMs)
+    }
+
+    @Test
+    fun migrationHonorsLegacyResetForBackupAndRoom() = runBlocking {
+        backupFile.writeText("""{"schemaVersion":2,"clearedAtEpochMsByLibrary":{"legacy":200},"progress":[{"libraryId":"legacy","episodeId":"backup-cleared","positionMs":33,"durationMs":100,"completed":false,"lastPlayedAtEpochMs":200}]}""")
+        database.playbackProgressDao().upsert(PlaybackProgressEntity(LibraryId.LEGACY, "room-cleared", 33, 100, false, 200))
+        database.playbackProgressDao().upsert(PlaybackProgressEntity(LibraryId.LEGACY, "room-new", 44, 100, false, 201))
+        repository.activateLibrary("library-first")
+        assertNull(repository.get("backup-cleared"))
+        assertNull(repository.get("room-cleared"))
+        assertNull(database.playbackProgressDao().get("library-first", "room-cleared"))
+        assertEquals(44L, repository.get("room-new")?.positionMs)
+    }
+
+    @Test
+    fun replayedMigrationHonorsTargetResetForBackupAndRoom() = runBlocking {
+        backupStore.upsertIfNewer(PlaybackProgressEntity(LibraryId.LEGACY, "backup-old", 33, 100, false, 200))
+        database.playbackProgressDao().upsert(PlaybackProgressEntity(LibraryId.LEGACY, "room-old", 33, 100, false, 200))
+        backupStore.migrateLegacyTo("library-first")
+        backupStore.clear("library-first", nowEpochMs = 200)
+        repository.activateLibrary("library-first")
+        assertNull(repository.get("backup-old"))
+        assertNull(repository.get("room-old"))
+        assertNull(backupStore.get("library-first", "backup-old"))
+        assertNull(database.playbackProgressDao().get("library-first", "room-old"))
     }
 
     @Test

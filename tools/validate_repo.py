@@ -191,10 +191,10 @@ def validate_builder(root: Path) -> None:
         previous = target.read_bytes()
         original_build = builder.legacy.build_library
 
-        def failing_build(_source: Path, output: Path, _language: str, _media_profile: str) -> dict:
+        def failing_build(_source: Path, output: Path, _language: str, _media_profile: str, *, catalog_output: Path) -> dict:
             broken = minimal_catalog()
             broken["series"][0]["seasons"][0]["episodes"][0]["media"] = "missing.mp4"
-            builder.atomic_write_json(output / "catalog.json", broken)
+            builder.atomic_write_json(catalog_output, broken)
             return {
                 "series": 1,
                 "episodes": 0,
@@ -305,6 +305,7 @@ def run_android(root: Path) -> None:
             "assembleDebug",
             "lintRelease",
             "assembleRelease",
+            "connectedDebugAndroidTest",
         ],
         cwd=root,
         check=True,
@@ -321,6 +322,7 @@ def main() -> int:
     validate_manifest(root)
     validate_policy(root)
     validate_builder(root)
+    subprocess.run([sys.executable, str(root / "tools/test_builder_publication.py")], cwd=root, check=True)
     validate_media_profiles(root)
     validate_version(root)
     if args.android:
