@@ -81,6 +81,7 @@ class ProgressRepository(
         val entity = databaseValue ?: runCatching { backupStore.get(libraryId, episodeId) }
             .onFailure { Log.e(TAG, "Progress backup get failed", it) }
             .getOrNull()
+            ?.takeIf { it.lastPlayedAtEpochMs > clearedAtEpochMs }
         entity?.toDomain()?.also { domain ->
             mutableProgress.value = mutableProgress.value + (episodeId to domain)
         }
@@ -148,6 +149,10 @@ class ProgressRepository(
         return applicationScope.launch {
             writeMutex.withLock {
                 ensureActiveLibraryUnlocked()
+                val resetAt = backupStore.clearedAtEpochMs(entity.libraryId)
+                if (entity.lastPlayedAtEpochMs <= resetAt) return@withLock
+                val current = if (activeLibraryId == entity.libraryId) mutableProgress.value[entity.episodeId] else null
+                if (current != null && entity.lastPlayedAtEpochMs < current.lastPlayedAtEpochMs) return@withLock
                 if (activeLibraryId == entity.libraryId) {
                     mutableProgress.value = mutableProgress.value + (entity.episodeId to entity.toDomain())
                 }

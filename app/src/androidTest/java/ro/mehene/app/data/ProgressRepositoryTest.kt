@@ -98,6 +98,24 @@ class ProgressRepositoryTest {
     }
 
     @Test
+    fun criticalCheckpointAtResetTimestampStaysCleared() = runBlocking {
+        repository.checkpoint("e1", 6_000, 10_000, nowEpochMs = 100)
+        repository.clear()
+        val resetAt = backupStore.clearedAtEpochMs("legacy")
+        repository.checkpointCritical("e1", 8_000, 10_000, nowEpochMs = resetAt).join()
+        assertNull(repository.get("e1"))
+        assertNull(database.playbackProgressDao().get("legacy", "e1"))
+    }
+
+    @Test
+    fun legacyBackupEntryAtResetTimestampDoesNotReappearOnGet() = runBlocking {
+        backupFile.writeText("""{"schemaVersion":2,"clearedAtEpochMsByLibrary":{"legacy":200},"progress":[{"libraryId":"legacy","episodeId":"e1","positionMs":8000,"durationMs":10000,"completed":false,"lastPlayedAtEpochMs":200}]}""")
+        val restarted = ProgressRepository(database.playbackProgressDao(), ProgressBackupStore(context), CoroutineScope(SupervisorJob() + Dispatchers.IO))
+        assertNull(restarted.get("e1"))
+        assertTrue(restarted.progress.value.isEmpty())
+    }
+
+    @Test
     fun switchingLibrariesRetainsProgressAndEmptyLibraryDoesNotPrune() = runBlocking {
         repository.activateLibrary("library-a")
         repository.checkpoint("episode-a", 6_000, 10_000, nowEpochMs = 100)

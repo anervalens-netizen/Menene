@@ -322,6 +322,7 @@ def main() -> int:
     validate_manifest(root)
     validate_policy(root)
     validate_builder(root)
+    subprocess.run([sys.executable, str(root / "tools/test_builder_publication.py")], cwd=root, check=True)
     validate_media_profiles(root)
     validate_version(root)
     if args.android:
