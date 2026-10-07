@@ -43,9 +43,14 @@ class ProgressRepository(
             null
         }
         if (legacyTargetLibraryId != null) {
+            val migrationCutoff = maxOf(
+                backupStore.clearedAtEpochMs(LibraryId.LEGACY),
+                backupStore.clearedAtEpochMs(legacyTargetLibraryId),
+            )
             runCatching { dao.getAll(LibraryId.LEGACY) }
                 .onFailure { Log.e(TAG, "Legacy Room progress read failed", it) }
                 .getOrDefault(emptyList())
+                .filter { it.lastPlayedAtEpochMs > migrationCutoff }
                 .forEach { legacy ->
                     val migrated = legacy.copy(libraryId = legacyTargetLibraryId)
                     val current = runCatching { dao.get(legacyTargetLibraryId, legacy.episodeId) }

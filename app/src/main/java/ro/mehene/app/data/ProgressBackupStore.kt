@@ -39,7 +39,10 @@ class ProgressBackupStore(context: Context) {
         ensureLoaded()
         if (libraryId == LibraryId.LEGACY) return@synchronized null
         val targetLibraryId = legacyMigratedTo ?: libraryId
-        entities.values.filter { it.libraryId == LibraryId.LEGACY }.forEach { legacy ->
+        val migrationCutoff = maxOf(clearedAtEpochMs(LibraryId.LEGACY), clearedAtEpochMs(targetLibraryId))
+        entities.values.filter {
+            it.libraryId == LibraryId.LEGACY && it.lastPlayedAtEpochMs > migrationCutoff
+        }.forEach { legacy ->
             val target = legacy.copy(libraryId = targetLibraryId)
             val key = Key(targetLibraryId, target.episodeId)
             val existing = entities[key]
