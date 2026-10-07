@@ -101,7 +101,7 @@ Echivalent Gradle:
 ./gradlew clean test lintDebug assembleDebug
 ```
 
-Cerințe: JDK 17 și Android SDK 36. APK-ul debug apare în:
+Cerințe: JDK 17 și Android SDK Platform 37 (`sdkmanager "platforms;android-37"`). APK-ul debug apare în:
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk

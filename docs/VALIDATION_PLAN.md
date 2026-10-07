@@ -33,7 +33,7 @@ python3 tools/validate_repo.py
 
 # Gate G1 — Build Android curat
 
-Pe un calculator cu JDK 17 și Android SDK 36, cu un emulator sau dispozitiv conectat:
+Pe un calculator cu JDK 17 și Android SDK Platform 37 (`sdkmanager "platforms;android-37"`), cu un emulator sau dispozitiv conectat:
 
 ```bash
 python3 tools/validate_repo.py --android
