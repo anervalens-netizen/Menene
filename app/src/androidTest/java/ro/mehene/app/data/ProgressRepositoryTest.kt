@@ -86,6 +86,18 @@ class ProgressRepositoryTest {
     }
 
     @Test
+    fun checkpointAtResetTimestampStaysCleared() = runBlocking {
+        repository.checkpoint("e1", 6_000, 10_000, nowEpochMs = 100)
+        repository.clear()
+        val resetAt = backupStore.clearedAtEpochMs("legacy")
+        repository.checkpoint("e1", 8_000, 10_000, nowEpochMs = resetAt)
+        assertNull(repository.get("e1"))
+        assertNull(backupStore.get("legacy", "e1"))
+        backupStore.upsertIfNewer(PlaybackProgressEntity("legacy", "e1", 8_000, 10_000, false, resetAt))
+        assertNull(backupStore.get("legacy", "e1"))
+    }
+
+    @Test
     fun switchingLibrariesRetainsProgressAndEmptyLibraryDoesNotPrune() = runBlocking {
         repository.activateLibrary("library-a")
         repository.checkpoint("episode-a", 6_000, 10_000, nowEpochMs = 100)

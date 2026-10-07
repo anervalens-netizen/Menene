@@ -9,6 +9,7 @@ import os
 import shutil
 import sys
 import time
+import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -309,13 +310,13 @@ def build_library(
     destination.mkdir(parents=True, exist_ok=True)
     catalog_path = destination / "catalog.json"
     report_path = destination / "mehene-report.json"
-    previous_catalog = catalog_path.read_bytes() if catalog_path.is_file() else None
     started = time.monotonic()
 
-    with BuildLock(destination):
+    with BuildLock(destination), tempfile.TemporaryDirectory(prefix=".catalog-stage-", dir=destination) as staging:
         legacy.copy_asset = atomic_copy_asset
         fingerprint = source_fingerprint(source)
-        report = legacy.build_library(source, destination, preferred_language, media_profile)
+        candidate_path = Path(staging) / "catalog.json"
+        report = legacy.build_library(source, destination, preferred_language, media_profile, catalog_output=candidate_path)
         report.update({
             "builderVersion": BUILDER_VERSION,
             "sourceFingerprint": fingerprint,
@@ -326,8 +327,8 @@ def build_library(
 
         candidate: dict[str, Any] | None = None
         try:
-            if catalog_path.is_file():
-                candidate = json.loads(catalog_path.read_text(encoding="utf-8"))
+            if candidate_path.is_file():
+                candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
                 candidate["builderVersion"] = BUILDER_VERSION
                 candidate["sourceFingerprint"] = fingerprint
                 candidate["mediaProfile"] = media_profile
@@ -335,6 +336,7 @@ def build_library(
                 candidate["catalogRevision"] = catalog_revision(candidate)
                 validate_catalog(candidate, destination)
         except Exception as error:
+            candidate = None
             report.setdefault("errors", []).append({"file": str(catalog_path), "error": str(error)})
 
         errors = report.get("errors", [])
@@ -342,7 +344,6 @@ def build_library(
             atomic_write_json(catalog_path, candidate)
             report["catalogPublished"] = True
         else:
-            restore_catalog(catalog_path, previous_catalog)
             report.setdefault("warnings", []).append(
                 "Catalogul anterior a fost păstrat deoarece există erori; folosește --publish-partial numai intenționat"
             )

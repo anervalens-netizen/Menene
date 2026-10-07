@@ -54,7 +54,7 @@ class ProgressBackupStore(context: Context) {
 
     fun upsertIfNewer(entity: PlaybackProgressEntity) = synchronized(lock) {
         ensureLoaded()
-        if (entity.lastPlayedAtEpochMs < clearedAtEpochMs(entity.libraryId)) return@synchronized
+        if (entity.lastPlayedAtEpochMs <= clearedAtEpochMs(entity.libraryId)) return@synchronized
         val key = Key(entity.libraryId, entity.episodeId)
         val existing = entities[key]
         if (existing == null || entity.lastPlayedAtEpochMs >= existing.lastPlayedAtEpochMs) {

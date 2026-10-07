@@ -33,7 +33,7 @@ python3 tools/validate_repo.py
 
 # Gate G1 — Build Android curat
 
-Pe un calculator cu JDK 17 și Android SDK 36:
+Pe un calculator cu JDK 17 și Android SDK 36, cu un emulator sau dispozitiv conectat:
 
 ```bash
 python3 tools/validate_repo.py --android
@@ -42,7 +42,7 @@ python3 tools/validate_repo.py --android
 Rulează echivalent:
 
 ```bash
-./gradlew clean test lintDebug assembleDebug
+./gradlew clean test lintDebug assembleDebug lintRelease assembleRelease connectedDebugAndroidTest
 ```
 
 Pentru release:
@@ -50,6 +50,8 @@ Pentru release:
 ```bash
 ./gradlew clean test lintRelease assembleRelease
 ```
+
+Instrumentarea trebuie să aibă rezultat separat în raportul de validare. Fără un dispozitiv/emulator sau dacă instrumentarea nu rulează, G1 rămâne nevalidat.
 
 ## Criterii
 

@@ -24,6 +24,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     private val catalogResult = MutableStateFlow<LibraryResult<LibraryCatalog>?>(null)
     private val kioskState = MutableStateFlow(KioskController.state(application))
     private var refreshJob: Job? = null
+    private var persistenceJob: Job? = null
     private var requestGeneration = 0L
 
     val uiState = combine(
@@ -63,6 +64,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refresh(force: Boolean = false) {
+        if (persistenceJob?.isActive == true) return
         val generation = ++requestGeneration
         refreshJob?.cancel()
         refreshKioskState()
@@ -73,9 +75,11 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setLibrary(uri: Uri) {
+        val previousPersistence = persistenceJob
         val generation = ++requestGeneration
         refreshJob?.cancel()
-        refreshJob = viewModelScope.launch {
+        persistenceJob = viewModelScope.launch {
+            previousPersistence?.join()
             val result = container.libraryRepository.persistLibraryUri(uri)
             if (generation == requestGeneration) catalogResult.value = result
         }

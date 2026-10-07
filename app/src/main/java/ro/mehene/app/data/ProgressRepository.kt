@@ -77,7 +77,7 @@ class ProgressRepository(
         val databaseValue = runCatching { dao.get(libraryId, episodeId) }
             .onFailure { Log.e(TAG, "Room get failed", it) }
             .getOrNull()
-            ?.takeIf { it.lastPlayedAtEpochMs >= clearedAtEpochMs }
+            ?.takeIf { it.lastPlayedAtEpochMs > clearedAtEpochMs }
         val entity = databaseValue ?: runCatching { backupStore.get(libraryId, episodeId) }
             .onFailure { Log.e(TAG, "Progress backup get failed", it) }
             .getOrNull()
@@ -180,7 +180,7 @@ class ProgressRepository(
         val libraryId = requireNotNull(activeLibraryId)
         val namespaced = entity.copy(libraryId = libraryId)
         val clearedAtEpochMs = runCatching { backupStore.clearedAtEpochMs(libraryId) }.getOrDefault(0L)
-        if (namespaced.lastPlayedAtEpochMs < clearedAtEpochMs) return@withLock
+        if (namespaced.lastPlayedAtEpochMs <= clearedAtEpochMs) return@withLock
         val current = mutableProgress.value[namespaced.episodeId]
         if (current != null && namespaced.lastPlayedAtEpochMs < current.lastPlayedAtEpochMs) return@withLock
 
@@ -217,11 +217,11 @@ class ProgressRepository(
             .getOrDefault(emptyList())
 
         val merged = linkedMapOf<String, PlaybackProgressEntity>()
-        backup.filter { it.lastPlayedAtEpochMs >= clearedAtEpochMs }.forEach { mergeNewer(merged, it) }
-        database.filter { it.lastPlayedAtEpochMs >= clearedAtEpochMs }.forEach { mergeNewer(merged, it) }
+        backup.filter { it.lastPlayedAtEpochMs > clearedAtEpochMs }.forEach { mergeNewer(merged, it) }
+        database.filter { it.lastPlayedAtEpochMs > clearedAtEpochMs }.forEach { mergeNewer(merged, it) }
         backup.forEach { backupEntity ->
                 val databaseEntity = database.firstOrNull { it.episodeId == backupEntity.episodeId }
-                if (backupEntity.lastPlayedAtEpochMs >= clearedAtEpochMs &&
+                if (backupEntity.lastPlayedAtEpochMs > clearedAtEpochMs &&
                     (databaseEntity == null || backupEntity.lastPlayedAtEpochMs > databaseEntity.lastPlayedAtEpochMs)
                 ) {
                     runCatching { dao.upsert(backupEntity) }

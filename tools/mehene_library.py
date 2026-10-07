@@ -413,7 +413,7 @@ def video_files(directory: Path) -> list[Path]:
 def relative_posix(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
-def build_library(source: Path, destination: Path, preferred_language: str, media_profile: str = 'tablet') -> dict[str, Any]:
+def build_library(source: Path, destination: Path, preferred_language: str, media_profile: str = 'tablet', *, catalog_output: Path | None = None) -> dict[str, Any]:
     ffmpeg = require_tool('ffmpeg')
     ffprobe = require_tool('ffprobe')
     if media_profile not in {'tablet', 'tv'}:
@@ -599,8 +599,8 @@ def build_library(source: Path, destination: Path, preferred_language: str, medi
         'series': catalog_series,
     }
     for file_name, payload in (('catalog.json', catalog), ('mehene-report.json', report)):
-        final_path = destination / file_name
-        temporary_path = destination / f'.{file_name}.tmp'
+        final_path = catalog_output if file_name == 'catalog.json' and catalog_output is not None else destination / file_name
+        temporary_path = final_path.with_name(f'.{final_path.name}.tmp')
         temporary_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
         os.replace(temporary_path, final_path)
     return report
